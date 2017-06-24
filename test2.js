@@ -164,6 +164,7 @@ function listThreads(auth) {
 
     } else {
       console.log(threads.length)
+      
       for (var i = 0; i < threads.length; i++) {
         var thread = threads[i];
 
@@ -190,7 +191,8 @@ function listThreads(auth) {
             userid: 'user_id',
             email: 'crystal.wesnoski@gmail.com',
             thread_id: thread.id,
-            encoded_message: raw_message}
+            encoded_message: raw_message},
+            { unique: true }
           );
 
         

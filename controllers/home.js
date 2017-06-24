@@ -1,12 +1,15 @@
 // var quickstart = require('./quicksstart');
 const async = require('async');
 const Message = require('../models/Message.js');
+var message_data = []
+
 
 exports.index = (req, res) => {
   var fs = require('fs');
   var readline = require('readline');
   var google = require('googleapis');
   var googleAuth = require('google-auth-library');
+  var gmail = google.gmail('v1');
 
   // If modifying these scopes, delete your previously saved credentials
   // at ~/.credentials/gmail-nodejs-quickstart.json
@@ -85,11 +88,8 @@ exports.index = (req, res) => {
     });
   }
 
-  /**
-   * Store token to disk be used in later program executions.
-   *
-   * @param {Object} token The token to store to disk.
-   */
+
+   // Store token to disk be used in later program executions.
   function storeToken(token) {
     try {
       fs.mkdirSync(TOKEN_DIR);
@@ -102,11 +102,44 @@ exports.index = (req, res) => {
     console.log('Token stored to ' + TOKEN_PATH);
   }
 
-  /**
-   * Lists the labels in the user's account.
-   *
-   * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
-   */
+
+  //sub function to get message from gmail api
+   function getMessage(i, auth, thread_id, callback) {
+     gmail.users.messages.get({
+       auth:auth,
+       userId: 'crystal.wesnoski@gmail.com',
+       id: thread_id.id,
+       format: 'raw'
+     }, 
+       function(err, response2) {
+         if (err) {
+
+           console.log('The API returned an error: ' + err);
+           return;
+         }
+         
+         //for some reason i needed to create an _id to save to mongoose...:(
+         var mongoose = require('mongoose');
+         var ObjectId =  mongoose.Types.ObjectId;
+         var x = new ObjectId();
+      
+         const email_thread = new Message(
+           {
+             _id: x,
+             userid: 'user_id',
+             email: 'crystal.wesnoski@gmail.com',
+             thread_id: thread_id.id, 
+             encoded_message: response2['raw']
+          }
+         );
+        
+         email_thread.save();
+
+      }
+    )
+
+   }
+
 
   function listThreads(auth) {
 
@@ -137,69 +170,39 @@ exports.index = (req, res) => {
         console.log('No labels found.');
 
       } else {
-        //console.log(threads.length)
+      
         for (var i = 0; i < threads.length; i++) {
           var thread = threads[i];
-
-          //console.log(thread)
-          //console.log('- %s', thread.id);
-          gmail.users.messages.get({
-            auth: auth,
-            userId: 'me',
-            id: thread.id,
-            format: 'raw'
-          }, function(err, response2) {
-            if (err) {
-
-              console.log('The API returned an error: ' + err);
-              return;
-            }
-
-            var b = new Buffer(response2['raw'], 'base64')
-            
-            message =b.toString();
-            raw_message = response2['raw']
-            
-            const email_thread = new Message({
-              userid: 'user_id',
-              email: 'crystal.wesnoski@gmail.com',
-              thread_id: thread.id,
-              encoded_message: raw_message}
-            );
-
-          
-            email_thread.save((err),{ unique: true } => {
-              if (err) {return next(err);}
-              console.log('saved thread '+thread.id)
-            });
-
-            }
-          );
+        
+          getMessage(i ,auth, thread)
+              
         }
       }
     });
-
-
   }
-  
-  var PythonShell = require('python-shell');
-  //you can use error handling to see if there are any errors
-  var options = {
-    scriptPath: '/Users/crystalm/desktop/piggie/'
-  };
-  PythonShell.run('test.py', options, function (err, results) { 
-    console.log("Here you are there...");
-  })
-  //your code
-
-
-
-
-
-
 
 
   res.render('home', {
     title: 'Home'
   });
 };
+
+
+
+/*
+var PythonShell = require('python-shell');
+//you can use error handling to see if there are any errors
+var options = {
+  scriptPath: '/Users/crystalm/desktop/piggie/'
+};
+PythonShell.run('test.py', options, function (err, results) { 
+  console.log("Here you are there...");
+})
+//your code
+
+
+
+*/
+
+
+
