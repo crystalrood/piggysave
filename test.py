@@ -25,6 +25,16 @@ db = client.test
 messages = db.messages
 messages = pd.DataFrame(list(messages.find()))
 
+#need to drop duplicate records
+del messages['__v']
+del messages['_id']
+del messages['createdAt']
+del messages['date_extracted']
+del messages['updatedAt']
+messages = messages.drop_duplicates()
+print "made it here"
+
+
 columns = ['thread_id','email', 'retailer', 'date', 'order_num', 'billing_address']
 #setting up dataframe
 df = pd.DataFrame(columns=columns)
@@ -76,13 +86,15 @@ for index, row in messages.iterrows():
 
     #print retailer
     
-    if retailer != 'best buy':
+    if retailer != 'best buy' and retailer != 'nordstrom':
     #order number
         order_num = ['order number', 'order id', 'order #']
 
+    if retailer == 'nordstrom':
+        order_num = ['order #']
+        
     if retailer == 'best buy':
         order_num = ['order id', 'order #']
-
     #getting order num
     for num in order_num:
         find = False 
@@ -102,18 +114,23 @@ for index, row in messages.iterrows():
         order_number = order_number[0]
         
     if retailer == 'best buy':
-        #print string[idx+1]
+        print string[idx+1]
         order_number = string[idx+1]
         
     if retailer == '''victoria's secret''':
-        #print  text + ' ' +string[idx+1]
+        print  text + ' ' +string[idx+1]
         order_number = re.findall(r'\d+', text + ' ' +string[idx+1] )
         order_number = order_number[0]
         
     if retailer == 'nordstrom':     
-        order_number = re.findall(r'\d+', text )
-        order_number = order_number[0]
+        try:
+            order_number = re.findall(r'\d+', text )
+            order_number = order_number[0]
+        except:
+            order_number = 'not available'
+            pass
         #print order_number
+    
     
 
     
@@ -124,7 +141,7 @@ for index, row in messages.iterrows():
     # https://www.codeproject.com/Tips/989012/Validate-and-Find-Addresses-with-RegEx
  
     try:
-        if retailer != '''victoria's secret''':
+        if retailer != '''victoria's secret''' and retailer != 'nordstrom':
             billing = ['billing address', 'billed to', 'bill to', 'estimated pickup date', 'get it by']
             for bill in billing:
                 find = False 
@@ -184,7 +201,66 @@ for index, row in messages.iterrows():
                 for i in range(idx,len(spt_address_string_2)-1):
                     address_string += spt_address_string_2[i] + ' '
 
-            #print(address_string)
+
+            
+        ##start for nordstrom retailer address extraction
+        if retailer == 'nordstrom':
+            billing = ['billing address:']
+            for bill in billing:
+                find = False 
+                for bill_idx, text in enumerate(string):
+                    if bill in text.lower():
+                        find = True
+                        #print(bill_idx, text)
+                        break;
+                if find:
+                    break
+            
+            address = ''
+            for i in range (0,30):
+                address += string[bill_idx+i] + ' '
+
+            address_string_1 = re.search(r'\d{1,6}( \w+){1,6}', address).group(0)
+            address_string_2 = re.search(r'\s+((?:[\w+\s*\-])+)[\,]\s+([a-zA-Z]+)\s+([0-9a-zA-Z]+)', address).group(0)
+            
+            #getting zip codde
+            match = re.search(r'\b\d{5}(?:-\d{4})?\b',  address)
+            zip_code = match.group(0)
+            zip_code
+            #putting the two together
+            address_string_2= address_string_2+' '+zip_code
+            
+            spt_address_string_1 = address_string_1.split(' ')
+            spt_address_string_2 = address_string_2.split(' ')
+            
+
+            address_seg = spt_address_string_1[len(spt_address_string_1)-1].lower()
+
+            for idx, text in enumerate(spt_address_string_2):
+                if address_seg in text.lower():
+                    
+                    break;
+
+            address_string = ''
+
+            #if no overlap was found then just concatenate the two threads
+            if idx == len(spt_address_string_2)-1:
+                for i in range(0,len(spt_address_string_1)-1):
+                    address_string += spt_address_string_1[i] + ' '
+
+                for i in range(0,len(spt_address_string_2)-1):
+                    address_string += spt_address_string_2[i] + ' '
+            #if overlap was found do this
+            else:
+                for i in range(0,len(spt_address_string_1)-1):
+                    address_string += spt_address_string_1[i] + ' '
+
+                for i in range(idx,len(spt_address_string_2)-1):
+                    address_string += spt_address_string_2[i] + ' '
+
+            
+
+            ##end for nordstrom emails
 
         else:
             address_string = 'not available'
@@ -207,7 +283,7 @@ for index, row in messages.iterrows():
            'order_num': row['order_num'],
            'billing_address': row['billing_address'],
           }
-        result = db.order_info_from_email.insert_one(dic, { unique: true })
+        result = db.order_info_from_email.insert_one(dic)
     
     print 'testedandsuccess'
     

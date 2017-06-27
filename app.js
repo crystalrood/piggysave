@@ -35,6 +35,9 @@ const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
+const cron_testController = require('./controllers/cron_test');
+
+
 
 /**
  * API keys and Passport configuration.

@@ -123,11 +123,13 @@ exports.index = (req, res) => {
          var ObjectId =  mongoose.Types.ObjectId;
          var x = new ObjectId();
       
+         var date = new Date().getTime()
          const email_thread = new Message(
            {
              _id: x,
              userid: 'user_id',
              email: 'crystal.wesnoski@gmail.com',
+             date_extracted: date,
              thread_id: thread_id.id, 
              encoded_message: response2['raw']
           }
@@ -179,30 +181,53 @@ exports.index = (req, res) => {
         }
       }
     });
+
   }
 
+  var PythonShell = require('python-shell');
+
+  var pyshell = new PythonShell('test.py',{scriptPath:"/Users/crystalm/desktop/piggie/", pythonOptions: ['-u']});
+
+  pyshell.on('message', function (message) {
+    // received a message sent from the Python script (a simple "print" statement) 
+    console.log(message);
+
+  });
+
+  // end the input stream and allow the process to exit 
+  pyshell.end(function (err) {
+    if (err) throw err;
+    console.log('finished');
+  });
+  
+  
+  
+  var PythonShell = require('python-shell');
+
+  var pyshell = new PythonShell('test_scrape_nordstrom.py',{scriptPath:"/Users/crystalm/desktop/piggie/", pythonOptions: ['-u']});
+
+  pyshell.on('message', function (message) {
+    // received a message sent from the Python script (a simple "print" statement) 
+    console.log(message);
+
+  });
+
+  // end the input stream and allow the process to exit 
+  pyshell.end(function (err) {
+    if (err) throw err;
+    console.log('finished');
+  });
+  
+
+
+  
+  
 
   res.render('home', {
     title: 'Home'
   });
 };
 
-
-
-/*
-var PythonShell = require('python-shell');
-//you can use error handling to see if there are any errors
-var options = {
-  scriptPath: '/Users/crystalm/desktop/piggie/'
-};
-PythonShell.run('test.py', options, function (err, results) { 
-  console.log("Here you are there...");
-})
-//your code
-
-
-
-*/
 
 
 
