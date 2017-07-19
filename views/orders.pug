@@ -1,0 +1,127 @@
+extends layout
+
+block content
+  script(type='text/javascript').
+    var CSRF_HEADER = 'x-csrf-token';
+
+    var setCSRFToken = function (securityToken) {
+      jQuery.ajaxPrefilter(function (options, _, xhr) {
+        if (!xhr.crossDomain) {
+          xhr.setRequestHeader(CSRF_HEADER, securityToken);
+        }
+      });
+    };
+
+    window.onload = function bring_in_da_data() {
+      
+        //getting the data from the initial pull upon page load
+        var data_for_db = document.getElementById("order_info_data").value;
+
+        var data_for_db_value = JSON.parse( data_for_db );
+        console.log(data_for_db_value[0])
+          
+          
+        for (var i = 0; i < data_for_db_value.length; i++){
+          console.log(data_for_db_value[i])  
+          
+         }
+        /*
+         //putting all the new rows from the post function together in HTML
+        shifts_data.forEach(function(item, itemIndex){
+        if(item.date_range_start == date_selected_in_dropdown) {
+          trHTML += '<tr><td>' + item.employee_type
+            +'<td>' + item.days_worked
+            +'<td>' + item.num_employees
+            +'<td>' + item.shift_start_time
+            +'<td>' + item.shift_end_time
+            +'<td>' + '<input type="button" name="btn-Edit" value="Edit" onClick="Javacsript:editRow(this)"/>'
+            +'<td>' + '<input type="button" name="Delete" value="Delete" onClick="Javacsript:deleteRow(this)"/>'
+        }
+        })
+
+        //appending all rows to the myTableData table :)
+        $('#myTableData').append(trHTML);        
+        */    
+    
+    
+    }
+    
+  
+  
+  h1 Your orders
+  br
+  br
+  input.form-control(type='hidden', id="order_info_data", value=  JSON.stringify(orders))
+    
+  #item_checking.container
+    .row
+      #item_checking.h3 Nordstrom
+    .row
+      #itemsub.div.col-sm-2
+        img(src="https://secure.nordstromimage.com/ImageGallery/store/Product/thumbnail/1/_10827641.jpg")
+      #itemsub.div.col-sm-8
+        p.item_checking 
+          span Item: 
+          | UGG® 'Alamar' Twinsole® Slip-On (Men)
+          br
+          span Quantity: 
+          | 1
+          br
+          span Unit Price: 
+          | $69.99
+          br
+          span Order Number: 
+          | 831696422
+          br
+          span Date Ordered: 
+          | 2017-05-01
+
+  br
+    
+  #retailer_contacted.container
+    .row
+      #retailer_contacted.h3 Nordstrom
+    .row
+      #itemsub1.div.col-sm-2
+        img(src="https://secure.nordstromimage.com/ImageGallery/store/Product/thumbnail/1/_10827641.jpg")
+      #itemsub2.div.col-sm-8
+        p.retailer_contacted 
+          span Item: 
+          | UGG® 'Alamar' Twinsole® Slip-On (Men)
+          br
+          span Quantity: 
+          | 1
+          br
+          span Unit Price: 
+          | $69.99
+          br
+          span Order Number: 
+          | 831696422
+          br
+          span Date Ordered: 
+          | 2017-05-01
+
+  br
+
+  #refunded_savings.container
+    .row
+      #refunded_savings.h3 Nordstrom
+    .row
+      #itemsub.div.col-sm-2
+        img(src="https://secure.nordstromimage.com/ImageGallery/store/Product/thumbnail/1/_10827641.jpg")
+      #itemsub.div.col-sm-8
+        p.refunded_savings 
+          span Item: 
+          | UGG® 'Alamar' Twinsole® Slip-On (Men)
+          br
+          span Quantity: 
+          | 1
+          br
+          span Unit Price: 
+          | $69.99
+          br
+          span Order Number: 
+          | 831696422
+          br
+          span Date Ordered: 
+          | 2017-05-01

@@ -1,7 +1,7 @@
-#required encoding for scraping, otherwise defaults to unicode and screws things up
+# this file scrapes the order number from the nordstrom website
 from bs4 import BeautifulSoup
 import requests
-import sys;
+import sys
 import re
 import pandas as pd
 import pprint
@@ -99,4 +99,4 @@ for index, row in df.iterrows():
        'style': row['style'],
        'tracking_num': row['tracking_num'],
       }
-    result = db.order_info_item_scrape.insert_one(dic)
+    result = db.order_info_item_scrapes.insert_one(dic)

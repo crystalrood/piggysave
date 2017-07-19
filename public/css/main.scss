@@ -8,6 +8,184 @@
 // Scaffolding
 // -------------------------
 
+//
+//
+//
+//generic formatting
+//
+//
+//
+
+// creates formatting for a second to put item info in\
+#itemsub.div{
+  margin: auto !important;
+  position: relative !important;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+//helps with mobile views
+h1 {
+  font-size: 3.9vw;
+}
+h2 {
+  font-size: 2.0vh;
+}
+p {
+  font-size: 2vmin;
+}
+
+
+
+
+///
+///
+//tracking item formatting
+///
+///
+
+//containter that holds picture and info
+#item_checking.container {
+  margin: auto !important;
+  position: relative;
+  min-width: 250px;
+  min-height: 200px;
+  width:75%;
+  height:100%;
+  border:5px solid #BEE6FF;
+  background-color: #BEE6FF;
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#item_checking2.container {
+  margin: auto !important;
+  position: relative;
+  min-width: 250px;
+  min-height: 200px;
+  width:75%;
+  height:100%;
+  border:5px solid #33AFFF;
+  background-color: #33AFFF;
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+
+//
+#item_checking.h3{
+  color: #004589;
+  text-align:left;
+  vertical-align: top;
+}
+
+.item_checking span {
+    color:#004589;
+    font-weight:bold;
+    font-size: 2vmin;
+    line-height: 200%;
+}
+
+.item_checking {
+    font-size: 2vmin;
+    color:#5C5C5C;
+}
+
+
+
+///
+///
+//retailer contacted formatting
+///
+///FF4983
+
+//containter that holds picture and info
+#retailer_contacted.container {
+  margin: auto !important;
+  position: relative;
+  min-width: 250px;
+  min-height: 200px;
+  width:75%;
+  height:100%;
+  border:5px solid #FFD1E0;
+  background-color: #FFD1E0;
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+//
+#retailer_contacted.h3{
+  color: #004589;
+  text-align:left;
+  vertical-align: top;
+}
+
+.retailer_contacted span {
+    color:#004589;
+    font-weight:bold;
+    font-size: 2vmin;
+    line-height: 200%;
+}
+
+.retailer_contacted {
+    font-size: 2vmin;
+    color:#5C5C5C;
+}
+
+
+
+
+///
+///
+//retailer contacted formatting
+///
+///FF4983
+
+//containter that holds picture and info
+#refunded_savings.container {
+  margin: auto !important;
+  position: relative;
+  min-width: 250px;
+  min-height: 200px;
+  width:75%;
+  height:100%;
+  border:5px solid #C3FFD9;
+  background-color: #C3FFD9;
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+//
+#refunded_savings.h3{
+  color: #210090;
+  text-align:left;
+  vertical-align: top;
+}
+
+.refunded_savings span {
+    color:#210090;
+    font-weight:bold;
+    font-size: 2vmin;
+    line-height: 200%;
+}
+
+.refunded_savings {
+    font-size: 2vmin;
+    color:#5C5C5C;
+}
+
+
+
+
 html {
   position: relative;
   min-height: 100%;
@@ -17,6 +195,7 @@ body {
   padding-top: 60px;
   margin-bottom: 75px;
 }
+
 
 footer {
   position: absolute;
@@ -39,6 +218,15 @@ textarea {
 
 // Navbar
 // -------------------------
+
+
+
+a.navbar-brand{
+  color: #2196f3 !important;
+  font-family: Avenir,Lato,sans-serif !important;
+  font-weight: bold;
+  font-size: 145%;
+}
 
 .navbar-nav img {
   width: 30px;

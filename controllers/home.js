@@ -176,7 +176,7 @@ exports.index = (req, res) => {
         for (var i = 0; i < threads.length; i++) {
           var thread = threads[i];
         
-          getMessage(i ,auth, thread)
+          //getMessage(i ,auth, thread)
               
         }
       }
@@ -184,6 +184,7 @@ exports.index = (req, res) => {
 
   }
 
+/*
   var PythonShell = require('python-shell');
 
   var pyshell = new PythonShell('test.py',{scriptPath:"/Users/crystalm/desktop/piggie/", pythonOptions: ['-u']});
@@ -220,7 +221,7 @@ exports.index = (req, res) => {
   
 
 
-  
+  */
   
 
   res.render('home', {
