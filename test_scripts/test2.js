@@ -4,12 +4,25 @@
 //
 //
 
+
+ const mongoose = require('mongoose');
+
+
+//mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost:27017/test' || 'mongodb://localhost:27017/test');
+mongoose.connection.on('error', (err) => {
+  console.error(err);
+  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
+  process.exit();
+});
+
 const async = require('async');
-const Message = require('./models/Message.js');
+const Message = require('../models/Message.js');
 var fs = require('fs');
 var readline = require('readline');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
+var gmail = google.gmail('v1');
 
 // If modifying these scopes, delete your previously saved credentials
 // at ~/.credentials/gmail-nodejs-quickstart.json
@@ -19,7 +32,7 @@ var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
 var TOKEN_PATH = TOKEN_DIR + 'gmail-nodejs-quickstart.json';
 
 // Load client secrets from a local file.
-fs.readFile('client_secret.json', function processClientSecrets(err, content) {
+fs.readFile('../client_secret.json', function processClientSecrets(err, content) {
   if (err) {
     console.log('Error loading client secret file: ' + err);
     return;
@@ -105,107 +118,85 @@ function storeToken(token) {
   console.log('Token stored to ' + TOKEN_PATH);
 }
 
-/**
- * Lists the labels in the user's account.
- *
- * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
- */
-function listLabels(auth) {
-  var retailers = ['contact@em.nordstrom.com', 'VictoriasSecret@e1.victoriassecret.com','help@walmart.com', 'BestBuyInfo@emailinfo.bestbuy.com']
-  var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
-  var gmail = google.gmail('v1');
-  gmail.users.labels.list({
-    auth: auth,
-    userId: 'me',
-  }, function(err, response) {
-    if (err) {
-      console.log('The API returned an error: ' + err);
-      return;
+
+
+//sub function to get message from gmail api
+ function getMessage(i, auth, thread_id, callback) {
+   gmail.users.messages.get({
+     auth:auth,
+     userId: 'crystal.wesnoski@gmail.com',
+     id: thread_id.id,
+     format: 'raw'
+   },
+     function(err, response2) {
+       if (err) {
+
+         console.log('The API returned an error: ' + err);
+         return;
+       }
+
+       //for some reason i needed to create an _id to save to mongoose...:(
+       var mongoose = require('mongoose');
+       var ObjectId =  mongoose.Types.ObjectId;
+       var x = new ObjectId();
+
+       var date = new Date().getTime()
+       const email_thread = new Message(
+         {
+           _id: x,
+           userid: 'user_id',
+           email: 'crystal.wesnoski@gmail.com',
+           date_extracted: date,
+           thread_id: thread_id.id,
+           encoded_message: response2['raw']
+        }
+       );
+       console.log(thread_id.id)
+       email_thread.save();
+
     }
-    var labels = response.labels;
-    if (labels.length == 0) {
-      console.log('No labels found.');
-    } else {
-      console.log('Labels:');
-      for (var i = 0; i < labels.length; i++) {
-        var label = labels[i];
-        console.log('- %s', label.name);
-      }
-    }
-  });
-}
+  )
 
-function listThreads(auth) {
-  var mongoose = require('mongoose');
-  mongoose.Promise = require('bluebird');
-
-  var message
-  //only focusing on nordstrom , 'VictoriasSecret@e1.victoriassecret.com','help@walmart.com', 'BestBuyInfo@emailinfo.bestbuy.com'
-  var retailers = ['contact@em.nordstrom.com']
-  var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
-  query = 'in: anywhere,' + retailers +','+ key_words
-  console.log(query)
-  var gmail = google.gmail('v1');
-  gmail.users.threads.list({
-    auth: auth,
-    userId: 'me',
-    q: query
-  }, function(err, response) {
-    if (err) {
-
-      console.log('The API returned an error: ' + err);
-      return;
-    }
-
-    var threads = response['threads']
-    if (threads.length == 0) {
-
-      console.log('No labels found.');
-
-    } else {
-      console.log(threads.length)
-      
-      for (var i = 0; i < threads.length; i++) {
-        var thread = threads[i];
-
-        console.log(thread)
-        console.log('- %s', thread.id);
-        gmail.users.messages.get({
-          auth: auth,
-          userId: 'me',
-          id: thread.id,
-          format: 'raw'
-        }, function(err, response2) {
-          if (err) {
-
-            console.log('The API returned an error: ' + err);
-            return;
-          }
-
-          var b = new Buffer(response2['raw'], 'base64')
-          
-          message =b.toString();
-          raw_message = response2['raw']
-          
-          const email_thread = new Message({
-            userid: 'user_id',
-            email: 'crystal.wesnoski@gmail.com',
-            thread_id: thread.id,
-            encoded_message: raw_message},
-            { unique: true }
-          );
-
-        
-          email_thread.save((err) => {
-            if (err) {return next(err);}
-            console.log('saved thread '+thread.id)
-          });
-
-          }
-        );
-      }
-    }
-  });
+ }
 
 
-}
+
+   function listThreads(auth) {
+
+     var mongoose = require('mongoose');
+     mongoose.Promise = require('bluebird');
+
+     var message
+     //only focusing on nordstrom , 'VictoriasSecret@e1.victoriassecret.com','help@walmart.com', 'BestBuyInfo@emailinfo.bestbuy.com'
+     var retailers = ['contact@em.nordstrom.com']
+     var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
+     query = 'in: anywhere,' + retailers +','+ key_words
+     //console.log(query)
+     var gmail = google.gmail('v1');
+     gmail.users.threads.list({
+       auth: auth,
+       userId: 'crystal.wesnoski@gmail.com',
+       q: query
+     }, function(err, response) {
+       if (err) {
+
+         console.log('The API returned an error: ' + err);
+         return;
+       }
+
+       var threads = response['threads']
+       if (threads.length == 0) {
+
+         console.log('No labels found.');
+
+       } else {
+
+         for (var i = 0; i < threads.length; i++) {
+           var thread = threads[i];
+
+           getMessage(i ,auth, thread)
+
+         }
+       }
+     });
+   }

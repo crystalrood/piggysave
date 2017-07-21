@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const messageSchema = new mongoose.Schema({
-  userid: String,
   email: String,
   thread_id: String,
   date_extracted: String,
-  encoded_message: String},
+  encoded_message: String,
+  status: String},
   { timestamps: true }
 );
 

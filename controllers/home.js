@@ -110,19 +110,19 @@ exports.index = (req, res) => {
        userId: 'crystal.wesnoski@gmail.com',
        id: thread_id.id,
        format: 'raw'
-     }, 
+     },
        function(err, response2) {
          if (err) {
 
            console.log('The API returned an error: ' + err);
            return;
          }
-         
+
          //for some reason i needed to create an _id to save to mongoose...:(
          var mongoose = require('mongoose');
          var ObjectId =  mongoose.Types.ObjectId;
          var x = new ObjectId();
-      
+
          var date = new Date().getTime()
          const email_thread = new Message(
            {
@@ -130,11 +130,11 @@ exports.index = (req, res) => {
              userid: 'user_id',
              email: 'crystal.wesnoski@gmail.com',
              date_extracted: date,
-             thread_id: thread_id.id, 
+             thread_id: thread_id.id,
              encoded_message: response2['raw']
           }
          );
-        
+
          email_thread.save();
 
       }
@@ -147,7 +147,7 @@ exports.index = (req, res) => {
 
     var mongoose = require('mongoose');
     mongoose.Promise = require('bluebird');
-    
+
     var message
     //only focusing on nordstrom , 'VictoriasSecret@e1.victoriassecret.com','help@walmart.com', 'BestBuyInfo@emailinfo.bestbuy.com'
     var retailers = ['contact@em.nordstrom.com']
@@ -172,12 +172,12 @@ exports.index = (req, res) => {
         console.log('No labels found.');
 
       } else {
-      
+
         for (var i = 0; i < threads.length; i++) {
           var thread = threads[i];
-        
+
           //getMessage(i ,auth, thread)
-              
+
         }
       }
     });
@@ -190,45 +190,41 @@ exports.index = (req, res) => {
   var pyshell = new PythonShell('test.py',{scriptPath:"/Users/crystalm/desktop/piggie/", pythonOptions: ['-u']});
 
   pyshell.on('message', function (message) {
-    // received a message sent from the Python script (a simple "print" statement) 
+    // received a message sent from the Python script (a simple "print" statement)
     console.log(message);
 
   });
 
-  // end the input stream and allow the process to exit 
+  // end the input stream and allow the process to exit
   pyshell.end(function (err) {
     if (err) throw err;
     console.log('finished');
   });
-  
-  
-  
+
+
+
   var PythonShell = require('python-shell');
 
   var pyshell = new PythonShell('test_scrape_nordstrom.py',{scriptPath:"/Users/crystalm/desktop/piggie/", pythonOptions: ['-u']});
 
   pyshell.on('message', function (message) {
-    // received a message sent from the Python script (a simple "print" statement) 
+    // received a message sent from the Python script (a simple "print" statement)
     console.log(message);
 
   });
 
-  // end the input stream and allow the process to exit 
+  // end the input stream and allow the process to exit
   pyshell.end(function (err) {
     if (err) throw err;
     console.log('finished');
   });
-  
+
 
 
   */
-  
+
 
   res.render('home', {
     title: 'Home'
   });
 };
-
-
-
-

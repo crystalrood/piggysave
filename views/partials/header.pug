@@ -8,7 +8,7 @@
         span.icon-bar
       a.navbar-brand(href='/')
         i.fa.fa-cube
-        | Project name
+        | Piggie
     .collapse.navbar-collapse
       ul.nav.navbar-nav
         li(class=(title == 'Home') ? 'active' : undefined)
@@ -17,8 +17,6 @@
           a(href='/order') Your Orders
         li(class=(title == 'Contact') ? 'active' : undefined)
           a(href='/contact') Contact
-        li
-          a(href='/status') Status
       ul.nav.navbar-nav.navbar-right
         if !user
           li(class=(title == 'Login') ? 'active' : undefined)

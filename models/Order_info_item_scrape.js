@@ -9,7 +9,8 @@ const order_info_item_scrapeSchema = new mongoose.Schema({
   item_name: String,
   size: String,
   style: String,
-  tracking_num: String},
+  tracking_num: String,
+  status: String},
   { timestamps: true }
 );
 

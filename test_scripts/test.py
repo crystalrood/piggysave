@@ -1,5 +1,5 @@
 # this test file takes an encoded emai, decodes it, parese out order information and saves it to the database
-##
+# also changes the status of the messages db from "need to scrape" to "scraped"
 #
 #
 #
@@ -32,6 +32,8 @@ del messages['createdAt']
 del messages['date_extracted']
 del messages['updatedAt']
 messages = messages.drop_duplicates()
+##here i'm filter out ones that i need to scrape
+messages = messages[(messages.status == 'need to scrape')]
 print "made it here"
 
 
@@ -40,13 +42,13 @@ columns = ['thread_id','email', 'retailer', 'date', 'order_num', 'billing_addres
 df = pd.DataFrame(columns=columns)
 
 for index, row in messages.iterrows():
-    
+
     ##allows us to decode message :)
     msg_decoded = base64.urlsafe_b64decode(row['encoded_message'].encode('ASCII'))
-    
+
     #splits above message into lines of text
     string = msg_decoded.split('\r\n')
-    
+
     #getting email
     delivered_to = 'delivered-to'
 
@@ -72,8 +74,8 @@ for index, row in messages.iterrows():
     for match in matches:
         date = match.strftime('%m/%d/%Y')
         #print match
-        
-        
+
+
     #retailer information
     retailers = ['nordstrom', 'walmart', '''victoria's secret''', 'best buy']
 
@@ -85,19 +87,19 @@ for index, row in messages.iterrows():
                 break;
 
     #print retailer
-    
+
     if retailer != 'best buy' and retailer != 'nordstrom':
     #order number
         order_num = ['order number', 'order id', 'order #']
 
     if retailer == 'nordstrom':
         order_num = ['order #']
-        
+
     if retailer == 'best buy':
         order_num = ['order id', 'order #']
     #getting order num
     for num in order_num:
-        find = False 
+        find = False
         for idx, text in enumerate(string):
             if num in text.lower():
                 find = True
@@ -106,23 +108,23 @@ for index, row in messages.iterrows():
                 break;
         if find:
             break
-            
+
     order_number = ''
-            
+
     if retailer == 'walmart':
         order_number = re.findall(r'\w+(?:-\w+)+',text)
         order_number = order_number[0]
-        
+
     if retailer == 'best buy':
         print string[idx+1]
         order_number = string[idx+1]
-        
+
     if retailer == '''victoria's secret''':
         print  text + ' ' +string[idx+1]
         order_number = re.findall(r'\d+', text + ' ' +string[idx+1] )
         order_number = order_number[0]
-        
-    if retailer == 'nordstrom':     
+
+    if retailer == 'nordstrom':
         try:
             order_number = re.findall(r'\d+', text )
             order_number = order_number[0]
@@ -130,21 +132,21 @@ for index, row in messages.iterrows():
             order_number = 'not available'
             pass
         #print order_number
-    
-    
 
-    
-    
-    
+
+
+
+
+
     #billing informaiton
     #getting billing information is a bitch
     # https://www.codeproject.com/Tips/989012/Validate-and-Find-Addresses-with-RegEx
- 
+
     try:
         if retailer != '''victoria's secret''' and retailer != 'nordstrom':
             billing = ['billing address', 'billed to', 'bill to', 'estimated pickup date', 'get it by']
             for bill in billing:
-                find = False 
+                find = False
                 for bill_idx, text in enumerate(string):
                     if bill in text.lower():
                         find = True
@@ -183,7 +185,7 @@ for index, row in messages.iterrows():
                     break;
 
             address_string = ''
-            
+
             #if no overlap was found then just concatenate the two threads
             if idx == len(spt_address_string_2)-1:
                 #print "made it here1"
@@ -202,12 +204,12 @@ for index, row in messages.iterrows():
                     address_string += spt_address_string_2[i] + ' '
 
 
-            
+
         ##start for nordstrom retailer address extraction
         if retailer == 'nordstrom':
             billing = ['billing address:']
             for bill in billing:
-                find = False 
+                find = False
                 for bill_idx, text in enumerate(string):
                     if bill in text.lower():
                         find = True
@@ -215,30 +217,30 @@ for index, row in messages.iterrows():
                         break;
                 if find:
                     break
-            
+
             address = ''
             for i in range (0,30):
                 address += string[bill_idx+i] + ' '
 
             address_string_1 = re.search(r'\d{1,6}( \w+){1,6}', address).group(0)
             address_string_2 = re.search(r'\s+((?:[\w+\s*\-])+)[\,]\s+([a-zA-Z]+)\s+([0-9a-zA-Z]+)', address).group(0)
-            
+
             #getting zip codde
             match = re.search(r'\b\d{5}(?:-\d{4})?\b',  address)
             zip_code = match.group(0)
             zip_code
             #putting the two together
             address_string_2= address_string_2+' '+zip_code
-            
+
             spt_address_string_1 = address_string_1.split(' ')
             spt_address_string_2 = address_string_2.split(' ')
-            
+
 
             address_seg = spt_address_string_1[len(spt_address_string_1)-1].lower()
 
             for idx, text in enumerate(spt_address_string_2):
                 if address_seg in text.lower():
-                    
+
                     break;
 
             address_string = ''
@@ -258,7 +260,7 @@ for index, row in messages.iterrows():
                 for i in range(idx,len(spt_address_string_2)-1):
                     address_string += spt_address_string_2[i] + ' '
 
-            
+
 
             ##end for nordstrom emails
 
@@ -269,11 +271,11 @@ for index, row in messages.iterrows():
         pass
     thread_id = row['thread_id']
     #inserting fow into dataframe
-    df.loc[len(df)]=[thread_id, email, retailer, date, order_number, address_string] 
-    
-    
-    
-    
+    df.loc[len(df)]=[thread_id, email, retailer, date, order_number, address_string]
+
+
+
+
     db = client.test
     for index, row in df.iterrows():
         dic = {'thread_id': row['thread_id'],
@@ -282,10 +284,21 @@ for index, row in messages.iterrows():
            'date': row['date'],
            'order_num': row['order_num'],
            'billing_address': row['billing_address'],
+           'status': 'need to scrape'
           }
         result = db.order_info_from_email.insert_one(dic)
-    
+
+
+    #this changes the status from "need to scrape" to "scraped" in
+    #the messages database
+    for index, row in df.iterrows():
+        db.messages.update_many(
+            {"thread_id": row['thread_id']},
+            {"$set": {"status": "scraped"}}
+        )
+
+
     print 'testedandsuccess'
-    
-    
+
+
     #print df.head()
