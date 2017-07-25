@@ -14,7 +14,7 @@ function runPythonScript() {
 
   var PythonShell = require('python-shell');
 
-  var pyshell = new PythonShell('test.py',{scriptPath:"/Users/crystalm/desktop/piggie/", pythonOptions: ['-u']});
+  var pyshell = new PythonShell('test.py',{scriptPath:"/Users/crystalm/desktop/piggie/test_scripts/", pythonOptions: ['-u']});
 
   pyshell.on('message', function (message) {
     // received a message sent from the Python script (a simple "print" statement)
@@ -37,7 +37,7 @@ function runPythonScript2() {
 
   var PythonShell = require('python-shell');
 
-  var pyshell = new PythonShell('test_scrape_nordstrom.py',{scriptPath:"/Users/crystalm/desktop/piggie/", pythonOptions: ['-u']});
+  var pyshell = new PythonShell('test_scrape_nordstrom.py',{scriptPath:"/Users/crystalm/desktop/piggie/test_scripts/", pythonOptions: ['-u']});
 
   pyshell.on('message', function (message) {
     // received a message sent from the Python script (a simple "print" statement)
@@ -402,7 +402,8 @@ function newusercheck(){
              email: email,
              date_extracted: date,
              thread_id: thread_id.id,
-             encoded_message: response2['raw']
+             encoded_message: response2['raw'],
+             status: 'need to scrape'
           }
          );
          console.log(thread_id.id)
@@ -488,10 +489,12 @@ function newusercheck(){
 }
 
 
-new CronJob('* * * * * *', function() {
+new CronJob('* * * * *', function() {
   console.log('peanuts')
+
   //runPythonScript()
-  getemails()
+  runPythonScript2()
+  //getemails()
   //newusercheck()
 
 

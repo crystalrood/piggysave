@@ -23,6 +23,9 @@ orders = pd.DataFrame(list(orders.find()))
 #removing duplicates
 del orders['_id']
 orders = orders.drop_duplicates()
+##here i'm filter out ones that i need to scrape
+orders = orders[(orders.status == 'need to scrape')]
+
 
 
 columns = ['order_num','zipcode', 'image', 'quantity', 'unit_price', 'item_name', 'size', 'style', 'tracking_num']
@@ -35,7 +38,7 @@ for index, row in orders.iterrows():
     if (order_num != 'not available'):
         print order_num
         match = re.search(r'\b\d{5}(?:-\d{4})?\b',  row['billing_address'])
-        zipcode = match.group(0)
+        zipcode = row['zipcode']
 
         url = 'https://secure.nordstrom.com/OrderLookupStatus.aspx?ordernum='+order_num+'&zipcode='+zipcode+'&origin=orderinfo'
 
@@ -67,8 +70,8 @@ for index, row in orders.iterrows():
             except:
                 tracking_num = 'not available'
                 pass
-            
-            df.loc[len(df)]=[order_num, 
+
+            df.loc[len(df)]=[order_num,
                                zipcode,
                                image,
                                quantity,
@@ -76,8 +79,8 @@ for index, row in orders.iterrows():
                                item_name,
                                size,
                                style,
-                               tracking_num] 
-            order_info.append((order_num, 
+                               tracking_num]
+            order_info.append((order_num,
                                zipcode,
                                image,
                                quantity,
@@ -87,9 +90,42 @@ for index, row in orders.iterrows():
                                style,
                                tracking_num
                               ))
+##deleting some of the unnecessary stuff from the orders df to merge
+del orders['billing_address']
+del orders['status']
+del orders['zipcode']
+
+df = pd.merge(df, orders, on='order_num')
+
+
+##getting additional information and adding to the data frame
+for index, row in df.iterrows():
+    url2 ='http://shop.nordstrom.com/sr?origin=keywordsearch&keyword=' + row['style']
+
+    html2 = requests.get(url2).text
+    soup2 = BeautifulSoup(html2, "html.parser")
+    divTag2 = soup2.find_all("article", {"class": "npr-ahINh npr-product-module large"})
+
+    #if search returns more than 1 result, only look at 1st result
+    if len(divTag2) >1: divTag2 = divTag2[0]
+
+    for th2 in divTag2:
+        link3 ='http://shop.nordstrom.com'+th2.find_all('a')[1].get('href')
+        try:
+            image_link_2 = th2.find('img')['src'].encode('utf-8')
+            item_name2 = th2.find('img')['alt'].encode('utf-8')
+        except:
+             pass
+    df.set_value(index,'link3',link3)
+    df.set_value(index,'image_link_2',image_link_2)
+    df.set_value(index,'item_name2',item_name2)
+
+
+##this piece of code saves it to the database :)
 db = client.test
 for index, row in df.iterrows():
-    dic = {'order_num': row['order_num'],
+    dic = {
+       'order_num': row['order_num'],
        'zipcode': row['zipcode'],
        'image': row['image'],
        'quantity': row['quantity'],
@@ -98,5 +134,25 @@ for index, row in df.iterrows():
        'size': row['size'],
        'style': row['style'],
        'tracking_num': row['tracking_num'],
-      }
+       'date_placed': row['date'],
+       'email': row['email'],
+       'retailer': row['retailer'],
+       'thread_id': row['thread_id'],
+       'link_to_product': row['link3'],
+       'image_link_2': row['image_link_2'],
+       'item_name_2':row['item_name2'],
+       'status': 'tracking'
+    }
     result = db.order_info_item_scrapes.insert_one(dic)
+
+
+#this changes the status from "need to scrape" to "scraped" in
+#the messages database
+for index, row in df.iterrows():
+    db.order_info_from_email.update_many(
+        {"order_num": row['order_num']},
+        {"$set": {"status": "scraped"}}
+    )
+
+
+print 'testedandsuccess'

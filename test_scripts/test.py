@@ -37,7 +37,7 @@ messages = messages[(messages.status == 'need to scrape')]
 print "made it here"
 
 
-columns = ['thread_id','email', 'retailer', 'date', 'order_num', 'billing_address']
+columns = ['thread_id','email', 'retailer', 'date', 'order_num', 'billing_address', 'zipcode']
 #setting up dataframe
 df = pd.DataFrame(columns=columns)
 
@@ -54,30 +54,30 @@ for index, row in messages.iterrows():
 
     for idx, text in enumerate(string):
         if delivered_to in text.lower():
-            #print(idx, text)
+            print(idx, text)
             break;
 
     ## extracting email from string
     match = re.search(r'[\w\.-]+@[\w\.-]+', text)
     email = match.group(0)
-    #print(email)
+    print(email)
 
     #date
     recieved = 'received'
     for idx, text in enumerate(string):
         if recieved in text.lower():
-            #print(idx+1, string[idx+1])
+            print(idx+1, string[idx+1])
             break;
 
     ## extracting date from string
     matches = datefinder.find_dates(string[idx+1])
     for match in matches:
         date = match.strftime('%m/%d/%Y')
-        #print match
+        print match
 
 
     #retailer information
-    retailers = ['nordstrom', 'walmart', '''victoria's secret''', 'best buy']
+    retailers = ['nordstrom']
 
     #getting retailer information
     for num in retailers:
@@ -86,17 +86,12 @@ for index, row in messages.iterrows():
                 retailer = num
                 break;
 
-    #print retailer
-
-    if retailer != 'best buy' and retailer != 'nordstrom':
-    #order number
-        order_num = ['order number', 'order id', 'order #']
+    print retailer
 
     if retailer == 'nordstrom':
         order_num = ['order #']
 
-    if retailer == 'best buy':
-        order_num = ['order id', 'order #']
+    print order_num
     #getting order num
     for num in order_num:
         find = False
@@ -104,25 +99,12 @@ for index, row in messages.iterrows():
             if num in text.lower():
                 find = True
                 text = text
-                #print(idx, text)
+                print(idx, text)
                 break;
         if find:
             break
 
     order_number = ''
-
-    if retailer == 'walmart':
-        order_number = re.findall(r'\w+(?:-\w+)+',text)
-        order_number = order_number[0]
-
-    if retailer == 'best buy':
-        print string[idx+1]
-        order_number = string[idx+1]
-
-    if retailer == '''victoria's secret''':
-        print  text + ' ' +string[idx+1]
-        order_number = re.findall(r'\d+', text + ' ' +string[idx+1] )
-        order_number = order_number[0]
 
     if retailer == 'nordstrom':
         try:
@@ -131,8 +113,7 @@ for index, row in messages.iterrows():
         except:
             order_number = 'not available'
             pass
-        #print order_number
-
+        print order_number
 
 
 
@@ -143,8 +124,8 @@ for index, row in messages.iterrows():
     # https://www.codeproject.com/Tips/989012/Validate-and-Find-Addresses-with-RegEx
 
     try:
-        if retailer != '''victoria's secret''' and retailer != 'nordstrom':
-            billing = ['billing address', 'billed to', 'bill to', 'estimated pickup date', 'get it by']
+        if retailer != '''victoria's secret''':
+            billing = ['billing address start']
             for bill in billing:
                 find = False
                 for bill_idx, text in enumerate(string):
@@ -154,30 +135,25 @@ for index, row in messages.iterrows():
                         break;
                 if find:
                     break
-            #print bill_idx
+            print bill_idx
             address = ''
-            for i in range (0,30):
+            for i in range (0,40):
                 address += string[bill_idx+i] + ' '
 
-            address_string_1 = re.search(r'\d{1,6}( \w+){1,6}', address).group(0)
 
-            if retailer == 'walmart':
-                #gets city + state
-                address_string_2 = re.search(r'\s+((?:[\w+\s*\-])+)[\,]\s+([a-zA-Z]+)\s+([0-9a-zA-Z]+)', address).group(0)
-                #gest zipcode
-                match = re.search(r'\b\d{5}(?:-\d{4})?\b',  address)
-                zip_code = match.group(0)
-                zip_code
-                #putting the two together
-                address_string_2= address_string_2+' '+zip_code
-            else:
-                address_string_2 = re.search(r'\d{1,4}( \w+){1,3},( \w+){1,3} [A-Z]{2}', address).group(0)
-            #address_string_2 = re.search(r'\d{1,4}( \w+){1,3},( \w+){1,3} [A-Z]{2}', address).group(0)
-            #address_string_2 = re.search(r'\s+((?:[\w+\s*\-])+)[\,]\s+([a-zA-Z]+)\s+([0-9a-zA-Z]+)', address).group(0)
+            address_string_1 = re.search(r'\d{1,6}( \w+){1,6}', address).group(0)
+            address_string_2 = re.search(r'\s+((?:[\w+\s*\-])+)[\,]\s+([a-zA-Z]+)\s+([0-9a-zA-Z]+)', address).group(0)
+
+
+            match = re.search(r'\b\d{5}(?:-\d{4})?\b',  address)
+            zip_code = match.group(0)
+            print "zipcode" + zip_code
+
             spt_address_string_1 = address_string_1.split(' ')
             spt_address_string_2 = address_string_2.split(' ')
 
             address_seg = spt_address_string_1[len(spt_address_string_1)-1].lower()
+
 
             for idx, text in enumerate(spt_address_string_2):
                 if address_seg in text.lower():
@@ -188,7 +164,7 @@ for index, row in messages.iterrows():
 
             #if no overlap was found then just concatenate the two threads
             if idx == len(spt_address_string_2)-1:
-                #print "made it here1"
+                print "made it here1"
                 for i in range(0,len(spt_address_string_1)-1):
                     address_string += spt_address_string_1[i] + ' '
 
@@ -196,73 +172,14 @@ for index, row in messages.iterrows():
                     address_string += spt_address_string_2[i] + ' '
             #if overlap was found do this
             else:
-                #print "made it here 2"
+                print "made it here 2"
                 for i in range(0,len(spt_address_string_1)-1):
                     address_string += spt_address_string_1[i] + ' '
 
                 for i in range(idx,len(spt_address_string_2)-1):
                     address_string += spt_address_string_2[i] + ' '
 
-
-
-        ##start for nordstrom retailer address extraction
-        if retailer == 'nordstrom':
-            billing = ['billing address:']
-            for bill in billing:
-                find = False
-                for bill_idx, text in enumerate(string):
-                    if bill in text.lower():
-                        find = True
-                        #print(bill_idx, text)
-                        break;
-                if find:
-                    break
-
-            address = ''
-            for i in range (0,30):
-                address += string[bill_idx+i] + ' '
-
-            address_string_1 = re.search(r'\d{1,6}( \w+){1,6}', address).group(0)
-            address_string_2 = re.search(r'\s+((?:[\w+\s*\-])+)[\,]\s+([a-zA-Z]+)\s+([0-9a-zA-Z]+)', address).group(0)
-
-            #getting zip codde
-            match = re.search(r'\b\d{5}(?:-\d{4})?\b',  address)
-            zip_code = match.group(0)
-            zip_code
-            #putting the two together
-            address_string_2= address_string_2+' '+zip_code
-
-            spt_address_string_1 = address_string_1.split(' ')
-            spt_address_string_2 = address_string_2.split(' ')
-
-
-            address_seg = spt_address_string_1[len(spt_address_string_1)-1].lower()
-
-            for idx, text in enumerate(spt_address_string_2):
-                if address_seg in text.lower():
-
-                    break;
-
-            address_string = ''
-
-            #if no overlap was found then just concatenate the two threads
-            if idx == len(spt_address_string_2)-1:
-                for i in range(0,len(spt_address_string_1)-1):
-                    address_string += spt_address_string_1[i] + ' '
-
-                for i in range(0,len(spt_address_string_2)-1):
-                    address_string += spt_address_string_2[i] + ' '
-            #if overlap was found do this
-            else:
-                for i in range(0,len(spt_address_string_1)-1):
-                    address_string += spt_address_string_1[i] + ' '
-
-                for i in range(idx,len(spt_address_string_2)-1):
-                    address_string += spt_address_string_2[i] + ' '
-
-
-
-            ##end for nordstrom emails
+            print(address_string)
 
         else:
             address_string = 'not available'
@@ -271,7 +188,8 @@ for index, row in messages.iterrows():
         pass
     thread_id = row['thread_id']
     #inserting fow into dataframe
-    df.loc[len(df)]=[thread_id, email, retailer, date, order_number, address_string]
+    df.loc[len(df)]=[thread_id, email, retailer, date, order_number, address_string, zip_code]
+
 
 
 
@@ -284,6 +202,7 @@ for index, row in messages.iterrows():
            'date': row['date'],
            'order_num': row['order_num'],
            'billing_address': row['billing_address'],
+           'zipcode': row['zipcode'],
            'status': 'need to scrape'
           }
         result = db.order_info_from_email.insert_one(dic)
