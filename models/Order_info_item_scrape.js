@@ -15,6 +15,8 @@ const order_info_item_scrapeSchema = new mongoose.Schema({
   retailer: String,
   thread_id: String,
   status: String,
+  last_date_checked: String,
+  price_last_check: String,
   date_price_reduce: String,
   reduced_price: String,
   date_refunded_difference: String,

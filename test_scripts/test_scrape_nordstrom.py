@@ -129,7 +129,7 @@ for index, row in df.iterrows():
        'zipcode': row['zipcode'],
        'image': row['image'],
        'quantity': row['quantity'],
-       'unit_price': row['unit_price'],
+       'purchase_price': row['unit_price'],
        'item_name': row['item_name'],
        'size': row['size'],
        'style': row['style'],
@@ -141,7 +141,13 @@ for index, row in df.iterrows():
        'link_to_product': row['link3'],
        'image_link_2': row['image_link_2'],
        'item_name_2':row['item_name2'],
-       'status': 'tracking'
+       'status': 'tracking',
+       'last_date_checked': '',
+       'price_last_check': '',
+       'date_price_reduced': '',
+       'reduced_price': '',
+       'date_refunded_difference': '',
+       'price difference': ''
     }
     result = db.order_info_item_scrapes.insert_one(dic)
 
