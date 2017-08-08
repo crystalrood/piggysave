@@ -147,7 +147,7 @@ for index, row in df.iterrows():
        'date_price_reduced': '',
        'reduced_price': '',
        'date_refunded_difference': '',
-       'price difference': ''
+       'price_difference': ''
     }
     result = db.order_info_item_scrapes.insert_one(dic)
 

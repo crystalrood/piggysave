@@ -16,6 +16,66 @@
 //
 //
 
+
+//home page information
+#home.container {
+  margin: auto !important;
+  position: relative;
+  min-width: 250px;
+  min-height: 200px;
+  width:75%;
+  height:100%;
+  border:5px;
+  border-radius: 10px;
+  align: middle;
+}
+
+
+#welcome.container{
+  text-align: center !important;
+}
+
+#home.div{
+  margin: auto !important;
+  position: relative !important;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  align: middle;
+}
+
+//
+#home.h3{
+  color: #004589;
+  text-align:left;
+  vertical-align: top;
+}
+
+.item_checking span {
+    color:#004589;
+    font-weight:bold;
+    font-size: 2vmin;
+    line-height: 200%;
+}
+
+.item_checking {
+    font-size: 2vmin;
+    color:#5C5C5C;
+}
+
+
+
+///
+///
+
+///
+///
+//tracking item formatting
+///
+///
+
+
+
 // creates formatting for a second to put item info in\
 #itemsub.div{
   margin: auto !important;

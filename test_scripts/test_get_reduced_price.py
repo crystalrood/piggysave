@@ -53,7 +53,7 @@ for index, row in orders.iterrows():
 
             # another check to ensure that the price found is less than the current price
             # if it is less the DF will be updated in the code below
-            if price < row['unit_price']:
+            if price < row['purchase_price']:
 
                 #trying to convert non-numeric price to get the price difference
                 non_decimal = re.compile(r'[^\d.]+')
@@ -80,7 +80,7 @@ for index, row in orders.iterrows():
             "zipcode": row['zipcode'].encode('utf-8'),
             "image": row['image'].encode('utf-8'),
             "quantity": row['quantity'].encode('utf-8'),
-            "purchase_price": row['unit_price'].encode('utf-8'),
+            "purchase_price": row['purchase_price'].encode('utf-8'),
             "item_name": row['item_name'].encode('utf-8'),
             "size": row['size'].encode('utf-8'),
             "style": row['style'].encode('utf-8'),

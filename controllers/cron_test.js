@@ -29,8 +29,6 @@ function runPythonScript() {
   });
 
 
-
-
 }
 
 function runPythonScript2() {
@@ -50,6 +48,29 @@ function runPythonScript2() {
     if (err) throw err;
     console.log('finished');
   });
+
+}
+
+
+
+function runPythonScript3() {
+
+  var PythonShell = require('python-shell');
+
+  var pyshell = new PythonShell('test_get_reduced_price.py',{scriptPath:"/Users/crystalm/desktop/piggie/test_scripts/", pythonOptions: ['-u']});
+
+  pyshell.on('message', function (message) {
+    // received a message sent from the Python script (a simple "print" statement)
+    console.log(message);
+
+  });
+
+  // end the input stream and allow the process to exit
+  pyshell.end(function (err) {
+    if (err) throw err;
+    console.log('finished');
+  });
+
 
 }
 
@@ -489,13 +510,26 @@ function newusercheck(){
 }
 
 
-new CronJob('* * * * *', function() {
-  console.log('peanuts')
+//new CronJob('* * * * *', function() {
+  //console.log('peanuts')
 
+  //this script goes through the meessages database and scrapes new messages
+  //and puts the order information into a new database
   //runPythonScript()
-  runPythonScript2()
+
+  //this script goes through the order information and scrapes the order details
+  //from nordstrom and puts the order details into another database
+  //runPythonScript2()
+
+  //this script attempts to find lower prices for each individual item
+  //runPythonScript3()
+
+  //this script gets emails that were sent within the lsat day for all users
   //getemails()
+
+
+  //this script gets all new users emails that were created within the last 24 hours
   //newusercheck()
 
 
-}, null, true, 'America/Los_Angeles');
+//}, null, true, 'America/Los_Angeles');
