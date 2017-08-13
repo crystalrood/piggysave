@@ -30,15 +30,25 @@
   align: middle;
 }
 
+#home {
+  font-family: "Helvetica Neue";
+  margin-bottom: 20px;
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.4;
+}
 
 #welcome.container{
   text-align: center !important;
+
 }
 
-#welcome.col-sm-4.col-sm-offset-4{
+#welcome.col-sm-4{
   margin: auto !important;
   position: relative !important;
   align: middle;
+  border:5px;
+  border-radius: 20px;
 }
 
 
