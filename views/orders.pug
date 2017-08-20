@@ -11,36 +11,52 @@ block content
         }
       });
     };
+    
+    
+    function create_tracking_html(value){
+      var retailer = value['retailer']
+      var status = value['status']
+      var item_link = value['item_link_2']
+      var item_name = value['item_name_2']
+      var quantity = value['quantity']
+      var purchase_price = value['purchase_price']
+      var order_num = value['order_num']
+      var date_purchased = value['date_placed']
+      html = ''
+      html += '<div class="item_checking" id="item_checking"><div class="row"><h3 class="col-sm-4">'
+      html += retailer + '</h3><h4 class="col-sm-4 col-sm-offset-4">'
+      html += '<span style="background-color:#380083;font color:;color: white;letter-spacing: 2px; padding: 5px;">tracking</span></h4>'
+      html += '</div><div class="row"><div class="div col-sm-2"><img src="'
+      html += item_link + '" width="140px"></div><div class="div col-sm-7 col-sm-offset-3"><p class="item_checking"> <span>Item: </span>'
+      html += item_name + ' X ' + quantity + '<br><span>Unit Price: </span>' + purchase_price + '<br><span>Order Number: </span>' 
+      html += order_num + '<br><span>Date Ordered: </span>' + date_purchased + '</p></div></div></div>'
+      
+      return html
+    }
 
     window.onload = function bring_in_da_data() {
       
         //getting the data from the initial pull upon page load
         var data_for_db = document.getElementById("order_info_data").value;
-
         var data_for_db_value = JSON.parse( data_for_db );
-        console.log(data_for_db_value[0])
-          
-          
+        
+        var main_container = document.getElementById("myTableData")
+        var html_to_add
+        
         for (var i = 0; i < data_for_db_value.length; i++){
-          console.log(data_for_db_value[i])  
+      
+          if (data_for_db_value[i]['status'] = 'tracking'){
+            html_to_add += create_tracking_html(data_for_db_value[i])
+            
+          }
+          
           
          }
+         $('#main').append(html_to_add); 
+         console.log(html_to_add)
         /*
-         //putting all the new rows from the post function together in HTML
-        shifts_data.forEach(function(item, itemIndex){
-        if(item.date_range_start == date_selected_in_dropdown) {
-          trHTML += '<tr><td>' + item.employee_type
-            +'<td>' + item.days_worked
-            +'<td>' + item.num_employees
-            +'<td>' + item.shift_start_time
-            +'<td>' + item.shift_end_time
-            +'<td>' + '<input type="button" name="btn-Edit" value="Edit" onClick="Javacsript:editRow(this)"/>'
-            +'<td>' + '<input type="button" name="Delete" value="Delete" onClick="Javacsript:deleteRow(this)"/>'
-        }
-        })
-
         //appending all rows to the myTableData table :)
-        $('#myTableData').append(trHTML);        
+               
         */    
     
     
@@ -53,7 +69,7 @@ block content
   br
   input.form-control(type='hidden', id="order_info_data", value=  JSON.stringify(orders))
   
-  .container
+  #main.container
     #item_checking.item_checking
       .row
         h3.col-sm-4  Nordstrom
