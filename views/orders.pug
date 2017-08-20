@@ -16,7 +16,7 @@ block content
     function create_tracking_html(value){
       var retailer = value['retailer']
       var status = value['status']
-      var item_link = value['item_link_2']
+      var item_link = value['image_link_2']
       var item_name = value['item_name_2']
       var quantity = value['quantity']
       var purchase_price = value['purchase_price']
@@ -30,7 +30,6 @@ block content
       html += item_link + '" width="140px"></div><div class="div col-sm-7 col-sm-offset-3"><p class="item_checking"> <span>Item: </span>'
       html += item_name + ' X ' + quantity + '<br><span>Unit Price: </span>' + purchase_price + '<br><span>Order Number: </span>' 
       html += order_num + '<br><span>Date Ordered: </span>' + date_purchased + '</p></div></div></div>'
-      
       return html
     }
 
@@ -53,7 +52,7 @@ block content
           
          }
          $('#main').append(html_to_add); 
-         console.log(html_to_add)
+         //console.log(html_to_add)
         /*
         //appending all rows to the myTableData table :)
                
