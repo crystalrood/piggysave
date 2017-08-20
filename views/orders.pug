@@ -40,12 +40,15 @@ block content
         var data_for_db_value = JSON.parse( data_for_db );
         
         var main_container = document.getElementById("myTableData")
-        var html_to_add
+        var html_to_add = ''
         
         for (var i = 0; i < data_for_db_value.length; i++){
       
           if (data_for_db_value[i]['status'] = 'tracking'){
-            html_to_add += create_tracking_html(data_for_db_value[i])
+            console.log(i)
+            html = create_tracking_html(data_for_db_value[i])
+            console.log(html)
+            html_to_add += html
             
           }
           
