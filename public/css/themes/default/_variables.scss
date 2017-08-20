@@ -1,7 +1,7 @@
 // Brand Colors
 // -------------------------
 
-$brand-primary: #4d90fc;
+$brand-primary: #ff63d5;
 $brand-success: #60bf60;
 $brand-warning: #ff9800;
 $brand-danger: #de4b33;
@@ -10,7 +10,7 @@ $brand-info: #5bc0dd;
 // Typography
 // -------------------------
 
-$headings-font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue", Arial, sans-serif;
+$headings-font-family: open sans-serif;
 
 // Buttons
 // -------------------------
@@ -52,9 +52,9 @@ $state-danger-border: #e0b1b8;
 
 $navbar-default-bg: rgba(255, 255, 255, 0.9);
 $navbar-default-link-color: #252525;
-$navbar-default-link-hover-color: #4da5f4;
-$navbar-default-link-active-color: #4da5f4;
+$navbar-default-link-hover-color: #ff63d5;
+$navbar-default-link-active-color: #ff63d5;
 $navbar-default-link-hover-bg: transparent;
 $navbar-default-link-active-bg: transparent;
 $navbar-default-color: #fafafa;
-$navbar-default-brand-hover-color: #4da5f4;
+$navbar-default-brand-hover-color: #ff63d5;
