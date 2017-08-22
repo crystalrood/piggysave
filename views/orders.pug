@@ -13,6 +13,53 @@ block content
     };
     
     
+    
+    function create_html(value, status){
+      var retailer = value['retailer']
+      var status = value['status']
+      var item_link = value['image_link_2']
+      var item_name = value['item_name_2']
+      var quantity = value['quantity']
+      var purchase_price = value['purchase_price']
+      var order_num = value['order_num']
+      var date_purchased = value['date_placed']
+      var html = ''
+      if (status == 'tracking'){
+        html += '<div class="item_checking" id="item_checking"><div class="row"><h3 class="col-sm-4">'
+        html += retailer + '</h3><h4 class="col-sm-4 col-sm-offset-4">'
+        html += '<span style="background-color:#380083;font color:;color: white;letter-spacing: 2px; padding: 5px;">tracking</span></h4>'
+      }
+      
+      if (status == 'confirmed'){
+        html += '<div class="refunded_savings" id="refunded_savings"><div class="row"><h3 class="col-sm-4"> '
+        html += retailer + '</h3><h4 class="col-sm-4 col-sm-offset-4"> '
+        html += '<span style="background-color:#008745;font color:;color: white;letter-spacing: 3px; padding: 5px;">refunded!</span></h4>'
+      }
+      
+      if (status == 'not_eligible'){
+        html += '<div class="not_eligable" id="not_eligable"><div class="row"><h3 class="col-sm-4">'
+        html += retailer + '</h3><h4 class="col-sm-4 col-sm-offset-4">'
+        html += '<span style="background-color:#565656;font color:;color: white; letter-spacing: 3px; padding: 5px;">ineligible</span></h4>'
+      }
+      
+      if (status == 'contacted'){
+        html += '<div class="retailer_contacted" id="retailer_contacted"><div class="row"><h3 class="col-sm-4">'
+        html += retailer + '</h3><h4 class="col-sm-4 col-sm-offset-4"> '
+        html += '<span style="background-color:#840469;font color:;color: white;letter-spacing: 3px; padding: 5px;">contacted</span></h4>'
+      }
+      
+      
+      html += '</div><div class="row"><div class="div col-sm-2"><img src="'
+      html += item_link + '" width="140px"></div><div class="div col-sm-7 col-sm-offset-3"><p class="item_checking"> <span>Item: </span>'
+      html += item_name + ' X ' + quantity + '<br><span>Unit Price: </span>' + purchase_price + '<br><span>Order Number: </span>' 
+      html += order_num + '<br><span>Date Ordered: </span>' + date_purchased + '</p></div></div></div>'
+      
+      return html
+    
+    
+    }
+    
+    
     function create_tracking_html(value){
       var retailer = value['retailer']
       var status = value['status']
@@ -32,6 +79,67 @@ block content
       html += order_num + '<br><span>Date Ordered: </span>' + date_purchased + '</p></div></div></div>'
       return html
     }
+    
+    function created_email_html(value){
+      var retailer = value['retailer']
+      var status = value['status']
+      var item_link = value['image_link_2']
+      var item_name = value['item_name_2']
+      var quantity = value['quantity']
+      var purchase_price = value['purchase_price']
+      var order_num = value['order_num']
+      var date_purchased = value['date_placed']
+      html = ''
+      html += '<div class="retailer_contacted" id="retailer_contacted"><div class="row"><h3 class="col-sm-4"> '
+      html += retailer + '</h3><h4 class="col-sm-4 col-sm-offset-4"> '
+      html += '<span style="background-color:#840469;font color:;color: white;letter-spacing: 3px; padding: 5px;">contacted</span></h4>'
+      html += '</div><div class="row"><div class="div col-sm-2"><img src="'
+      html += item_link + '" width="140px"></div><div class="div col-sm-7 col-sm-offset-3"><p class="item_checking"> <span>Item: </span>'
+      html += item_name + ' X ' + quantity + '<br><span>Unit Price: </span>' + purchase_price + '<br><span>Order Number: </span>' 
+      html += order_num + '<br><span>Date Ordered: </span>' + date_purchased + '</p></div></div></div>'
+      return html
+    }
+    
+    function refunded_html_add(value){
+      var retailer = value['retailer']
+      var status = value['status']
+      var item_link = value['image_link_2']
+      var item_name = value['item_name_2']
+      var quantity = value['quantity']
+      var purchase_price = value['purchase_price']
+      var order_num = value['order_num']
+      var date_purchased = value['date_placed']
+      html = ''
+      html += '<div class="refunded_savings" id="refunded_savings"><div class="row"><h3 class="col-sm-4"> '
+      html += retailer + '</h3><h4 class="col-sm-4 col-sm-offset-4"> '
+      html += '<span style="background-color:#008745;font color:;color: white;letter-spacing: 3px; padding: 5px;">refunded!   </span></h4>'
+      html += '</div><div class="row"><div class="div col-sm-2"><img src="'
+      html += item_link + '" width="140px"></div><div class="div col-sm-7 col-sm-offset-3"><p class="item_checking"> <span>Item: </span>'
+      html += item_name + ' X ' + quantity + '<br><span>Unit Price: </span>' + purchase_price + '<br><span>Order Number: </span>' 
+      html += order_num + '<br><span>Date Ordered: </span>' + date_purchased + '</p></div></div></div>'
+      return html
+    }
+    
+    function ineligible_html_add(value){
+      var retailer = value['retailer']
+      var status = value['status']
+      var item_link = value['image_link_2']
+      var item_name = value['item_name_2']
+      var quantity = value['quantity']
+      var purchase_price = value['purchase_price']
+      var order_num = value['order_num']
+      var date_purchased = value['date_placed']
+      html = ''
+      html += '<div class="not_eligable" id="not_eligable"><div class="row"><h3 class="col-sm-4">'
+      html += retailer + '</h3><h4 class="col-sm-4 col-sm-offset-4"> '
+      html += '<span style="background-color:#565656;font color:;color: white; letter-spacing: 3px; padding: 5px;">ineligible </span></h4'
+      html += '</div><div class="row"><div class="div col-sm-2"><img src="'
+      html += item_link + '" width="140px"></div><div class="div col-sm-7 col-sm-offset-3"><p class="item_checking"> <span>Item: </span>'
+      html += item_name + ' X ' + quantity + '<br><span>Unit Price: </span>' + purchase_price + '<br><span>Order Number: </span>' 
+      html += order_num + '<br><span>Date Ordered: </span>' + date_purchased + '</p></div></div></div>'
+      return html
+    }
+    
 
     window.onload = function bring_in_da_data() {
       
@@ -44,12 +152,24 @@ block content
         
         for (var i = 0; i < data_for_db_value.length; i++){
       
-          if (data_for_db_value[i]['status'] = 'tracking'){
-            console.log(i)
-            html = create_tracking_html(data_for_db_value[i])
-            console.log(html)
+          if (data_for_db_value[i]['status'] == 'tracking'){
+            html = create_html(data_for_db_value[i], 'tracking')
             html_to_add += html
-            
+          }
+
+          if (data_for_db_value[i]['status'] == 'contacted'){
+            html = create_html(data_for_db_value[i], 'contacted')
+            html_to_add += html
+          }
+          
+          if (data_for_db_value[i]['status'] == 'not_eligible'){
+            html = create_html(data_for_db_value[i], 'not_eligible')
+            html_to_add += html
+          }
+          
+          if (data_for_db_value[i]['status'] == 'confirmed'){
+            html = create_html(data_for_db_value[i], 'confirmed')
+            html_to_add += html
           }
           
           
@@ -76,7 +196,7 @@ block content
       .row
         h3.col-sm-4  Nordstrom
         h4.col-sm-4.col-sm-offset-4 
-          span(style='background-color:#380083;font color:;color: white;letter-spacing: 2px; padding: 5px;') tracking
+          span(style='background-color:#380083;font color:;color: white;letter-spacing: 3px; padding: 5px;') tracking
       .row
         .div.col-sm-2
           img(src='http://n.nordstrommedia.com/ImageGallery/store/product/Zoom/13/_12352713.jpg', width='140px')
@@ -98,7 +218,7 @@ block content
       .row
         h3.col-sm-4  Nordstrom
         h4.col-sm-4.col-sm-offset-4 
-          span(style='background-color:#840469;font color:;color: white;letter-spacing: 2px; padding: 5px;') contacted
+          span(style='background-color:#840469;font color:;color: white;letter-spacing: 3px; padding: 5px;') contacted
       .row
         .div.col-sm-2
           img(src='http://n.nordstrommedia.com/ImageGallery/store/product/Zoom/13/_12352713.jpg', width='140px')
@@ -120,7 +240,7 @@ block content
       .row
         h3.col-sm-4  Nordstrom
         h4.col-sm-4.col-sm-offset-4 
-          span(style='background-color:#008745;font color:;color: white;letter-spacing: 2px; padding: 5px;') refunded!   
+          span(style='background-color:#008745;font color:;color: white;letter-spacing: 3px; padding: 5px;') refunded!   
       .row
         .div.col-sm-2
           img(src='http://n.nordstrommedia.com/ImageGallery/store/product/Zoom/13/_12352713.jpg', width='140px')
@@ -137,3 +257,26 @@ block content
             br
             span Date Ordered: 
             | 2017-05-01
+
+    #not_eligable.not_eligable
+      .row
+        h3.col-sm-4  Nordstrom
+        h4.col-sm-4.col-sm-offset-4
+          span(style='background-color:#565656;font color:;color: white; letter-spacing: 3px; padding: 5px;') ineligible 
+      .row
+        .div.col-sm-2
+          img(src='http://n.nordstrommedia.com/ImageGallery/store/product/Zoom/13/_12352713.jpg', width='140px',style="opacity: 0.6;")
+        .div.col-sm-7.col-sm-offset-3
+          p.item_checking 
+            span Item: 
+            | UGG® 'Alamar' Twinsole® Slip-On (Men) X 1
+            br
+            span Unit Price: 
+            | $69.99 
+            br
+            span Order Number: 
+            | 831696422
+            br
+            span Date Ordered: 
+            | 2017-05-01
+  
