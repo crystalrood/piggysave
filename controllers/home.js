@@ -227,7 +227,7 @@ exports.index = (req, res) => {
     title: 'Home'
   });
 
-  
+
 
 
 
