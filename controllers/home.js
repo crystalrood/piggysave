@@ -107,7 +107,7 @@ exports.index = (req, res) => {
    function getMessage(i, auth, thread_id, callback) {
      gmail.users.messages.get({
        auth:auth,
-       userId: 'crystal.wesnoski@gmail.com',
+       userId: req.user.email,
        id: thread_id.id,
        format: 'raw'
      },
@@ -128,7 +128,7 @@ exports.index = (req, res) => {
            {
              _id: x,
              userid: 'user_id',
-             email: 'crystal.wesnoski@gmail.com',
+             email: req.user.email,
              date_extracted: date,
              thread_id: thread_id.id,
              encoded_message: response2['raw']
@@ -175,8 +175,9 @@ exports.index = (req, res) => {
 
         for (var i = 0; i < threads.length; i++) {
           var thread = threads[i];
+          console.log(req.user.email)
 
-          //getMessage(i ,auth, thread)
+          getMessage(i ,auth, thread)
 
         }
       }
@@ -222,7 +223,7 @@ exports.index = (req, res) => {
 
 
   */
-
+  //console.log(req.user.email)
   res.render('home', {
     title: 'Home'
   });

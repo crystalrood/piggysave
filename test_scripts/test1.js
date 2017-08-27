@@ -1,8 +1,14 @@
-/*
+///took everything that was in home.js
+
+const async = require('async');
+const Message = require('../models/Message.js');
+var message_data = []
+
 var fs = require('fs');
 var readline = require('readline');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
+var gmail = google.gmail('v1');
 
 // If modifying these scopes, delete your previously saved credentials
 // at ~/.credentials/gmail-nodejs-quickstart.json
@@ -31,7 +37,6 @@ fs.readFile('client_secret.json', function processClientSecrets(err, content) {
  * @param {Object} credentials The authorization client credentials.
  * @param {function} callback The callback to call with the authorized client.
  */
- /*
 function authorize(credentials, callback) {
   var clientSecret = credentials.web.client_secret;
   var clientId = credentials.web.client_id;
@@ -58,7 +63,6 @@ function authorize(credentials, callback) {
  * @param {getEventsCallback} callback The callback to call with the authorized
  *     client.
  */
- /*
 function getNewToken(oauth2Client, callback) {
   var authUrl = oauth2Client.generateAuthUrl({
     access_type: 'offline',
@@ -83,12 +87,8 @@ function getNewToken(oauth2Client, callback) {
   });
 }
 
-/**
- * Store token to disk be used in later program executions.
- *
- * @param {Object} token The token to store to disk.
- */
- /*
+
+ // Store token to disk be used in later program executions.
 function storeToken(token) {
   try {
     fs.mkdirSync(TOKEN_DIR);
@@ -101,44 +101,58 @@ function storeToken(token) {
   console.log('Token stored to ' + TOKEN_PATH);
 }
 
-/**
- * Lists the labels in the user's account.
- *
- * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
- */
- /*
-function listLabels(auth) {
-  var retailers = ['contact@em.nordstrom.com', 'VictoriasSecret@e1.victoriassecret.com','help@walmart.com', 'BestBuyInfo@emailinfo.bestbuy.com']
-  var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
-  var gmail = google.gmail('v1');
-  gmail.users.labels.list({
-    auth: auth,
-    userId: 'me',
-  }, function(err, response) {
-    if (err) {
-      console.log('The API returned an error: ' + err);
-      return;
+
+//sub function to get message from gmail api
+ function getMessage(i, auth, thread_id, callback) {
+   gmail.users.messages.get({
+     auth:auth,
+     userId: req.user.email,
+     id: thread_id.id,
+     format: 'raw'
+   },
+     function(err, response2) {
+       if (err) {
+
+         console.log('The API returned an error: ' + err);
+         return;
+       }
+
+       //for some reason i needed to create an _id to save to mongoose...:(
+       var mongoose = require('mongoose');
+       var ObjectId =  mongoose.Types.ObjectId;
+       var x = new ObjectId();
+
+       var date = new Date().getTime()
+       const email_thread = new Message(
+         {
+           _id: x,
+           userid: 'user_id',
+           email: req.user.email,
+           date_extracted: date,
+           thread_id: thread_id.id,
+           encoded_message: response2['raw']
+        }
+       );
+
+       email_thread.save();
+
     }
-    var labels = response.labels;
-    if (labels.length == 0) {
-      console.log('No labels found.');
-    } else {
-      console.log('Labels:');
-      for (var i = 0; i < labels.length; i++) {
-        var label = labels[i];
-        console.log('- %s', label.name);
-      }
-    }
-  });
-}
-*/
-/*
+  )
+
+ }
+
+
 function listThreads(auth) {
+
+  var mongoose = require('mongoose');
+  mongoose.Promise = require('bluebird');
+
+  var message
   //only focusing on nordstrom , 'VictoriasSecret@e1.victoriassecret.com','help@walmart.com', 'BestBuyInfo@emailinfo.bestbuy.com'
   var retailers = ['contact@em.nordstrom.com']
   var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
   query = 'in: anywhere,' + retailers +','+ key_words
-  console.log(query)
+  //console.log(query)
   var gmail = google.gmail('v1');
   gmail.users.threads.list({
     auth: auth,
@@ -157,14 +171,15 @@ function listThreads(auth) {
       console.log('No labels found.');
 
     } else {
-      console.log(threads.length)
+
       for (var i = 0; i < threads.length; i++) {
         var thread = threads[i];
+        console.log(req.user.email)
 
-        console.log(thread)
-        console.log('- %s', thread.id);
+        //getMessage(i ,auth, thread)
+
       }
     }
   });
+
 }
-*/
