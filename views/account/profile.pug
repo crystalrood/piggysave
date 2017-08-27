@@ -2,7 +2,7 @@ extends ../layout
 
 block content
   .page-header
-    h3 Profile Information
+    h3(style = 'font-family:"Helvetica Neue";') Profile Information
 
   form.form-horizontal(action='/account/profile', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
@@ -45,7 +45,7 @@ block content
           | Update Profile
 
   .page-header
-    h3 Change Password
+    h3(style = 'font-family:"Helvetica Neue";') Change Password
 
   form.form-horizontal(action='/account/password', method='POST')
     input(type='hidden', name='_csrf', value=_csrf)
@@ -64,7 +64,7 @@ block content
           | Change Password
 
   .page-header
-    h3 Delete Account
+    h3(style = 'font-family:"Helvetica Neue";') Delete Account
 
   form.form-horizontal(action='/account/delete', method='POST')
     .form-group
@@ -76,7 +76,7 @@ block content
           | Delete my account
 
   .page-header
-    h3 Linked Accounts
+    h3(style = 'font-family:"Helvetica Neue";') Linked Accounts
   .form-horizontal
     .form-group
       .col-sm-offset-3.col-sm-4
