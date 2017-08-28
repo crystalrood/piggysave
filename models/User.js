@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
+  initial_scrape_state: String,
   email: { type: String, unique: true },
   password: String,
   passwordResetToken: String,
