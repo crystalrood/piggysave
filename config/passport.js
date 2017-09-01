@@ -273,6 +273,7 @@ passport.use(new GoogleStrategy({
           done(err);
         } else {
           const user = new User();
+          user.initial_scrape_state = 'need_initial';
           user.email = profile.emails[0].value;
           user.google = profile.id;
           user.tokens.push({ kind: 'google', accessToken });
