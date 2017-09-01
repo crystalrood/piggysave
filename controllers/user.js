@@ -87,6 +87,7 @@ exports.postSignup = (req, res, next) => {
   }
 
   const user = new User({
+    initial_scrape_state: 'need_initial',
     email: req.body.email,
     password: req.body.password
   });

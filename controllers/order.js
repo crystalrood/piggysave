@@ -7,7 +7,6 @@ const passport = require('passport');
 exports.getOrder = (req, res) => {
 
   Order_info_item_scrape.find((err, docs) => {
-    //console.log(docs)
     res.render('orders', {orders: docs});
   });
 
