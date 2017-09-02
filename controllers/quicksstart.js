@@ -19,9 +19,7 @@ fs.readFile('client_secret.json', function processClientSecrets(err, content) {
   }
   // Authorize a client with the loaded credentials, then call the
   // Gmail API.
-
-  //authorize(JSON.parse(content), listLabels);
-  authorize(JSON.parse(content), listThreads);
+  authorize(JSON.parse(content), listLabels);
 });
 
 /**
@@ -32,9 +30,9 @@ fs.readFile('client_secret.json', function processClientSecrets(err, content) {
  * @param {function} callback The callback to call with the authorized client.
  */
 function authorize(credentials, callback) {
-  var clientSecret = credentials.web.client_secret;
-  var clientId = credentials.web.client_id;
-  var redirectUrl = credentials.web.redirect_uris[0];
+  var clientSecret = credentials.installed.client_secret;
+  var clientId = credentials.installed.client_id;
+  var redirectUrl = credentials.installed.redirect_uris[0];
   var auth = new googleAuth();
   var oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
 
@@ -104,8 +102,6 @@ function storeToken(token) {
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
 function listLabels(auth) {
-  var retailers = ['contact@em.nordstrom.com', 'VictoriasSecret@e1.victoriassecret.com','help@walmart.com', 'BestBuyInfo@emailinfo.bestbuy.com']
-  var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
   var gmail = google.gmail('v1');
   gmail.users.labels.list({
     auth: auth,
@@ -123,40 +119,6 @@ function listLabels(auth) {
       for (var i = 0; i < labels.length; i++) {
         var label = labels[i];
         console.log('- %s', label.name);
-      }
-    }
-  });
-}
-
-function listThreads(auth) {
-  //only focusing on nordstrom , 'VictoriasSecret@e1.victoriassecret.com','help@walmart.com', 'BestBuyInfo@emailinfo.bestbuy.com'
-  var retailers = ['contact@em.nordstrom.com']
-  var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
-  query = 'in: anywhere,' + retailers +','+ key_words
-
-  var gmail = google.gmail('v1');
-  gmail.users.threads.list({
-    auth: auth,
-    userId: 'me',
-    query: query
-  }, function(err, response) {
-    if (err) {
-
-      console.log('The API returned an error: ' + err);
-      return;
-    }
-
-    var threads = response['threads']
-    if (threads.length == 0) {
-
-      console.log('No labels found.');
-
-    } else {
-
-      for (var i = 0; i < threads.length; i++) {
-        var thread = threads[i];
-
-        console.log('- %s', thread.id);
       }
     }
   });

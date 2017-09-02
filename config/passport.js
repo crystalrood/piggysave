@@ -249,7 +249,7 @@ passport.use(new GoogleStrategy({
         User.findById(req.user.id, (err, user) => {
           if (err) { return done(err); }
           user.google = profile.id;
-          user.tokens.push({ kind: 'google', accessToken });
+          user.tokens.push({ kind: 'google', accessToken, refreshToken });
           user.profile.name = user.profile.name || profile.displayName;
           user.profile.gender = user.profile.gender || profile._json.gender;
           user.profile.picture = user.profile.picture || profile._json.image.url;
@@ -276,7 +276,7 @@ passport.use(new GoogleStrategy({
           user.initial_scrape_state = 'need_initial';
           user.email = profile.emails[0].value;
           user.google = profile.id;
-          user.tokens.push({ kind: 'google', accessToken });
+          user.tokens.push({ kind: 'google', accessToken, refreshToken });
           user.profile.name = profile.displayName;
           user.profile.gender = profile._json.gender;
           user.profile.picture = profile._json.image.url;
