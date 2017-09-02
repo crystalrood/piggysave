@@ -12,7 +12,8 @@ var google = require('googleapis');
 var OAuth2 = google.auth.OAuth2;
 var oauth2Client = new OAuth2(
   "582437152045-pkb7bgnetap50evvvc8lkde2nfb4q3as.apps.googleusercontent.com",
-  "w06GC7IFKMAUVH3_anGTDO0q"
+  "w06GC7IFKMAUVH3_anGTDO0q",
+  //"http://localhost:3000/auth/google/callback/"
 );
 
 var gmail = google.gmail({
@@ -23,79 +24,17 @@ var gmail = google.gmail({
 
 
 
-exports.getOrder = (req, res) => {
-
-
-
-  if (req.user.initial_scrape_state == 'need_initial') {
-
-
-
-    console.log('here')
-
-    if (req.user.tokens[0].accessToken) {
-        oauth2Client.setCredentials({
-        refresh_token: req.user.tokens[0].accessToken
-    });
-  }
-
-    var message
-
-    var retailers = ['contact@em.nordstrom.com']
-    var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
-    query = 'in: anywhere,' + retailers +','+ key_words
-    //console.log(query)
-    gmail.users.threads.list({
-      auth: oauth2Client,
-      userId: req.user.email,
-      q: query
-    }, function(err, response) {
-      if (err) {
-
-        console.log('The API returned an error: ' + err);
-        return;
-      }
-
-      var threads = response['threads']
-      if (threads.length == 0) {
-
-        console.log('No labels found.');
-
-      } else {
-
-        for (var i = 0; i < threads.length; i++) {
-          var thread = threads[i];
-          console.log(req.user.email)
-          console.log(threads[i])
-          //getMessage(i ,auth, thread)
-
-        }
-      }
-    });
-
-
-
-
-
-}
-
-
-
-
-/*
-
 //sub function to get message from gmail api
-
- function getMessage(i, auth, thread_id, callback) {
+//**********//**********//**********//**********
+function getMessage(i, email ,thread_id, callback) {
    gmail.users.messages.get({
-     //auth:auth,
-     userId: req.user.email,
+     auth:oauth2Client,
+     userId: email,
      id: thread_id.id,
      format: 'raw'
    },
      function(err, response2) {
        if (err) {
-
          console.log('The API returned an error: ' + err);
          return;
        }
@@ -110,22 +49,65 @@ exports.getOrder = (req, res) => {
          {
            _id: x,
            userid: 'user_id',
-           email: req.user.email,
+           email: email,
            date_extracted: date,
            thread_id: thread_id.id,
            encoded_message: response2['raw']
         }
        );
-
        email_thread.save();
-
-    }
-  )
-
+    })
  }
+//**********//**********//**********//**********
+//**********//**********//**********//**********
 
 
-*/
+exports.getOrder = (req, res) => {
+
+  if (req.user.initial_scrape_state == 'need_initial') {
+
+    console.log('here')
+
+
+    if (req.user.tokens[0].accessToken) {
+        oauth2Client.setCredentials({
+        refresh_token: req.user.tokens[0].accessToken
+      });
+    }
+
+    oauth2Client.refreshAccessToken(function(err, tokens) {
+      //might have to save refresh token to db under the user...but not sure
+    });
+
+    var message
+
+    var retailers = ['contact@em.nordstrom.com']
+    var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
+    query = 'in: anywhere,' + retailers +','+ key_words
+    //console.log(query)
+    gmail.users.threads.list({
+      auth: oauth2Client,
+      userId: req.user.email,
+      q: query
+    }, function(err, response) {
+      if (err) {
+        console.log('The API returned an error: ' + err);
+        return;
+      }
+
+      var threads = response['threads']
+      if (threads.length == 0) {
+        console.log('no threads found that match critera');
+      } else {
+        for (var i = 0; i < threads.length; i++) {
+          var thread = threads[i];
+          console.log(req.user.email)
+          //getMessage(i , req.user.email, thread)
+
+        }
+      }
+    });
+  }
 
 
   Order_info_item_scrape.find((err, docs) => {
