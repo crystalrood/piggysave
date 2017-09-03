@@ -12,8 +12,8 @@ var message_data = []
 var google = require('googleapis');
 var OAuth2 = google.auth.OAuth2;
 var oauth2Client = new OAuth2(
-  "582437152045-pkb7bgnetap50evvvc8lkde2nfb4q3as.apps.googleusercontent.com",
-  "w06GC7IFKMAUVH3_anGTDO0q",
+  process.env.GOOGLE_ID,
+  process.env.GOOGLE_SECRET,
   //"http://localhost:3000/auth/google/callback/"
 );
 
