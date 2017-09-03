@@ -71,13 +71,11 @@ exports.getOrder = (req, res) => {
 
     if (req.user.tokens[0].accessToken) {
         oauth2Client.setCredentials({
-        refresh_token: req.user.tokens[0].accessToken
+        access_token: req.user.tokens[0].accessToken,
+        refresh_token: req.user.refresh_token[0].refresh_token
       });
     }
 
-    oauth2Client.refreshAccessToken(function(err, tokens) {
-      //might have to save refresh token to db under the user...but not sure
-    });
 
     var message
 

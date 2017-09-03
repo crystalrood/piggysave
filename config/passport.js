@@ -238,7 +238,8 @@ passport.use(new GoogleStrategy({
   callbackURL: '/auth/google/callback',
   access_type: 'offline',
   passReqToCallback: true
-}, (req, accessToken, refreshToken, profile, done) => {
+}, (req, accessToken, refreshToken, params, profile, done) => {
+    console.log(params)
   if (req.user) {
     User.findOne({ google: profile.id }, (err, existingUser) => {
       if (err) { return done(err); }
@@ -249,7 +250,8 @@ passport.use(new GoogleStrategy({
         User.findById(req.user.id, (err, user) => {
           if (err) { return done(err); }
           user.google = profile.id;
-          user.tokens.push({ kind: 'google', accessToken, refreshToken });
+          user.tokens.push({ kind: 'google', accessToken, refreshToken});
+          user.refresh_token.push({ kind: 'google', refreshToken });
           user.profile.name = user.profile.name || profile.displayName;
           user.profile.gender = user.profile.gender || profile._json.gender;
           user.profile.picture = user.profile.picture || profile._json.image.url;
@@ -277,6 +279,7 @@ passport.use(new GoogleStrategy({
           user.email = profile.emails[0].value;
           user.google = profile.id;
           user.tokens.push({ kind: 'google', accessToken, refreshToken });
+          user.refresh_token.push({ kind: 'google', refreshToken });
           user.profile.name = profile.displayName;
           user.profile.gender = profile._json.gender;
           user.profile.picture = profile._json.image.url;

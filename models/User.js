@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
   linkedin: String,
   steam: String,
   tokens: Array,
+  refresh_token:Array,
 
   profile: {
     name: String,
