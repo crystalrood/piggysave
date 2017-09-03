@@ -4,6 +4,7 @@ const Message = require('../models/Message.js');
 const passport = require('passport');
 var mongoose = require('mongoose');
 var fs = require('fs');
+const User = require('../models/User');
 mongoose.Promise = require('bluebird');
 
 var message_data = []
@@ -21,14 +22,11 @@ var gmail = google.gmail({
   auth: oauth2Client
 });
 
-
-
-
 //sub function to get message from gmail api
 //**********//**********//**********//**********
 function getMessage(i, email ,thread_id, callback) {
    gmail.users.messages.get({
-     auth:oauth2Client,
+     auth: oauth2Client,
      userId: email,
      id: thread_id.id,
      format: 'raw'
@@ -55,56 +53,75 @@ function getMessage(i, email ,thread_id, callback) {
            encoded_message: response2['raw']
         }
        );
-       email_thread.save();
+       //email_thread.save();
     })
  }
+
+
+function getThreads(email) {
+  var retailers = ['contact@em.nordstrom.com']
+  var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
+  query = 'in: anywhere,' + retailers +','+ key_words
+
+  gmail.users.threads.list({
+    auth: oauth2Client,
+    userId: email,
+    q: query
+  }, function(err, response) {
+    if (err) {
+      console.log('The API returned an error: ' + err);
+      return;
+    }
+
+    var threads = response['threads']
+    if (threads.length == 0) {
+      console.log('no threads found that match critera');
+    } else {
+      for (var i = 0; i < threads.length; i++) {
+        var thread = threads[i];
+        console.log(email)
+        getMessage(i , email, thread)
+      }
+    }
+  });
+
+}
+
 //**********//**********//**********//**********
 //**********//**********//**********//**********
 
 
 exports.getOrder = (req, res) => {
 
+  //checking to see if the user has an initial status of need to scrape
   if (req.user.initial_scrape_state == 'need_initial') {
 
-    console.log('here')
-
-
+    //setting access token given the user is logged in
+    // also we only want to check if the user has an access token on file
     if (req.user.tokens[0].accessToken) {
+
+        //setting oauth2Client credentials
         oauth2Client.setCredentials({
         access_token: req.user.tokens[0].accessToken,
         refresh_token: req.user.refresh_token[0].refreshToken
       });
-    }
 
-    var message
+      //
+      getThreads(req.user.email);
 
-    var retailers = ['contact@em.nordstrom.com']
-    var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
-    query = 'in: anywhere,' + retailers +','+ key_words
-    //console.log(query)
-    gmail.users.threads.list({
-      auth: oauth2Client,
-      userId: req.user.email,
-      q: query
-    }, function(err, response) {
-      if (err) {
-        console.log('The API returned an error: ' + err);
-        return;
-      }
+      //here if the user is new, and we're done scraping their emails,
+      //we're saving their new status to complete
 
-      var threads = response['threads']
-      if (threads.length == 0) {
-        console.log('no threads found that match critera');
-      } else {
-        for (var i = 0; i < threads.length; i++) {
-          var thread = threads[i];
-          console.log(req.user.email)
-          //getMessage(i , req.user.email, thread)
-
-        }
-      }
-    });
-  }
+      User.update(
+        {'email': req.user.email }
+        ,{$set:{'initial_scrape_state':'complete'}}
+        , function(err, result) {
+              if (err) {console.log(err);}
+              else {console.log('saved')}
+          }
+      )
+    } // end of checking to see if user has an access token
+  }; //end of checking user status
 
 
   Order_info_item_scrape.find((err, docs) => {
