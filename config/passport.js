@@ -238,8 +238,8 @@ passport.use(new GoogleStrategy({
   callbackURL: '/auth/google/callback',
   access_type: 'offline',
   passReqToCallback: true
-}, (req, accessToken, refreshToken, params, profile, done) => {
-    console.log(params)
+}, (req, accessToken, refreshToken, profile, done) => {
+
   if (req.user) {
     User.findOne({ google: profile.id }, (err, existingUser) => {
       if (err) { return done(err); }

@@ -72,10 +72,9 @@ exports.getOrder = (req, res) => {
     if (req.user.tokens[0].accessToken) {
         oauth2Client.setCredentials({
         access_token: req.user.tokens[0].accessToken,
-        refresh_token: req.user.refresh_token[0].refresh_token
+        refresh_token: req.user.refresh_token[0].refreshToken
       });
     }
-
 
     var message
 
