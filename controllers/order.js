@@ -2,6 +2,7 @@ const async = require('async');
 const Order_info_item_scrape = require('../models/Order_info_item_scrape.js');
 const Message = require('../models/Message.js');
 const passport = require('passport');
+var PythonShell = require('python-shell');
 var mongoose = require('mongoose');
 var fs = require('fs');
 const User = require('../models/User');
@@ -46,19 +47,20 @@ function getMessage(i, email ,thread_id, callback) {
        const email_thread = new Message(
          {
            _id: x,
-           userid: 'user_id',
            email: email,
            date_extracted: date,
            thread_id: thread_id.id,
            encoded_message: response2['raw']
         }
        );
-       //email_thread.save();
+       email_thread.save();
+       console.log('saved thread')
     })
+
  }
 
 
-function getThreads(email) {
+function getThreads(email, callback) {
   var retailers = ['contact@em.nordstrom.com']
   var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
   query = 'in: anywhere,' + retailers +','+ key_words
@@ -82,9 +84,12 @@ function getThreads(email) {
         console.log(email)
         getMessage(i , email, thread)
       }
+      if (i==threads.length){
+        //callback(null);
+      }
     }
   });
-
+  //callback && callback();
 }
 
 //**********//**********//**********//**********
@@ -93,39 +98,120 @@ function getThreads(email) {
 
 exports.getOrder = (req, res) => {
 
-  //checking to see if the user has an initial status of need to scrape
-  if (req.user.initial_scrape_state == 'need_initial') {
+  async.waterfall([
+    function(callback) {
+      //checking to see if the user has an initial status of need to scrape
+      if (req.user.initial_scrape_state == 'need_initial') {
 
-    //setting access token given the user is logged in
-    // also we only want to check if the user has an access token on file
-    if (req.user.tokens[0].accessToken) {
+        if (req.user.tokens[0].accessToken) {
+            //setting oauth2Client credentials if user has a token set up
+            oauth2Client.setCredentials({
+            access_token: req.user.tokens[0].accessToken,
+            refresh_token: req.user.refresh_token[0].refreshToken
+          });
+          //getThreads(req.user.email, callback);
 
-        //setting oauth2Client credentials
-        oauth2Client.setCredentials({
-        access_token: req.user.tokens[0].accessToken,
-        refresh_token: req.user.refresh_token[0].refreshToken
-      });
+          //callback(null, 'next1');
 
-      //
-      getThreads(req.user.email);
+          var retailers = ['contact@em.nordstrom.com']
+          var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
+          query = 'in: anywhere,' + retailers +','+ key_words
 
-      //here if the user is new, and we're done scraping their emails,
-      //we're saving their new status to complete
+          gmail.users.threads.list({
+            auth: oauth2Client,
+            userId: req.user.email,
+            q: query
+          }, function(err, response) {
+            if (err) {
+              console.log('The API returned an error: ' + err);
+              return;
+            }
 
-      User.update(
-        {'email': req.user.email }
-        ,{$set:{'initial_scrape_state':'complete'}}
-        , function(err, result) {
-              if (err) {console.log(err);}
-              else {console.log('saved')}
-          }
-      )
-    } // end of checking to see if user has an access token
-  }; //end of checking user status
+            var threads = response['threads']
+            if (threads.length == 0) {
+              console.log('no threads found that match critera');
+            } else {
+              var j = 0
+              for (var i = 0; i < threads.length; i++) {
+                var thread = threads[i];
+                console.log(req.user.email)
+
+                //getMessage(i , req.user.email, thread)
+                gmail.users.messages.get({
+                  auth: oauth2Client,
+                  userId: req.user.email,
+                  id: thread.id,
+                  format: 'raw'
+                },
+                  function(err, response2) {
+                    if (err) {
+                      console.log('The API returned an error: ' + err);
+                      return;
+                    }
+
+                    var mongoose = require('mongoose');
+                    var ObjectId =  mongoose.Types.ObjectId;
+                    var x = new ObjectId();
+
+                    var date = new Date().getTime()
+                    const email_thread = new Message(
+                      {
+                        _id: x,
+                        email: req.user.email,
+                        date_extracted: date,
+                        thread_id: thread.id,
+                        encoded_message: response2['raw']
+                     }
+                    );
+                    email_thread.save();
+                    j++;
+                    console.log('saved thread')
+                    console.log(j)
+                    if (j==threads.length){
+                      callback(null, 'next1');
+                    }
+
+                 })
+              }
 
 
-  Order_info_item_scrape.find((err, docs) => {
-    res.render('orders', {orders: docs});
-  });
+            }
+          });
+        }
+
+      }
+      else{
+        callback(null, 'next1');
+      }
+
+    },
+
+    function(arg1, callback) {
+        if (req.user.initial_scrape_state == 'need_initial') {
+          User.update(
+            {'email': req.user.email }
+            ,{$set:{'initial_scrape_state':'complete'}}
+            , function(err, result) {
+                  if (err) {console.log(err);}
+                  else {console.log('saved')}
+              }
+          )
+        };
+      //console.log(arg1)
+      console.log('task2')
+      callback(null, 'next2');
+    },
+    function(arg1, callback) {
+        console.log(arg1)
+        callback(null, 'next3');
+    }
+  ], function (err, arg1) {
+    console.log(arg1)
+    Order_info_item_scrape.find((err, docs) => {
+        res.render('orders', {orders: docs});
+    });
+    console.log('result')
+});
+
 
 };
