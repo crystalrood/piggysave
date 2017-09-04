@@ -56,7 +56,7 @@ function getMessage(i, email ,thread_id, callback) {
        email_thread.save();
        console.log('saved thread')
     })
-
+    console.log('counter is ' + i)
  }
 
 
@@ -89,7 +89,6 @@ function getThreads(email, callback) {
       }
     }
   });
-  //callback && callback();
 }
 
 //**********//**********//**********//**********
@@ -110,9 +109,10 @@ exports.getOrder = (req, res) => {
             refresh_token: req.user.refresh_token[0].refreshToken
           });
           //getThreads(req.user.email, callback);
-
           //callback(null, 'next1');
 
+
+///*
           var retailers = ['contact@em.nordstrom.com']
           var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
           query = 'in: anywhere,' + retailers +','+ key_words
@@ -148,7 +148,6 @@ exports.getOrder = (req, res) => {
                       console.log('The API returned an error: ' + err);
                       return;
                     }
-
                     var mongoose = require('mongoose');
                     var ObjectId =  mongoose.Types.ObjectId;
                     var x = new ObjectId();
@@ -160,7 +159,8 @@ exports.getOrder = (req, res) => {
                         email: req.user.email,
                         date_extracted: date,
                         thread_id: thread.id,
-                        encoded_message: response2['raw']
+                        encoded_message: response2['raw'],
+                        status: 'need to scrape'
                      }
                     );
                     email_thread.save();
@@ -170,20 +170,68 @@ exports.getOrder = (req, res) => {
                     if (j==threads.length){
                       callback(null, 'next1');
                     }
-
                  })
               }
-
-
             }
           });
+          //*/
         }
-
       }
       else{
         callback(null, 'next1');
       }
 
+    },
+
+    function(arg1, callback) {
+      //in this subfunction i want to call the python scraper :D
+      if (req.user.initial_scrape_state == 'need_initial') {
+
+        var PythonShell = require('python-shell');
+        var pyshell = new PythonShell('test.py',{scriptPath:"/Users/crystalm/desktop/piggie/test_scripts/", pythonOptions: ['-u']});
+        pyshell.on('message', function (message) {
+          // received a message sent from the Python script (a simple "print" statement)
+          console.log(message);
+        });
+        // end the input stream and allow the process to exit
+        pyshell.end(function (err) {
+          if (err) throw err;
+          console.log('finished first python scrape');
+          console.log(arg1)
+          callback(null, 'next3');
+        });
+      }
+      else{
+        callback(null, 'next1');
+      }
+    },
+
+    function(arg1, callback) {
+      //in this subfunction i want to call the python scraper :D
+      if (req.user.initial_scrape_state == 'need_initial') {
+
+        var PythonShell = require('python-shell');
+
+        var pyshell = new PythonShell('test_scrape_nordstrom.py',{scriptPath:"/Users/crystalm/desktop/piggie/test_scripts/", pythonOptions: ['-u']});
+
+        pyshell.on('message', function (message) {
+          // received a message sent from the Python script (a simple "print" statement)
+          console.log(message);
+
+        });
+
+        // end the input stream and allow the process to exit
+        pyshell.end(function (err) {
+          if (err) throw err;
+          console.log('finished second python scrape');
+          console.log(arg1)
+          callback(null, 'next3');
+        });
+
+      }
+      else{
+        callback(null, 'next1');
+      }
     },
 
     function(arg1, callback) {
@@ -197,14 +245,9 @@ exports.getOrder = (req, res) => {
               }
           )
         };
-      //console.log(arg1)
       console.log('task2')
       callback(null, 'next2');
     },
-    function(arg1, callback) {
-        console.log(arg1)
-        callback(null, 'next3');
-    }
   ], function (err, arg1) {
     console.log(arg1)
     Order_info_item_scrape.find((err, docs) => {
