@@ -34,7 +34,7 @@ del messages['updatedAt']
 messages = messages.drop_duplicates()
 ##here i'm filter out ones that i need to scrape
 messages = messages[(messages.status == 'need to scrape')]
-print "made it here"
+# print "made it here"
 
 
 columns = ['thread_id','email', 'retailer', 'date', 'order_num', 'billing_address', 'zipcode']
@@ -60,20 +60,20 @@ for index, row in messages.iterrows():
     ## extracting email from string
     match = re.search(r'[\w\.-]+@[\w\.-]+', text)
     email = match.group(0)
-    print(email)
+    # print(email)
 
     #date
     recieved = 'received'
     for idx, text in enumerate(string):
         if recieved in text.lower():
-            print(idx+1, string[idx+1])
+            # print(idx+1, string[idx+1])
             break;
 
     ## extracting date from string
     matches = datefinder.find_dates(string[idx+1])
     for match in matches:
         date = match.strftime('%m/%d/%Y')
-        print match
+        # print match
 
 
     #retailer information
@@ -86,12 +86,12 @@ for index, row in messages.iterrows():
                 retailer = num
                 break;
 
-    print retailer
+    # print retailer
 
     if retailer == 'nordstrom':
         order_num = ['order #']
 
-    print order_num
+    # print order_num
     #getting order num
     for num in order_num:
         find = False
@@ -99,7 +99,7 @@ for index, row in messages.iterrows():
             if num in text.lower():
                 find = True
                 text = text
-                print(idx, text)
+                # print(idx, text)
                 break;
         if find:
             break
@@ -113,7 +113,7 @@ for index, row in messages.iterrows():
         except:
             order_number = 'not available'
             pass
-        print order_number
+        # print order_number
 
 
 
@@ -135,7 +135,7 @@ for index, row in messages.iterrows():
                         break;
                 if find:
                     break
-            print bill_idx
+            # print bill_idx
             address = ''
             for i in range (0,40):
                 address += string[bill_idx+i] + ' '
@@ -147,7 +147,7 @@ for index, row in messages.iterrows():
 
             match = re.search(r'\b\d{5}(?:-\d{4})?\b',  address)
             zip_code = match.group(0)
-            print "zipcode" + zip_code
+            # print "zipcode" + zip_code
 
             spt_address_string_1 = address_string_1.split(' ')
             spt_address_string_2 = address_string_2.split(' ')
@@ -164,7 +164,7 @@ for index, row in messages.iterrows():
 
             #if no overlap was found then just concatenate the two threads
             if idx == len(spt_address_string_2)-1:
-                print "made it here1"
+                # print "made it here1"
                 for i in range(0,len(spt_address_string_1)-1):
                     address_string += spt_address_string_1[i] + ' '
 
@@ -172,14 +172,14 @@ for index, row in messages.iterrows():
                     address_string += spt_address_string_2[i] + ' '
             #if overlap was found do this
             else:
-                print "made it here 2"
+                # print "made it here 2"
                 for i in range(0,len(spt_address_string_1)-1):
                     address_string += spt_address_string_1[i] + ' '
 
                 for i in range(idx,len(spt_address_string_2)-1):
                     address_string += spt_address_string_2[i] + ' '
 
-            print(address_string)
+            # print(address_string)
 
         else:
             address_string = 'not available'

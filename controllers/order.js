@@ -115,7 +115,8 @@ exports.getOrder = (req, res) => {
 ///*
           var retailers = ['contact@em.nordstrom.com']
           var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
-          query = 'in: anywhere,' + retailers +','+ key_words
+          var lookback = ' newer_than:60d'
+          query = 'in: anywhere,' + retailers +','+ key_words + ',' + lookback
 
           gmail.users.threads.list({
             auth: oauth2Client,

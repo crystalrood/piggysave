@@ -36,7 +36,7 @@ df = pd.DataFrame(columns=columns)
 for index, row in orders.iterrows():
     order_num = row['order_num']
     if (order_num != 'not available'):
-        print order_num
+        # print order_num
         match = re.search(r'\b\d{5}(?:-\d{4})?\b',  row['billing_address'])
         zipcode = row['zipcode']
 
@@ -124,6 +124,11 @@ for index, row in df.iterrows():
 ##this piece of code saves it to the database :)
 db = client.test
 for index, row in df.iterrows():
+    if (((pd.to_datetime('today') - pd.to_datetime(row['date'])) / np.timedelta64(1, 'D')).astype(int) <15):
+        status = 'tracking'
+    else:
+        status = 'not_eligible'
+
     dic = {
        'order_num': row['order_num'],
        'zipcode': row['zipcode'],
@@ -141,7 +146,7 @@ for index, row in df.iterrows():
        'link_to_product': row['link3'],
        'image_link_2': row['image_link_2'],
        'item_name_2':row['item_name2'],
-       'status': 'tracking',
+       'status': status,
        'last_date_checked': '',
        'price_last_check': '',
        'date_price_reduced': '',
