@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
-    "beautifulsoup4": "4.3.2",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
     "chalk": "^1.1.3",
