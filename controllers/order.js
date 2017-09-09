@@ -16,7 +16,6 @@ var oauth2Client = new OAuth2(
   process.env.GOOGLE_ID,
   process.env.GOOGLE_SECRET,
   process.env.GOOGLE_URIS
-  //"http://localhost:3000/auth/google/callback/"
 );
 
 var gmail = google.gmail({
