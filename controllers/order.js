@@ -105,7 +105,7 @@ console.log(process.cwd())
       function(callback) {
         //checking to see if the user has an initial status of need to scrape
         if (req.user.initial_scrape_state == 'need_initial') {
-
+          console.log(req.user.tokens[0].accessToken)
           if (req.user.tokens[0].accessToken) {
               //setting oauth2Client credentials if user has a token set up
               oauth2Client.setCredentials({
