@@ -1,12 +1,6 @@
 beautifulsoup4
-re
 pandas
-pprint
 numpy
-csv
-sys
-base64
 datefinder
 datetime
 pymongo
-MongoClient
