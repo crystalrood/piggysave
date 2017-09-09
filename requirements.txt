@@ -4,3 +4,4 @@ numpy
 datefinder
 datetime
 pymongo
+requests
