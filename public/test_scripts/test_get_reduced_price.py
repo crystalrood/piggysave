@@ -15,14 +15,12 @@ import pymongo
 from pymongo import MongoClient
 
 local_host = 'mongodb://localhost:27017/test'
-uri = 'mongodb://crystalrood:Crystal1992@ds161503.mlab.com:61503/heroku_4jtg3rvf'
+uri = 'mongodb://heroku_4jtg3rvf:r9nq5ealpnfrlda5la4fj8r192@ds161503.mlab.com:61503/heroku_4jtg3rvf'
 client = MongoClient(uri)
-
-
+db = client['heroku_4jtg3rvf']
 
 ## consolidating big block of code
 
-db = client['test']
 orders = db.order_info_item_scrapes
 orders = pd.DataFrame(list(orders.find()))
 

@@ -21,19 +21,10 @@ import pymongo
 from pymongo import MongoClient
 
 local_host = 'mongodb://localhost:27017/test'
-uri = 'mongodb://crystalrood:Crystal1992@ds161503.mlab.com:61503/heroku_4jtg3rvf'
+uri = 'mongodb://heroku_4jtg3rvf:r9nq5ealpnfrlda5la4fj8r192@ds161503.mlab.com:61503/heroku_4jtg3rvf'
 
-MONGO_HOST = "ds161503.mlab.com"
-MONGO_PORT = 61503
-MONGO_DB = "heroku_4jtg3rvf"
-MONGO_USER = "crystalrood"
-MONGO_PASS = "Crystal1992"
-connection = MongoClient(MONGO_HOST, MONGO_PORT)
-db = connection[MONGO_DB]
-db.authenticate(MONGO_USER, MONGO_PASS)
-
-# client = MongoClient(uri)
-
+client = MongoClient(uri)
+db = client['heroku_4jtg3rvf']
 # db = client['test']
 messages = db.messages
 messages = pd.DataFrame(list(messages.find()))
