@@ -76,6 +76,7 @@ function getThreads(email, callback) {
     }
 
     var threads = response['threads']
+    console.log(threads.length)
     if (threads.length == 0) {
       console.log('no threads found that match critera');
     } else {
@@ -96,9 +97,10 @@ function getThreads(email, callback) {
 
 
 exports.getOrder = (req, res) => {
-
+console.log(process.cwd())
   if(req.user){
     async.waterfall([
+
       function(callback) {
         //checking to see if the user has an initial status of need to scrape
         if (req.user.initial_scrape_state == 'need_initial') {
@@ -190,7 +192,7 @@ exports.getOrder = (req, res) => {
         if (req.user.initial_scrape_state == 'need_initial') {
 
           var PythonShell = require('python-shell');
-          var pyshell = new PythonShell('test.py',{scriptPath:"/Users/crystalm/desktop/piggie/test_scripts/", pythonOptions: ['-u']});
+          var pyshell = new PythonShell('test.py', {scriptPath:"/test_scripts/", pythonOptions: ['-u']});
           pyshell.on('message', function (message) {
             // received a message sent from the Python script (a simple "print" statement)
             console.log(message);
@@ -214,7 +216,9 @@ exports.getOrder = (req, res) => {
 
           var PythonShell = require('python-shell');
 
-          var pyshell = new PythonShell('test_scrape_nordstrom.py',{scriptPath:"/Users/crystalm/desktop/piggie/test_scripts/", pythonOptions: ['-u']});
+          var path = process.cwd() + "/test_scripts"
+          console.log(path)
+          var pyshell = new PythonShell('test_scrape_nordstrom.py',{scriptPath: path, pythonOptions: ['-u']});
 
           pyshell.on('message', function (message) {
             // received a message sent from the Python script (a simple "print" statement)
