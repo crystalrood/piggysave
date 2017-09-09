@@ -16,7 +16,7 @@ from pymongo import MongoClient
 
 local_host = 'mongodb://localhost:27017/test'
 uri = 'mongodb://crystalrood:Crystal1992@ds161503.mlab.com:61503/heroku_4jtg3rvf'
-client = MongoClient(local_host)
+client = MongoClient(uri)
 
 
 
