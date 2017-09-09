@@ -12,7 +12,9 @@ import datefinder
 
 import pymongo
 from pymongo import MongoClient
-client = MongoClient('mongodb://localhost:27017/test')
+local_host = 'mongodb://localhost:27017/test'
+uri = 'mongodb://crystalrood:Crystal1992@ds161503.mlab.com:61503/heroku_4jtg3rvf'
+client = MongoClient(uri)
 
 
 ## consolidating big block of code
