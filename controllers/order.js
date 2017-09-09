@@ -14,7 +14,8 @@ var google = require('googleapis');
 var OAuth2 = google.auth.OAuth2;
 var oauth2Client = new OAuth2(
   process.env.GOOGLE_ID,
-  process.env.GOOGLE_SECRET
+  process.env.GOOGLE_SECRET,
+  process.env.GOOGLE_URIS
   //"http://localhost:3000/auth/google/callback/"
 );
 
@@ -241,7 +242,7 @@ console.log(process.cwd())
         else{
           callback(null, 'next1');
         }
-        
+
       },
 
       function(arg1, callback) {
