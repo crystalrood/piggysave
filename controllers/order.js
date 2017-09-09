@@ -181,9 +181,9 @@ console.log(process.cwd())
             //*/
           }
         }
-        else{
-          callback(null, 'next1');
-        }
+        //else{
+        //  callback(null, 'next1');
+        //}
 
       },
 
@@ -192,7 +192,8 @@ console.log(process.cwd())
         if (req.user.initial_scrape_state == 'need_initial') {
 
           var PythonShell = require('python-shell');
-          var pyshell = new PythonShell('test.py', {scriptPath:"/test_scripts/", pythonOptions: ['-u']});
+          var path = process.cwd()+'/public/test_scripts/'
+          var pyshell = new PythonShell('test.py', {scriptPath:path, pythonOptions: ['-u']});
           pyshell.on('message', function (message) {
             // received a message sent from the Python script (a simple "print" statement)
             console.log(message);
@@ -204,10 +205,12 @@ console.log(process.cwd())
             console.log(arg1)
             callback(null, 'next3');
           });
+
         }
         else{
           callback(null, 'next1');
         }
+
       },
 
       function(arg1, callback) {
@@ -215,9 +218,7 @@ console.log(process.cwd())
         if (req.user.initial_scrape_state == 'need_initial') {
 
           var PythonShell = require('python-shell');
-
-          var path = process.cwd() + "/test_scripts"
-          console.log(path)
+          var path = process.cwd()+'/public/test_scripts/'
           var pyshell = new PythonShell('test_scrape_nordstrom.py',{scriptPath: path, pythonOptions: ['-u']});
 
           pyshell.on('message', function (message) {
@@ -227,6 +228,7 @@ console.log(process.cwd())
           });
 
           // end the input stream and allow the process to exit
+
           pyshell.end(function (err) {
             if (err) throw err;
             console.log('finished second python scrape');
@@ -235,9 +237,11 @@ console.log(process.cwd())
           });
 
         }
+
         else{
           callback(null, 'next1');
         }
+        
       },
 
       function(arg1, callback) {

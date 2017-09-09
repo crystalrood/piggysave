@@ -14,7 +14,7 @@ import pymongo
 from pymongo import MongoClient
 local_host = 'mongodb://localhost:27017/test'
 uri = 'mongodb://crystalrood:Crystal1992@ds161503.mlab.com:61503/heroku_4jtg3rvf'
-client = MongoClient(uri)
+client = MongoClient(local_host)
 
 
 ## consolidating big block of code
@@ -112,15 +112,19 @@ for index, row in df.iterrows():
     if len(divTag2) >1: divTag2 = divTag2[0]
 
     for th2 in divTag2:
-        link3 ='http://shop.nordstrom.com'+th2.find_all('a')[1].get('href')
-        try:
-            image_link_2 = th2.find('img')['src'].encode('utf-8')
-            item_name2 = th2.find('img')['alt'].encode('utf-8')
-        except:
-             pass
+            try:
+                link3 ='http://shop.nordstrom.com'+th2.find_all('a')[1].get('href')
+            except:
+                pass
+            try:
+                image_link_2 = th2.find('img')['src'].encode('utf-8')
+                item_name2 = th2.find('img')['alt'].encode('utf-8')
+            except:
+                 pass
     df.set_value(index,'link3',link3)
     df.set_value(index,'image_link_2',image_link_2)
     df.set_value(index,'item_name2',item_name2)
+
 
 
 ##this piece of code saves it to the database :)
