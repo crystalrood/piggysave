@@ -51,7 +51,7 @@ for index, row in messages.iterrows():
     msg_decoded = base64.urlsafe_b64decode(row['encoded_message'].encode('ASCII'))
 
     #splits above message into lines of text
-    string = msg_decoded.split('\r\n')
+    string = msg_decoded.split(b'\r\n')
 
     #getting email
     delivered_to = 'delivered-to'
