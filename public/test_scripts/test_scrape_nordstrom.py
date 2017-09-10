@@ -127,7 +127,6 @@ for index, row in df.iterrows():
 
 
 ##this piece of code saves it to the database :)
-db = client.test
 for index, row in df.iterrows():
     if (((pd.to_datetime('today') - pd.to_datetime(row['date'])) / np.timedelta64(1, 'D')).astype(int) <15):
         status = 'tracking'

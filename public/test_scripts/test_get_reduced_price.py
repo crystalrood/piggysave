@@ -75,7 +75,6 @@ for index, row in orders.iterrows():
         orders.set_value(index,'status','not_eligible')
 
 
-db = client.test
 for index, row in orders.iterrows():
     db.order_info_item_scrapes.update_many(
         {"_id": row['_id']},

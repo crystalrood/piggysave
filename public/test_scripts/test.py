@@ -197,8 +197,6 @@ for index, row in messages.iterrows():
 
 
 
-
-    db = client.test
     for index, row in df.iterrows():
         dic = {'thread_id': row['thread_id'],
            'email': row['email'],
