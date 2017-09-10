@@ -98,12 +98,11 @@ function getThreads(email, callback) {
 
 exports.getOrder = (req, res) => {
 console.log(process.cwd())
-  if(req.user){
+  if(req.user && req.user.initial_scrape_state == 'need_initial'){
     async.waterfall([
 
       function(callback) {
         //checking to see if the user has an initial status of need to scrape
-        if (req.user.initial_scrape_state == 'need_initial') {
           console.log(req.user.tokens[0].accessToken)
           if (req.user.tokens[0].accessToken) {
               //setting oauth2Client credentials if user has a token set up
@@ -111,11 +110,7 @@ console.log(process.cwd())
               access_token: req.user.tokens[0].accessToken,
               refresh_token: req.user.refresh_token[0].refreshToken
             });
-            //getThreads(req.user.email, callback);
-            //callback(null, 'next1');
 
-
-  ///*
             var retailers = ['contact@em.nordstrom.com']
             var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
             var lookback = ' newer_than:60d'
@@ -180,7 +175,7 @@ console.log(process.cwd())
             });
             //*/
           }
-        }
+
         //else{
         //  callback(null, 'next1');
         //}
@@ -189,7 +184,6 @@ console.log(process.cwd())
 
       function(arg1, callback) {
         //in this subfunction i want to call the python scraper :D
-        if (req.user.initial_scrape_state == 'need_initial') {
 
           var PythonShell = require('python-shell');
           var path = process.cwd()+'/public/test_scripts/'
@@ -206,16 +200,12 @@ console.log(process.cwd())
             callback(null, 'next3');
           });
 
-        }
-        else{
-          callback(null, 'next1');
-        }
 
       },
 
       function(arg1, callback) {
         //in this subfunction i want to call the python scraper :D
-        if (req.user.initial_scrape_state == 'need_initial') {
+
 
           var PythonShell = require('python-shell');
           var path = process.cwd()+'/public/test_scripts/'
@@ -236,16 +226,11 @@ console.log(process.cwd())
             callback(null, 'next3');
           });
 
-        }
-
-        else{
-          callback(null, 'next1');
-        }
 
       },
 
       function(arg1, callback) {
-          if (req.user.initial_scrape_state == 'need_initial') {
+
             User.update(
               {'email': req.user.email }
               ,{$set:{'initial_scrape_state':'complete'}}
@@ -254,7 +239,6 @@ console.log(process.cwd())
                     else {console.log('saved')}
                 }
             )
-          };
         console.log('task2')
         callback(null, 'next2');
       },
@@ -268,7 +252,9 @@ console.log(process.cwd())
   }
   else{
 
-    res.render('orders')
+    Order_info_item_scrape.find((err, docs) => {
+        res.render('orders', {orders: docs});
+    });
   }
 
 };
