@@ -66,6 +66,11 @@ for index, row in orders.iterrows():
             item_name = div.find_all('tr')[1].find_all('td')[2].text.strip().encode('utf-8').splitlines()[0]
             size = div.find_all('tr')[1].find_all('td')[2].text.strip().encode('utf-8').splitlines()[6].lstrip()
             style = div.find_all('tr')[1].find_all('td')[2].text.strip().encode('utf-8').splitlines()[12].lstrip()
+            if size == 'Size:':
+                size = div.find_all('tr')[1].find_all('td')[2].text.strip().encode('utf-8').splitlines()[7].lstrip()
+            if style == 'Style:':
+                style = div.find_all('tr')[1].find_all('td')[2].text.strip().encode('utf-8').splitlines()[13].lstrip()
+
             try:
                 tracking_num = div.find_all('tr')[1].find_all('td')[5].text.strip().encode('utf-8').splitlines()[3]
             except:
