@@ -225,6 +225,7 @@ function sayHello() {
                         var x = new ObjectId();
 
                         var date = new Date().getTime()
+
                         const email_thread = new Message(
                           {
                             _id: x,
@@ -236,14 +237,13 @@ function sayHello() {
                          }
                         );
 
-                          // find all users
-                        var query2 = email_thread.save();
                         console.log('made it here')
 
-                        query2.exec(function (err, users) {
-                          if (err) return handleError(err);
-                          console.log('save')
-                        })
+                        email_thread.save(function(err, news){
+                          if(err) return console.error("Error while saving data to MongoDB: " + err); // <- this gets executed when there's an error
+                          //console.error(news); // <- this never gets logged, even if there's no error.
+                          console.log('saved success')
+                        });
 
                         j++;
                        
