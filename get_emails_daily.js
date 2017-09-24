@@ -236,7 +236,7 @@ function sayHello() {
                          }
                         );
 
-                        console.log('made-it-here')
+                        console.log(email_thread)
 
                         email_thread.save((err) => {
                           if (err) { return next(err); }
