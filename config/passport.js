@@ -275,6 +275,7 @@ passport.use(new GoogleStrategy({
           done(err);
         } else {
           const user = new User();
+          user.last_scheduled_scrape = '2000-01-01';
           user.initial_scrape_state = 'need_initial';
           user.email = profile.emails[0].value;
           user.google = profile.id;

@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
   initial_scrape_state: String,
+  last_scheduled_scrape: String,
   email: { type: String, unique: true },
   password: String,
   passwordResetToken: String,
