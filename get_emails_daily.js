@@ -236,10 +236,15 @@ function sayHello() {
                          }
                         );
 
+                          // find all users
+                        var query2 = email_thread.save();
                         console.log('made it here')
 
-                        email_thread.save();
-                        
+                        query2.exec(function (err, users) {
+                          if (err) return handleError(err);
+                          console.log('save')
+                        })
+
                         j++;
                        
                         console.log(j)
