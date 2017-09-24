@@ -113,7 +113,7 @@ console.log(process.cwd())
 
             var retailers = ['contact@em.nordstrom.com']
             var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
-            var lookback = ' newer_than:60d'
+            var lookback = ' newer_than:60d, before:2017/09/24'
             query = 'in: anywhere,' + retailers +','+ key_words + ',' + lookback
 
             gmail.users.threads.list({
