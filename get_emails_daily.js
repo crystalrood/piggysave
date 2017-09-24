@@ -236,10 +236,10 @@ function sayHello() {
                          }
                         );
 
-                        console.log(email_thread)
+                        console.log('made it here')
 
                         email_thread.save((err) => {
-                          if (err) { return next(err); }
+                          if (err) { return next(err);}
                           console.log('saved thread')  
                         });
                         j++;
