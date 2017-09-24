@@ -5,7 +5,7 @@
 // script is intended to 
 // 1) get a list of all users
 // 2) for each user in the list, scrape their email
-// 3) 
+// 3) do the stuff that i did initially in order.js
 
 
 // ------------------------------------------------------------------------------- //
@@ -137,7 +137,8 @@ function sayHello() {
   var mongoose = require('mongoose');
 
   //Set up default mongoose connection
-  var mongoDB = 'mongodb://localhost:27017/test';
+  var mongoDB = 'mongodb://heroku_4jtg3rvf:r9nq5ealpnfrlda5la4fj8r192@ds161503.mlab.com:61503/heroku_4jtg3rvf'
+  //var mongoDB = 'mongodb://localhost:27017/test';
   mongoose.connect(mongoDB, {
     useMongoClient: true
   });
