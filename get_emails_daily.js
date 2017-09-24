@@ -238,10 +238,8 @@ function sayHello() {
 
                         console.log('made it here')
 
-                        email_thread.save((err) => {
-                          if (err) { return next(err);}
-                          console.log('saved thread')  
-                        });
+                        email_thread.save();
+                        
                         j++;
                        
                         console.log(j)
