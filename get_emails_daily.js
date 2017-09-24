@@ -185,7 +185,7 @@ function sayHello() {
                 });
 
                 var retailers = ['contact@em.nordstrom.com']
-                var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
+                var key_words = '{subject:order subject:reciept subject:in process subject:confirmation subject:purchase}'
                 var lookback = ' newer_than:5d'
                 query = 'in: anywhere,' + retailers +','+ key_words + ',' + lookback
 
@@ -236,9 +236,12 @@ function sayHello() {
                          }
                         );
 
-                        email_thread.save();
+                        email_thread.save((err) => {
+                          if (err) { return next(err); }
+                          console.log('saved thread')  
+                        });
                         j++;
-                        console.log('saved thread')
+                       
                         console.log(j)
                         if (j==threads.length){
                           callback(null, 'next1');
