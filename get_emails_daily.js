@@ -214,7 +214,7 @@ function sayHello() {
                   refresh_token: user.refresh_token[0].refreshToken
                 });
 
-                //console.log(user.email)
+                console.log(user.email)
 
                 var retailers = ['contact@em.nordstrom.com']
                 var key_words = '{subject:order subject:reciept subject:in process subject:confirmation subject:purchase}'
