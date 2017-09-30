@@ -175,7 +175,8 @@ function sayHello() {
   var oauth2Client = new OAuth2(
     process.env.GOOGLE_ID,
     process.env.GOOGLE_SECRET,
-    //process.env.GOOGLE_URIS
+    process.env.GOOGLE_URIS
+    //need to comment above line out if running locally
   );
 
   var gmail = google.gmail({
