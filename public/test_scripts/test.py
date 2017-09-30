@@ -20,11 +20,14 @@ import datefinder
 import pymongo
 from pymongo import MongoClient
 
-local_host = 'mongodb://localhost:27017/test'
-uri = 'mongodb://heroku_4jtg3rvf:r9nq5ealpnfrlda5la4fj8r192@ds161503.mlab.com:61503/heroku_4jtg3rvf'
 
+uri = 'mongodb://heroku_4jtg3rvf:r9nq5ealpnfrlda5la4fj8r192@ds161503.mlab.com:61503/heroku_4jtg3rvf'
 client = MongoClient(uri)
 db = client['heroku_4jtg3rvf']
+
+#client = MongoClient('mongodb://localhost:27017/test')
+#db = client.test
+
 # db = client['test']
 messages = db.messages
 messages = pd.DataFrame(list(messages.find()))

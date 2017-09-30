@@ -21,6 +21,11 @@ var fs = require('fs');
 const User = require('./models/User');
 mongoose.Promise = require('bluebird');
 
+require('dotenv').config()
+const dotenv = require('dotenv')
+const envConfig = dotenv.parse(fs.readFileSync('.env.example'))
+
+
 var message_data = []
 
 var google = require('googleapis');
@@ -130,31 +135,53 @@ function get_pretty_date(value){
 
 function sayHello() {
   
-  console.log('running')
-
 
   //Import the mongoose module
   var mongoose = require('mongoose');
+  var bodyParser = require('body-parser')
+  // create application/json parser
+  var jsonParser = bodyParser.json()
+ 
+  // create application/x-www-form-urlencoded parser
+  var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
   //Set up default mongoose connection
   var mongoDB = 'mongodb://heroku_4jtg3rvf:r9nq5ealpnfrlda5la4fj8r192@ds161503.mlab.com:61503/heroku_4jtg3rvf'
   //var mongoDB = 'mongodb://localhost:27017/test';
+
   mongoose.connect(mongoDB, {
     useMongoClient: true
   });
 
+
+
   //Get the default connection
+  // mongoose.createConnection(uri, { replset: { poolSize: 4 }});
   var db = mongoose.connection;
 
   //Bind connection to error event (to get notification of connection errors)
   db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-  //Require Mongoose
-  var mongoose = require('mongoose');
-
   // find all users
   var query = User.find();
 
+  for (var k in envConfig) {
+    process.env[k] = envConfig[k]
+  }
+
+
+  var google = require('googleapis');
+  var OAuth2 = google.auth.OAuth2;
+  var oauth2Client = new OAuth2(
+    process.env.GOOGLE_ID,
+    process.env.GOOGLE_SECRET,
+    //process.env.GOOGLE_URIS
+  );
+
+  var gmail = google.gmail({
+    version: 'v1',
+    auth: oauth2Client
+  });
 
   // execute the query at a later time
   query.exec(function (err, users) {
@@ -177,6 +204,9 @@ function sayHello() {
           async.waterfall([
 
             function(callback) {
+
+              console.log()
+              console.log(process.env.GOOGLE_ID)
               if (user.tokens[0].accessToken) {
                   //setting oauth2Client credentials if user has a token set up
                   oauth2Client.setCredentials({
@@ -184,9 +214,12 @@ function sayHello() {
                   refresh_token: user.refresh_token[0].refreshToken
                 });
 
+                //console.log(user.email)
+
                 var retailers = ['contact@em.nordstrom.com']
                 var key_words = '{subject:order subject:reciept subject:in process subject:confirmation subject:purchase}'
                 var lookback = 'after:2017/09/10'
+                //newer_than:2d
                 query = 'in: anywhere,' + retailers +','+ key_words + ',' + lookback
 
                 gmail.users.threads.list({
@@ -220,29 +253,28 @@ function sayHello() {
                           console.log('The API returned an error: ' + err);
                           return;
                         }
-                        var mongoose = require('mongoose');
-                        var ObjectId =  mongoose.Types.ObjectId;
-                        var x = new ObjectId();
-
+                        
                         var date = new Date().getTime()
 
-                        const email_thread = new Message(
-                          {
-                            _id: x,
-                            email: user.email,
-                            date_extracted: date,
-                            thread_id: thread.id,
-                            encoded_message: response2['raw'],
-                            status: 'need to scrape'
-                         }
-                        );
+                        //opening a pythong script to save to MongoDB
+                        var PythonShell = require('python-shell');
+                        var path = process.cwd()+'/public/test_scripts/'
+                        var pyshell = new PythonShell('saving_message_to_mongo.py',{scriptPath: path, pythonOptions: ['-u']});
 
-                        console.log('made it here')
+                        //this is how you send info to a python script :D
+                        pyshell.send(JSON.stringify([user.email, date, thread.id, response2['raw'],'need to scrape']));
 
-                        email_thread.save(function(err, news){
-                          if(err) return console.error("Error while saving data to MongoDB: " + err); // <- this gets executed when there's an error
-                          //console.error(news); // <- this never gets logged, even if there's no error.
-                          console.log('saved success')
+                        pyshell.on('message', function (message) {
+                          // received a message sent from the Python script (a simple "print" statement)
+                          console.log(message);
+
+                        });
+
+                        // end the input stream and allow the process to exit
+
+                        pyshell.end(function (err) {
+                          if (err) throw err;
+                          console.log('finished initial');
                         });
 
                         j++;
