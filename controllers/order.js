@@ -63,7 +63,8 @@ function getMessage(i, email ,thread_id, callback) {
 function getThreads(email, callback) {
   var retailers = ['contact@em.nordstrom.com']
   var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
-  query = 'in: anywhere,' + retailers +','+ key_words
+  var lookback = 'before:2017/09/10'
+  query = 'in: anywhere,' + retailers +','+ key_words +','+ lookback 
 
   gmail.users.threads.list({
     auth: oauth2Client,
@@ -97,7 +98,7 @@ function getThreads(email, callback) {
 
 
 exports.getOrder = (req, res) => {
-  console.log(process.env.GOOGLE_ID)
+
 console.log(process.cwd())
   if(req.user && req.user.initial_scrape_state == 'need_initial'){
     async.waterfall([
