@@ -24,7 +24,7 @@ block content
       var order_num = value['order_num']
       var date_purchased = value['date_placed']
       var html = ''
-      if ((status == 'tracking') OR (status == 'need_to_contact')){
+      if (status == 'tracking' OR status == 'need_to_contact'){
         html += '<div class="item_checking" id="item_checking"><div class="row"><h3 class="col-sm-4">'
         html += retailer + '</h3><h4 class="col-sm-4 col-sm-offset-4">'
         html += '<span style="background-color:#380083;font color:;color: white;letter-spacing: 2px; padding: 5px;">tracking</span></h4>'
