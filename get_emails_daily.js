@@ -218,7 +218,7 @@ function sayHello() {
                 console.log(user.email)
 
                 var retailers = ['contact@em.nordstrom.com']
-                var key_words = '{subject:order subject:reciept subject:in process subject:confirmation subject:purchase}'
+                var key_words = '{subject:order subject:in process}'
                 var lookback = 'newer_than:1d'
                 //after:2017/09/10
                 query = 'in: anywhere,' + retailers +','+ key_words + ',' + lookback
