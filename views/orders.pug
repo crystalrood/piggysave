@@ -29,7 +29,7 @@ block content
         html += retailer + '</h3><h4 class="col-sm-4 col-sm-offset-4">'
         html += '<span style="background-color:#380083;font color:;color: white;letter-spacing: 2px; padding: 5px;">tracking</span></h4>'
       }
-      
+
       if (status == 'need_to_contact'){
         html += '<div class="item_checking" id="item_checking"><div class="row"><h3 class="col-sm-4">'
         html += retailer + '</h3><h4 class="col-sm-4 col-sm-offset-4">'
@@ -163,6 +163,11 @@ block content
             html_to_add += html
           }
 
+          if (data_for_db_value[i]['status'] == 'need_to_contact'){
+            html = create_html(data_for_db_value[i], 'need_to_contact')
+            html_to_add += html
+          }
+          
           if (data_for_db_value[i]['status'] == 'contacted'){
             html = create_html(data_for_db_value[i], 'contacted')
             html_to_add += html
