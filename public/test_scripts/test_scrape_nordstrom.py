@@ -114,7 +114,7 @@ for index, row in df.iterrows():
 
     html2 = requests.get(url2).text
     soup2 = BeautifulSoup(html2, "html.parser")
-    divTag2 = soup2.find_all("article", {"class": "npr-ahINh npr-product-module large"})
+    divTag2 = soup2.find_all("article", {"class": re.compile("npr-ahINh npr-product-module large")})
 
     #if search returns more than 1 result, only look at 1st result
     if len(divTag2) >1: divTag2 = divTag2[0]
