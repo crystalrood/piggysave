@@ -65,7 +65,7 @@ for index, row in orders.iterrows():
 
                 #trying to convert non-numeric price to get the price difference
                 non_decimal = re.compile(r'[^\d.]+')
-                value = non_decimal.sub('', test.encode('utf-8'))
+                value = non_decimal.sub('',  row['purchase_price'].encode('utf-8'))
                 price_difference = float(value.lstrip('$')) - float(price.lstrip('$'))
 
                 #setting price difference, status, reduced price and date the price reduced field
