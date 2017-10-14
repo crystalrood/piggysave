@@ -128,7 +128,8 @@ for index, row in df.iterrows():
                 image_link_2 = th2.find('img')['src'].encode('utf-8')
                 item_name2 = th2.find('img')['alt'].encode('utf-8')
             except:
-                 pass
+                image_link_2 = row['image']
+                item_name2 = row['item_name']
     df.set_value(index,'link3',link3)
     df.set_value(index,'image_link_2',image_link_2)
     df.set_value(index,'item_name2',item_name2)
