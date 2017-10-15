@@ -41,7 +41,7 @@ for index, row in orders.iterrows():
     margin = datetime.timedelta(days = 14)
     #status available tracking, not eligible, contacted, confirmed
 
-
+    orders.set_value(index, 'last_date_checked', today)
     #if something is eligable to be checked, then we're going to
     if today - margin <= datetime.date(int(split_date[2]), int(split_date[0]), int(split_date[1])):
 
@@ -51,7 +51,6 @@ for index, row in orders.iterrows():
 
         #this class appears only if the item is on sale
         divTag = soup.find_all("div", {"class": "current-price price-display-sale"})
-        orders.set_value(index, 'last_date_checked', today)
 
         #check to see if there is even a sale price listed for the item
         if len(divTag)>0:
@@ -77,6 +76,7 @@ for index, row in orders.iterrows():
     #if the date over the 14 day period, update the status to relfect not eligable
     if today - margin > datetime.date(int(split_date[2]), int(split_date[0]), int(split_date[1])):
         orders.set_value(index,'status','not_eligible')
+
 
 
 for index, row in orders.iterrows():
