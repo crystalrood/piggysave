@@ -166,10 +166,9 @@ function sayHello() {
     if (items.length == 0) {
       console.log('no items found that match critera');
     } else {
-      //items.length
-      for (var i = 0; i < 1; i++) {
+      for (var i = 0; i < items.length; i++) {
         var item = items[i];
-        console.log(item.email)
+       // console.log(item.email)
 
         console.log(item)
           var email_lines = [];
@@ -213,11 +212,6 @@ function sayHello() {
                'raw': base64EncodedEmail
               }
           });
-          //request.execute(function() {/*do post email sending stuff*/});
-      
-
-  
-
       }
     }
       
