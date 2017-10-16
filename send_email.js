@@ -65,6 +65,28 @@ function get_pretty_date(value){
 }
     
 
+/**
+ * Send Message.
+ *
+ * @param  {String} userId User's email address. The special value 'me'
+ * can be used to indicate the authenticated user.
+ * @param  {String} email RFC 5322 formatted String.
+ * @param  {Function} callback Function to call when the request is complete.
+ */
+function sendMessage(userId, email, callback) {
+  // Using the js-base64 library for encoding:
+  // https://www.npmjs.com/package/js-base64
+  var base64EncodedEmail = Base64.encodeURI(email);
+  var request = gapi.client.gmail.users.messages.send({
+    'userId': userId,
+    'resource': {
+      'raw': base64EncodedEmail
+    }
+  });
+  request.execute(callback);
+}
+
+
 // ------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------- //
 
@@ -140,17 +162,61 @@ function sayHello() {
   // execute the query at a later time
   query2.exec(function (err, items) {
     if (err) return handleError(err);
-    console.log(items)
 
     if (items.length == 0) {
       console.log('no items found that match critera');
     } else {
-      for (var i = 0; i < items.length; i++) {
-        var thread = items[i];
-        //console.log(thread.email)
+      //items.length
+      for (var i = 0; i < 1; i++) {
+        var item = items[i];
+        console.log(item.email)
 
+        console.log(item)
+          var email_lines = [];
+
+          var from = 'From: ' + item.email
+          var to = 'To: crystal.rood.1@gmail.com'
+          var subject = 'Asking for a price adjustment on #' + item.order_num
+          var line1 = '<br></br> <br></br> On '+ item.date_placed+ ' I bought ' + item.item_name
+          var line2 = ' and I see now that the price has dropped by $' + item.price_difference 
+          var line3 = '. I am looking forward to getting money back on my purchase.'
+          var line4 = '<br></br><br>Here is my order number #' + item.order_num + ' and the lower price on ' + item.item_name + '</br>'
+          var line5 = '<br></br><br>' + item.link_to_product + '</br>'
+          var line6 = '<br></br><br>I look forward to hearing from you!</br><br></br><br></br> Thanks!'
+
+          email_lines.push(from);
+          email_lines.push(to);
+          email_lines.push('Content-type: text/html;charset=iso-8859-1');
+          email_lines.push('MIME-Version: 1.0');
+          email_lines.push("Subject: "+ subject);
+          email_lines.push("");
+          email_lines.push("Hello,");
+          email_lines.push(line1 + line2 + line3 + line4 + line5 + line6);
+
+          var email =email_lines.join("\r\n").trim();
+
+          var base64EncodedEmail = new Buffer(email).toString('base64');
+
+          base64EncodedEmail = base64EncodedEmail.replace(/\+/g, '-').replace(/\//g, '_')
+
+          if (item.emails_match.tokens[0].accessToken) {
+                  //setting oauth2Client credentials if user has a token set up
+                  oauth2Client.setCredentials({
+                  access_token: item.emails_match.tokens[0].accessToken,
+                  refresh_token: item.emails_match.refresh_token[0].refreshToken
+                });
+          }                  
+          var request =gmail.users.messages.send({
+               auth: oauth2Client,
+               userId: item.email,
+             'resource': {
+               'raw': base64EncodedEmail
+              }
+          });
+          //request.execute(function() {/*do post email sending stuff*/});
       
 
+  
 
       }
     }
