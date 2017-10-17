@@ -167,10 +167,16 @@ function sayHello() {
       console.log('no items found that match critera');
     } else {
       for (var i = 0; i < items.length; i++) {
-        var item = items[i];
-       // console.log(item.email)
 
-        console.log(item)
+        var item = items[i]
+        
+        async.waterfall([
+
+        function(callback) {
+
+  
+         
+          console.log(item)
           var email_lines = [];
 
           var from = 'From: ' + item.email
@@ -205,14 +211,42 @@ function sayHello() {
                   refresh_token: item.emails_match.refresh_token[0].refreshToken
                 });
           }                  
-          var request =gmail.users.messages.send({
+          var request = gmail.users.messages.send({
                auth: oauth2Client,
                userId: item.email,
              'resource': {
                'raw': base64EncodedEmail
               }
+          }, callback(null, 'next1'));
+
+        },
+        function(arg1, callback) {
+          //opening a pythong script to save to mongodb
+          var PythonShell = require('python-shell');
+          var path = process.cwd()+'/public/test_scripts/'
+          var pyshell = new PythonShell('updating_status_mongo.py',{scriptPath: path, pythonOptions: ['-u']});
+
+          //this is how you send info to a python script :D
+          pyshell.send(JSON.stringify([item.order_num, item.item_name]));
+
+          pyshell.on('message', function (message) {
+            // received a message sent from the Python script (a simple "print" statement)
+            console.log(message);
+
           });
-      }
+
+          // end the input stream and allow the process to exit
+
+          pyshell.end(function (err) {
+            if (err) throw err;
+            console.log('finished initial');
+          });
+
+        },
+ 
+        
+      ])//end of async waterfall
+      } //end for loop
     }
       
   }) //execute query end
