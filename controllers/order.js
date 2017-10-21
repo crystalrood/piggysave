@@ -135,7 +135,8 @@ console.log(process.cwd())
               }
 
               var threads = response['threads']
-              if(length in threads){
+              //dis don't work 10-20-2017
+              if (typeof threads.length !== 'undefined') {
                 if (threads.length == 0) {
                   console.log('no threads found that match critera');
                 } else {
