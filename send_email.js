@@ -183,7 +183,7 @@ function sayHello() {
           var to = 'To: crystal.rood.1@gmail.com'
           var subject = 'Asking for a price adjustment on #' + item.order_num
           var line1 = '<br></br> <br></br> On '+ item.date_placed+ ' I bought ' + item.item_name
-          var line2 = ' and I see now that the price has dropped by $' + item.price_difference 
+          var line2 = ' and I see now that the price has dropped by $' + Number((item.price_difference).toFixed(2))
           var line3 = '. I am looking forward to getting money back on my purchase.'
           var line4 = '<br></br><br>Here is my order number #' + item.order_num + ' and the lower price on ' + item.item_name + '</br>'
           var line5 = '<br></br><br>' + item.link_to_product + '</br>'
