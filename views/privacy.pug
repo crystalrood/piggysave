@@ -1,0 +1,62 @@
+//being manual extend layout
+html
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(name='theme-color' content='#4DA5F4')
+    meta(name='csrf-token', content=_csrf)
+    title #{title} - Find-me
+    link(rel='shortcut icon', href='/favicon.png')
+    link(rel='stylesheet', href='/css/main.css')
+
+  body
+    include partials/header
+
+
+    .container
+      include partials/flash
+      block content
+
+    include partials/footer
+
+
+//end manual extend layout paste (interferes with background image, account jquery dropdown)
+block content
+  script.
+    window.onload = function start(){
+
+    }
+  .container(style='text-align:center')
+      h3 Privacy Policy
+  .container
+      h4 Introduction
+      p.paragraph(style='font-size:18px;line-height:1.3;color:#71828c;') Crystal Rood operates the piggysave.me website, which provides a service to it's users of finding lower prices on past purchases. This page is used to inform website visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service. 
+      p.paragraph(style='font-size:18px;line-height:1.3;color:#71828c;') If you choose to use our Service, then you agree to the collection and use of information in relation with this policy. The Personal Information that we collect are used for providing and improving the Service. We will not use or share your information with anyone except as described in this Privacy Policy. 
+      p.paragraph(style='font-size:18px;line-height:1.3;color:#71828c;') The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which is accessible at piggysave.me, unless otherwise defined in this Privacy Policy.
+      br
+      h4 Information Collection and Use
+      p.paragraph(style='font-size:18px;line-height:1.3;color:#71828c;') For a better experience while using our Service, we may require you to provide us with certain personally identifiable information, including but not limited to your name, email address,and email information if your account is linked to Piggy. The information that we collect will be used to contact or identify you and your past purchases. We are the sole owners of the information collected on this site. We will not sell or rent this information to anyone. We will not share your information with any third party outside of our organization. Unless you ask us not to, we may contact you via email in the future to tell you about specials, new products or services, or changes to this privacy policy.
+      br
+      h4 Log Data
+      p.paragraph(style='font-size:18px;line-height:1.3;color:#71828c;') We want to inform you that whenever you visit our piggysave.me, we collect information that your browser sends to us that is called Log Data. This Log Data may include information such as your computer’s Internet Protocol (“IP”) address, browser version, pages of our Service that you visit, the time and date of your visit, the time spent on those pages, and other statistics. We also have a script that scrapes and logs your email for past purchases ONLY. We do not save or collect any other information out side of purchase information.
+      br
+      h4 Security
+      p.paragraph(style='font-size:18px;line-height:1.3;color:#71828c;') We take precautions to protect your information. When you submit sensitive information via the website, your information is protected both online and offline.
+
+      p.paragraph(style='font-size:18px;line-height:1.3;color:#71828c;') Wherever we collect sensitive information (such as credit card data), that information is encrypted and transmitted to us in a secure way. You can verify this by looking for a lock icon in the address bar and looking for "https" at the beginning of the address of the Web page.
+
+      p.paragraph(style='font-size:18px;line-height:1.3;color:#71828c;') While we use encryption to protect sensitive information transmitted online, we also protect your information offline. Only employees who need the information to perform a specific job (for example, billing or customer service) are granted access to personally identifiable information. The computers/servers in which we store personally identifiable information are kept in a secure environment.
+      br
+      h4 Links to Other Sites
+      p.paragraph(style='font-size:18px;line-height:1.3;color:#71828c;') Our Service may contain links to other sites. If you click on a third-party link, you will be directed to that site. Note that these external sites are not operated by us. Therefore, we strongly advise you to review the Privacy Policy of these websites, get more info. We have no control over, and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services.
+      br
+      h4 Children’s Privacy
+      p.paragraph(style='font-size:18px;line-height:1.3;color:#71828c;') Our Services do not address anyone under the age of 13. We do not knowingly collect personal identifiable information from children under 13. In the case we discover that a child under 13 has provided us with personal information, we immediately delete this from our servers. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact us so that we will be able to do necessary actions.
+      br
+      h4 Changes to This Privacy Policy
+      p.paragraph(style='font-size:18px;line-height:1.3;color:#71828c;') We may update our Privacy Policy from time to time. Thus, we advise you to review this page periodically for any changes. We will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately, after they are posted on this page.
+      br
+      h4 Contact Us
+      p.paragraph(style='font-size:18px;line-height:1.3;color:#71828c;') If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us.
+      br    

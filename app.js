@@ -34,8 +34,9 @@ dotenv.load({ path: '.env.example' });
 const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const contactController = require('./controllers/contact');
-const cron_testController = require('./controllers/cron_test');
 const orderController = require('./controllers/order');
+const termController = require('./controllers/term');
+const privacyController = require('./controllers/privacy');
 
 
 
@@ -142,6 +143,8 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 
 app.get('/order', orderController.getOrder);
+app.get('/terms', termController.index);
+app.get('/privacynotice', privacyController.index);
 
 /**
  * OAuth authentication routes. (Sign in)
