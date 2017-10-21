@@ -254,7 +254,8 @@ console.log(process.cwd())
   }
   else{
 
-    Order_info_item_scrape.find({ email: req.body.email }, (err, docs) => {
+    Order_info_item_scrape.find({ email: req.user.email }, (err, docs) => {
+
         res.render('orders', {orders: docs});
         //need to change this to only render the loggd in
     });
