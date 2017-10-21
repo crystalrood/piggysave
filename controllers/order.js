@@ -78,16 +78,22 @@ function getThreads(email, callback) {
 
     var threads = response['threads']
     console.log(threads.length)
-    if (threads.length == 0) {
-      console.log('no threads found that match critera');
-    } else {
-      for (var i = 0; i < threads.length; i++) {
-        var thread = threads[i];
-        console.log(email)
-        getMessage(i , email, thread)
-      }
-      if (i==threads.length){
-        //callback(null);
+    if(length in threads){
+        console.log("yes, i have that property");
+    
+
+
+      if (threads.length == 0) {
+        console.log('no threads found that match critera');
+      } else {
+        for (var i = 0; i < threads.length; i++) {
+          var thread = threads[i];
+          console.log(email)
+          getMessage(i , email, thread)
+        }
+        if (i==threads.length){
+          //callback(null);
+        }
       }
     }
   });
