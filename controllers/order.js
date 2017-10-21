@@ -267,7 +267,7 @@ console.log(process.cwd())
         });
       }catch(e){
         if(e){
-          res.render('orders', {orders: docs});
+          res.render('orders');
         }
       }     
   });
@@ -280,7 +280,7 @@ console.log(process.cwd())
         });
       }catch(e){
         if(e){
-          res.render('orders', {orders: docs});
+          res.render('orders');
         }
       }     
   }
