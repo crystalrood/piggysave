@@ -136,7 +136,7 @@ console.log(process.cwd())
 
               var threads = response['threads']
               //dis don't work 10-20-2017
-              if (typeof threads.length != 'undefined') {
+              try {
                 if (threads.length == 0) {
                   console.log('no threads found that match critera');
                 } else {
@@ -182,7 +182,11 @@ console.log(process.cwd())
                      })
                   }
                 }
-              }
+              }catch(e){
+                if(e){
+                  callback(null, 'next1');
+                }
+              }    
             });
 
             //*/
