@@ -135,52 +135,55 @@ console.log(process.cwd())
               }
 
               var threads = response['threads']
-              if (threads.length == 0) {
-                console.log('no threads found that match critera');
-              } else {
-                var j = 0
-                for (var i = 0; i < threads.length; i++) {
-                  var thread = threads[i];
-                  console.log(req.user.email)
+              if(length in threads){
+                if (threads.length == 0) {
+                  console.log('no threads found that match critera');
+                } else {
+                  var j = 0
+                  for (var i = 0; i < threads.length; i++) {
+                    var thread = threads[i];
+                    console.log(req.user.email)
 
-                  //getMessage(i , req.user.email, thread)
-                  gmail.users.messages.get({
-                    auth: oauth2Client,
-                    userId: req.user.email,
-                    id: thread.id,
-                    format: 'raw'
-                  },
-                    function(err, response2) {
-                      if (err) {
-                        console.log('The API returned an error: ' + err);
-                        return;
-                      }
-                      var mongoose = require('mongoose');
-                      var ObjectId =  mongoose.Types.ObjectId;
-                      var x = new ObjectId();
+                    //getMessage(i , req.user.email, thread)
+                    gmail.users.messages.get({
+                      auth: oauth2Client,
+                      userId: req.user.email,
+                      id: thread.id,
+                      format: 'raw'
+                    },
+                      function(err, response2) {
+                        if (err) {
+                          console.log('The API returned an error: ' + err);
+                          return;
+                        }
+                        var mongoose = require('mongoose');
+                        var ObjectId =  mongoose.Types.ObjectId;
+                        var x = new ObjectId();
 
-                      var date = new Date().getTime()
-                      const email_thread = new Message(
-                        {
-                          _id: x,
-                          email: req.user.email,
-                          date_extracted: date,
-                          thread_id: thread.id,
-                          encoded_message: response2['raw'],
-                          status: 'need to scrape'
-                       }
-                      );
-                      email_thread.save();
-                      j++;
-                      console.log('saved thread')
-                      console.log(j)
-                      if (j==threads.length){
-                        callback(null, 'next1');
-                      }
-                   })
+                        var date = new Date().getTime()
+                        const email_thread = new Message(
+                          {
+                            _id: x,
+                            email: req.user.email,
+                            date_extracted: date,
+                            thread_id: thread.id,
+                            encoded_message: response2['raw'],
+                            status: 'need to scrape'
+                         }
+                        );
+                        email_thread.save();
+                        j++;
+                        console.log('saved thread')
+                        console.log(j)
+                        if (j==threads.length){
+                          callback(null, 'next1');
+                        }
+                     })
+                  }
                 }
               }
             });
+
             //*/
           }
 
