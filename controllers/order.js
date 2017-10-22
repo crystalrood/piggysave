@@ -121,7 +121,7 @@ console.log(process.cwd())
 
             var retailers = ['contact@em.nordstrom.com']
             var key_words = '{subject:order subject:in process}'
-            var lookback = ' newer_than:60d, before:2017/10/14'
+            var lookback = ' newer_than:90d'
             query = 'in: anywhere,' + retailers +','+ key_words + ',' + lookback
 
             gmail.users.threads.list({
