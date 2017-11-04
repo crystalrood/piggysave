@@ -120,6 +120,19 @@ app.use((req, res, next) => {
   next();
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
+// Add a handler to inspect the req.secure flag (see 
+// http://expressjs.com/api#req.secure). This allows us 
+// to know whether the request was via http or https.
+app.use (function (req, res, next) {
+    if (req.secure) {
+            // request was via https, so do no special handling
+            next();
+    } else {
+            // request was via http, so redirect to https
+            res.redirect('https://' + req.headers.host + req.url);
+    }
+});
+
 
 /**
  * Primary app routes.
