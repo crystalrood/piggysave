@@ -92,6 +92,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+
 app.use((req, res, next) => {
   if (req.path === '/api/upload') {
     next();
@@ -123,7 +124,10 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 // Add a handler to inspect the req.secure flag (see 
 // http://expressjs.com/api#req.secure). This allows us 
 // to know whether the request was via http or https.
-app.use (function (req, res, next) {
+
+// from https://www.tonyerwin.com/2014/09/redirecting-http-to-https-with-nodejs.html
+// appending https to any new page
+/*app.use (function (req, res, next) {
     if (req.secure) {
             // request was via https, so do no special handling
             next();
@@ -131,7 +135,20 @@ app.use (function (req, res, next) {
             // request was via http, so redirect to https
             res.redirect('https://' + req.headers.host + req.url);
     }
-});
+});*/
+
+app.enable('trust proxy');
+// in production on Heroku - re-route everything to https
+if (process.env.NODE_ENV==="production") {
+  app.use((req, res, next) => {
+    if (req.header('x-forwarded-proto') !== 'https') {
+      res.redirect('https://' + req.hostname + req.url);
+    } else {
+      next()
+    }
+  })
+}
+
 
 
 /**
