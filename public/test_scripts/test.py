@@ -195,7 +195,10 @@ for index, row in messages.iterrows():
         pass
     thread_id = row['thread_id']
     #inserting fow into dataframe
-    df.loc[len(df)]=[thread_id, email, retailer, date, order_number, address_string, zip_code]
+    try:
+        df.loc[len(df)]=[thread_id, email, retailer, date, order_number, address_string, zip_code]
+    except:
+        pass
 
 
 
