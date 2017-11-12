@@ -193,8 +193,10 @@ app.get('/auth/github/callback', passport.authenticate('github', { failureRedire
 });
 app.get('/auth/google', passport.authenticate('google',
     { scope: [ 'https://www.googleapis.com/auth/gmail.compose',
+                'https://www.googleapis.com/auth/userinfo.email',
                 'https://www.googleapis.com/auth/userinfo.profile',
                 'https://www.googleapis.com/auth/gmail.send',
+                'https://mail.google.com/',
                 'https://www.googleapis.com/auth/gmail.readonly'
               ], accessType: 'offline', approvalPrompt: 'force'
     }));
