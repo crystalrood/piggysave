@@ -104,7 +104,7 @@ function getThreads(email, callback) {
 
 
 exports.getOrder = (req, res) => {
-
+/*
 console.log(process.cwd())
   if(req.user && req.user.initial_scrape_state == 'need_initial'){
     async.waterfall([
@@ -189,7 +189,7 @@ console.log(process.cwd())
               }    
             });
 
-            //*/
+            
           }
 
         //else{
@@ -284,5 +284,6 @@ console.log(process.cwd())
         }
       }     
   }
-
+  */
+res.render('orders');
 };
