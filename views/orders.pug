@@ -241,21 +241,20 @@ block content
   br
   br
   .container
-    .col-md-1
-    .col-md-10(style="text-align:center")
-    h1(style="font-size:30px") Your orders
-    br
-    p.paragraph(style='font-size:18px;line-height:1.5;color:#71828c;') 
-      | You have no orders from Nordstrom in the past 90 days in your Gmail account :(
+    .col-md-12
+      h1(style="font-size:30px") Your orders
       br
-      | We scrape daily, so if you signed up today or purchased something today it should show up under "Your Orders" by tomorrow.
+      p.paragraph(style='font-size:18px;line-height:1.5;color:#4c5459;') 
+        | We scrape orders 
+        b daily
+        |, with a 90-day lookback window. If you signed up or purchased something today it will show up under "Your Orders" by tomorrow.
+        br
+        br
+        | Currently we are beta testing with Nordstrom orders only, once we have a larger following we will expand!
+        br
+        | Have a suggestion on a retailer to add? Fill out a short form <a href="https://goo.gl/forms/FGngQvlPw2jaesZN2">here</a>.
       br
-      br
-      | Currently we are beta testing with Nordstrom orders only, once we have a larger following we will expand!
-      br
-      | Have a suggestion on a retailer to add? Fill out a short form <a href="https://goo.gl/forms/FGngQvlPw2jaesZN2">here</a>.
-    br
-    input.form-control(type='hidden', id="order_info_data", value=  JSON.stringify(orders))
+      input.form-control(type='hidden', id="order_info_data", value=  JSON.stringify(orders))
   
   #main.container
 
