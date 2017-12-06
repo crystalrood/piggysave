@@ -207,7 +207,7 @@ function sayHello() {
 
         //console.log(user.last_scheduled_scrape)
         //comparing today to the last day the scraper was run
-        console.log(typeof user.google === 'undefined')
+        //console.log(typeof user.google === 'undefined')
         if ((user.last_scheduled_scrape <= today_date) && (typeof user.google === 'undefined')==false)  {
           //console.log('user email:  ' + user.email)
 
@@ -215,11 +215,8 @@ function sayHello() {
 
             function(callback) {
 
-              ///console.log()
-              //console.log(process.env.GOOGLE_ID)
-              //console.log(user)
-              //console.log(!typeof user.google === 'undefined')
-              if (user.tokens[0].accessToken) {
+
+              if (user.tokens[0].accessToken && user.email == 'cbenkendorf@gmail.com') {
                   //setting oauth2Client credentials if user has a token set up
                   oauth2Client.setCredentials({
                   access_token: user.tokens[0].accessToken,
@@ -227,7 +224,6 @@ function sayHello() {
                 });
 
                 console.log(user.email)
-
                 var retailers = ['contact@em.nordstrom.com']
                 var key_words = '{subject:order subject:in process}'
                 var lookback = 'after:2017/09/10'
@@ -237,7 +233,7 @@ function sayHello() {
 
                 gmail.users.threads.list({
                   auth: oauth2Client,
-                  userId: user.email,
+                  userId: 'crystal.wesnoski@gmail.com',
                   q: query
                 }, function(err, response) {
                   if (err) {

@@ -9,7 +9,14 @@
 
 
 //mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/test' || 'mongodb://localhost:27017/test');
+  //Set up default mongoose connection
+  var mongoDB = 'mongodb://heroku_4jtg3rvf:r9nq5ealpnfrlda5la4fj8r192@ds161503.mlab.com:61503/heroku_4jtg3rvf'
+  //var mongoDB = 'mongodb://localhost:27017/test';
+
+  mongoose.connect(mongoDB, {
+    useMongoClient: true
+  });
+
 mongoose.connection.on('error', (err) => {
   console.error(err);
   console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
