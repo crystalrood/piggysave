@@ -11,6 +11,7 @@
 // ------------------------------------------------------------------------------- //
 // getting all the variables in place
 // ------------------------------------------------------------------------------- //
+const redis = require('redis');
 const async = require('async');
 const Order_info_item_scrape = require('./models/Order_info_item_scrape.js');
 const Message = require('./models/Message.js');
