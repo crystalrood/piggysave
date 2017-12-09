@@ -223,7 +223,7 @@ function sayHello() {
                   refresh_token: user.refresh_token[0].refreshToken
                 });
 
-                console.log(user.email)
+                console.log(user)
                 var retailers = ['contact@em.nordstrom.com']
                 var key_words = '{subject:order subject:in process}'
                 var lookback = 'after:2017/09/10'
