@@ -33,11 +33,11 @@ messages = db.messages
 messages = pd.DataFrame(list(messages.find()))
 
 #need to drop duplicate records
-del messages['__v']
-del messages['_id']
-del messages['createdAt']
+#del messages['__v']
+#del messages['_id']
+#del messages['createdAt']
 del messages['date_extracted']
-del messages['updatedAt']
+#del messages['updatedAt']
 messages = messages.drop_duplicates()
 ##here i'm filter out ones that i need to scrape
 messages = messages[(messages.status == 'need to scrape')]
