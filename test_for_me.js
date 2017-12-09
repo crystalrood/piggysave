@@ -216,7 +216,7 @@ function sayHello() {
             function(callback) {
 
 
-              if (user.tokens[0].accessToken && user.email == 'crystal.wesnoski@gmail.com') {
+              if (user.tokens[0].accessToken && user.email == 'erood20@gmail.com') {
                   //setting oauth2Client credentials if user has a token set up
                   oauth2Client.setCredentials({
                   access_token: user.tokens[0].accessToken,
@@ -233,7 +233,7 @@ function sayHello() {
 
                 gmail.users.threads.list({
                   auth: oauth2Client,
-                  userId: 'crystal.wesnoski@gmail.com',
+                  userId: 'erood20@gmail.com',
                   q: query
                 }, function(err, response) {
                   if (err) {
