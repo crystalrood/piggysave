@@ -217,6 +217,7 @@ function sayHello() {
 
               var usersarrayy = ['erood20@gmail.com', 'cbenkendorf@gmail.com']
               if (user.tokens[0].accessToken 
+                && user.tokens[0].refreshToken
                 && (user.email == 'cbenkendorf@gmail.com' 
                   || user.email == 'erood20@gmail.com'
                   || user.email == 'crystal.wesnoski@gmail.com'
@@ -225,7 +226,7 @@ function sayHello() {
                   //setting oauth2Client credentials if user has a token set up
                   oauth2Client.setCredentials({
                   access_token: user.tokens[0].accessToken,
-                  refresh_token: user.refresh_token[0].refreshToken
+                  refresh_token: user.tokens[0].refreshToken
                 });
 
                 console.log(user)
