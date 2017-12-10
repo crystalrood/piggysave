@@ -207,7 +207,7 @@ function sayHello() {
 
         //console.log(user.last_scheduled_scrape)
         //comparing today to the last day the scraper was run
-        console.log(typeof user.google === 'undefined')
+        //console.log(typeof user.google === 'undefined')
         if ((user.last_scheduled_scrape <= today_date) && (typeof user.google === 'undefined')==false)  {
           //console.log('user email:  ' + user.email)
 
@@ -215,10 +215,6 @@ function sayHello() {
 
             function(callback) {
 
-              ///console.log()
-              //console.log(process.env.GOOGLE_ID)
-              //console.log(user)
-              //console.log(!typeof user.google === 'undefined')
               if (user.tokens[0].accessToken) {
                   //setting oauth2Client credentials if user has a token set up
                   oauth2Client.setCredentials({
@@ -226,8 +222,7 @@ function sayHello() {
                   refresh_token: user.refresh_token[0].refreshToken
                 });
 
-                console.log(user.email)
-
+                console.log(user)
                 var retailers = ['contact@em.nordstrom.com']
                 var key_words = '{subject:order subject:in process}'
                 var lookback = 'after:2017/09/10'
