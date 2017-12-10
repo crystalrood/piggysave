@@ -220,8 +220,7 @@ function sayHello() {
                 && user.tokens[0].refreshToken
                 && (user.email == 'cbenkendorf@gmail.com' 
                   || user.email == 'erood20@gmail.com'
-                  || user.email == 'crystal.wesnoski@gmail.com'
-                  || user.email == 'gemini02ny2058@gmail.com')
+                  || user.email == 'crystal.wesnoski@gmail.com')
                 ) {
                   //setting oauth2Client credentials if user has a token set up
                   oauth2Client.setCredentials({
