@@ -216,7 +216,12 @@ function sayHello() {
             function(callback) {
 
               var usersarrayy = ['erood20@gmail.com', 'cbenkendorf@gmail.com']
-              if (user.tokens[0].accessToken && (user.email == 'cbenkendorf@gmail.com' || user.email == 'erood20@gmail.com')) {
+              if (user.tokens[0].accessToken 
+                && (user.email == 'cbenkendorf@gmail.com' 
+                  || user.email == 'erood20@gmail.com'
+                  || user.email == 'crystal.wesnoski@gmail.com'
+                  || user.email == 'gemini02ny2058@gmail.com')
+                ) {
                   //setting oauth2Client credentials if user has a token set up
                   oauth2Client.setCredentials({
                   access_token: user.tokens[0].accessToken,

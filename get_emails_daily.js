@@ -215,7 +215,7 @@ function sayHello() {
 
             function(callback) {
 
-              if (user.tokens[0].accessToken) {
+              if (user.tokens[0].accessToken && user.tokens[0].refreshTokens) {
                   //setting oauth2Client credentials if user has a token set up
                   oauth2Client.setCredentials({
                   access_token: user.tokens[0].accessToken,
