@@ -37,6 +37,7 @@ const contactController = require('./controllers/contact');
 const orderController = require('./controllers/order');
 const termController = require('./controllers/term');
 const privacyController = require('./controllers/privacy');
+const aboutController = require('./controllers/about');
 
 
 
@@ -175,6 +176,7 @@ app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userControl
 app.get('/order', orderController.getOrder);
 app.get('/terms', termController.index);
 app.get('/privacynotice', privacyController.index);
+app.get('/about', aboutController.index);
 
 /**
  * OAuth authentication routes. (Sign in)
