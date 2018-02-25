@@ -34,7 +34,6 @@ dotenv.load({ path: '.env.example' });
 const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const contactController = require('./controllers/contact');
-const orderController = require('./controllers/order');
 const termController = require('./controllers/term');
 const privacyController = require('./controllers/privacy');
 const aboutController = require('./controllers/about');
@@ -156,6 +155,7 @@ if (process.env.NODE_ENV==="production") {
  * Primary app routes.
  */
 app.get('/', homeController.index);
+app.post('/', homeController.postFormsubmit);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
@@ -173,7 +173,6 @@ app.post('/account/password', passportConfig.isAuthenticated, userController.pos
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 
-app.get('/order', orderController.getOrder);
 app.get('/terms', termController.index);
 app.get('/privacynotice', privacyController.index);
 app.get('/about', aboutController.index);
