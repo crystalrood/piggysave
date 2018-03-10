@@ -28,9 +28,12 @@ exports.postFormsubmit = (req, res, next) => {
 
 
   /* define what needs to be saved*/
+  var date = new Date().getTime()
   const submitted_item = new Submitted_item({
       email: req.body.email,
-      item_url: req.body.url
+      item_url: req.body.url,
+      date: date,
+      added: 'no'
    });
 
     submitted_item.save((err) => {

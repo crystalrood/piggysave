@@ -1,12 +1,23 @@
 const mongoose = require('mongoose');
 
 const item_to_userSchema = new mongoose.Schema({
-  email: String,
-  confirmation: String,
-  item_id: Number,
-  date_added: String,
-  follow_up: String,
-  is_authentic: String},
+	retailer: String, 
+	condensed: String, 
+	price: String, 
+	image_link: String, 
+	item_name: String,
+	email: String, 
+	has_account: String, 
+	date_submitted: String, 
+	followup_date: String, 
+	send_email_flag: String, 
+	last_price: String, 
+	last_date_checked: String, 
+	low_price: String, 
+	low_price_date: String, 
+	high_price: String, 
+	high_price_date: String
+},
   { timestamps: true }
 );
 
