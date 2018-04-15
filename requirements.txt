@@ -6,5 +6,4 @@ datetime
 pymongo
 requests
 datetime
-smtplib
 email
