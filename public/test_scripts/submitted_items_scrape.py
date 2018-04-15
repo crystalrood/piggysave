@@ -12,10 +12,11 @@ import base64
 import pymongo
 from pymongo import MongoClient
 
-client = MongoClient('localhost', 27017)
+#client = MongoClient('localhost', 27017)
 #client = MongoClient('mongodb://localhost:27017/')
-db = client.test
-mydb = client.test.submitted_items
+client = MongoClient('mongodb://heroku_4jtg3rvf:r9nq5ealpnfrlda5la4fj8r192@ds161503.mlab.com:61503/heroku_4jtg3rvf')
+db = client['heroku_4jtg3rvf']
+mydb = db.submitted_items
 submissions = pd.DataFrame(list(mydb.find()))
 submissions = submissions[(submissions.added== 'no')]
 submisission = submissions[['email', 'item_url', 'date']]

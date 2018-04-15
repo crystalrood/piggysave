@@ -14,10 +14,15 @@ import time
 import pymongo
 from pymongo import MongoClient
 
-client = MongoClient('localhost', 27017)
+#client = MongoClient('localhost', 27017)
 #client = MongoClient('mongodb://localhost:27017/')
-db = client.test
-mydb = client.test.item_to_user
+#db = client.test
+#mydb = client.test.item_to_user
+
+client = MongoClient('mongodb://heroku_4jtg3rvf:r9nq5ealpnfrlda5la4fj8r192@ds161503.mlab.com:61503/heroku_4jtg3rvf')
+db = client['heroku_4jtg3rvf']
+mydb = client.item_to_user
+
 itemsToUsers = pd.DataFrame(list(mydb.find()))
 
 for index, row in itemsToUsers.iterrows():
