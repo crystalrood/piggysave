@@ -6,7 +6,6 @@ datetime
 pymongo
 requests
 datetime
-base64
 csv
 sys
 smtplib
