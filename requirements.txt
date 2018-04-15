@@ -6,7 +6,5 @@ datetime
 pymongo
 requests
 datetime
-csv
-sys
 smtplib
 email
