@@ -14,6 +14,8 @@ from pymongo import MongoClient
 
 #client = MongoClient('localhost', 27017)
 #client = MongoClient('mongodb://localhost:27017/')
+#db = client.test
+#mydb = client.test.submitted_items
 client = MongoClient('mongodb://heroku_4jtg3rvf:r9nq5ealpnfrlda5la4fj8r192@ds161503.mlab.com:61503/heroku_4jtg3rvf')
 db = client['heroku_4jtg3rvf']
 mydb = db.submitted_items
@@ -167,6 +169,7 @@ for index, row in submisission.iterrows():
                      send_email_flag, last_price, last_date_checked, low_price, \
                      low_price_date, high_price, high_price_date
                     ]
+
 
 for index, row in df.iterrows():
     dic = {
