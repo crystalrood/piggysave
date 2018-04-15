@@ -1,4 +1,6 @@
 extends layout
+<script src='https://www.google.com/recaptcha/api.js'></script>
+
 
 block content
   .row
@@ -24,6 +26,8 @@ block content
               <label class="col-sm-3 control-label" for="email"></label>
                 <input class="form-control" style="border:1px solid #189aff; !important;border-radius:5px !important;"  name="url" id="url" placeholder="Product URL" autofocus="" required="">
               br
+              <div class="g-recaptcha" data-sitekey="6LexWFMUAAAAAF76TBXmR97co3veRZZLGsiY_xxS"></div>
+
               button.btn.btn-primary(type='submit')(style="width:50%;")
                 i.fa.fa-envelope
                 | Start tracking!
