@@ -121,30 +121,33 @@ for index, row in submisission.iterrows():
         ##-------------------------------------
         ## getting the price of the item
         ##-------------------------------------
-        html = requests.get(item_url).text
-        soup = BeautifulSoup(html, "html.parser")
+        ###html = requests.get(item_url).text
+        ###soup = BeautifulSoup(html, "html.parser")
 
         #this class appears only if the item is on sale
-        divTag = soup.find_all("span", {"id": "priceblock_ourprice"})
-        price = divTag[0].string
+        ###divTag = soup.find_all("span", {"id": "priceblock_ourprice"})
+        ###price = divTag[0].string
+        price = 0
         #print(price)
         
         ##-------------------------------------
         ## getting the item name + item image link
         ##-------------------------------------
-        html2 = requests.get(item_url).text
-        soup2 = BeautifulSoup(html2, "html.parser")
-        divTag2 = soup2.find_all("div", {"id": "imgTagWrapperId"})
+        ###html2 = requests.get(item_url).text
+        ###soup2 = BeautifulSoup(html2, "html.parser")
+        ###divTag2 = soup2.find_all("div", {"id": "imgTagWrapperId"})
 
-        if len(divTag2)>0:
-            image_link = divTag2[0].find('img')['src']
-            item_name = divTag2[0].find('img')['alt']
-        else:
-            image_link = 'mimzey fix this shit'
+        ###if len(divTag2)>0:
+            ###image_link = divTag2[0].find('img')['src']
+            ###item_name = divTag2[0].find('img')['alt']
+        ###else:
+            ###image_link = 'mimzey fix this shit'
 
         #print(item_name)
         #print(image_link)
 
+        image_link = 0
+        item_name = 0
         ##-------------------------------------
         ## shortening the URL
         ##-------------------------------------
