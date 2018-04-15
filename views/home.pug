@@ -28,16 +28,15 @@ block content
               <label class="col-sm-3 control-label" for="email"></label>
                 <input class="form-control" style="border:1px solid #189aff; !important;border-radius:5px !important;"  name="url" id="url" placeholder="Product URL" autofocus="" required="">
               br
-              .col-sm-3
-                <div class="g-recaptcha" data-sitekey="6LexWFMUAAAAAF76TBXmR97co3veRZZLGsiY_xxS"></div>
+              //.col-sm-3
+              // <div class="g-recaptcha" data-sitekey="6LexWFMUAAAAAF76TBXmR97co3veRZZLGsiY_xxS"></div>
               br
-              br
-              br
-              br
-              br
-              button.btn.btn-primary(type='submit')(style="width:50%;")
+              button.g-recaptcha(data-sitekey='6LduVVMUAAAAACW40K4eDwbXSVTN3P1GqGQ-lZge', data-callback='submit').btn.btn-primary(type='submit')(style="width:50%;")
                 i.fa.fa-envelope
                 | Start tracking!
+              //button.btn.btn-primary(type='submit')(style="width:50%;")
+              //  i.fa.fa-envelope
+              // | Start tracking!
 
 
             br     
