@@ -131,7 +131,7 @@ for index, row in submisission.iterrows():
         #print(price)
         
         ##-------------------------------------
-        ## getting the item name + item image link
+        ## getting the item name + item image link 
         ##-------------------------------------
         ###html2 = requests.get(item_url).text
         ###soup2 = BeautifulSoup(html2, "html.parser")
