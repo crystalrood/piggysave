@@ -7,3 +7,6 @@ pymongo
 requests
 datetime
 email
+lxml
+webbrowser
+selenium

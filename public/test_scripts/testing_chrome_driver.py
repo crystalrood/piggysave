@@ -13,21 +13,20 @@ import pymongo
 from pymongo import MongoClient
 
 from lxml import html  
-import csv,os,json
+import csv,json
 #from exceptions import ValueError
 from time import sleep
 import webbrowser
 import selenium
 from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
-import os
 import time
 
 client = MongoClient('mongodb://heroku_4jtg3rvf:r9nq5ealpnfrlda5la4fj8r192@ds161503.mlab.com:61503/heroku_4jtg3rvf')
 db = client['heroku_4jtg3rvf']
 
 
-# initiating chrome driver --https://stackoverflow.com/questions/41059144/running-chromedriver-with-python-selenium-on-heroku
+# initiating chrome driver --https://stackoverflow.com/questions/41059144/running-chromedriver-with-python-selenium-on-herokup
 
 chrome_options = Options()
 chrome_options.binary_location = GOOGLE_CHROME_BIN
