@@ -28,7 +28,7 @@ db = client['heroku_4jtg3rvf']
 
 # initiating chrome driver --https://stackoverflow.com/questions/41059144/running-chromedriver-with-python-selenium-on-herokup
 
-chrome_options = Options()
+chrome_options = webdriver.ChromeOptions()
 chrome_options.binary_location = GOOGLE_CHROME_BIN
 chrome_options.add_argument('--disable-gpu')
 chrome_options.add_argument('--no-sandbox')
