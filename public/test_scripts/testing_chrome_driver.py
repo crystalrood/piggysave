@@ -31,6 +31,9 @@ db = client['heroku_4jtg3rvf']
 
 GOOGLE_CHROME_BIN = '/app/.apt/usr/bin/google-chrome'
 CHROMEDRIVER_PATH = '/usr/bin/google-chrome'
+#GOOGLE_CHROME_BIN = '/app/.apt/opt/google/chrome/chrome'
+#GOOGLE_CHROME_SHIM = '/app/.apt/usr/bin/google-chrome-stable'
+
 
 #chrome_options = webdriver.ChromeOptions()
 #chrome_options.binary_location = GOOGLE_CHROME_BIN
@@ -38,10 +41,16 @@ CHROMEDRIVER_PATH = '/usr/bin/google-chrome'
 #chrome_options.add_argument('--no-sandbox')
 #driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
 
-chrome_options= webdriver.ChromeOptions()
-chrome_options.binary_location = env.get('GOOGLE_CHROME_SHIM')
-driver = webdriver.Chrome(chrome_options=chrome_options)
+#chrome_options= webdriver.ChromeOptions()
+#chrome_options.binary_location = os.environ.get('GOOGLE_CHROME_SHIM', None)
+#driver = webdriver.Chrome(chrome_options=chrome_options)
 
+
+chrome_bin = os.environ.get('GOOGLE_CHROME_SHIM', None)
+opts = ChromeOptions()
+opts.binary_location = chrome_bin
+driver = webdriver.Chrome(executable_path="chromedriver", chrome_options=opts)
+webdriver.Chrome(DRIVER)
 
 ## used for local testing
 #chromedriver = "/Users/crystalm/Downloads/chromedriver"
