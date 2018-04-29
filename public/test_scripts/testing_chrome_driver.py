@@ -29,7 +29,7 @@ db = client['heroku_4jtg3rvf']
 # initiating chrome driver --https://stackoverflow.com/questions/41059144/running-chromedriver-with-python-selenium-on-herokup
 
 GOOGLE_CHROME_BIN = '/app/.apt/usr/bin/google-chrome'
-CHROMEDRIVER_PATH = '/app/.apt/usr/bin/google-chrome'
+CHROMEDRIVER_PATH = '/usr/bin/google-chrome'
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.binary_location = GOOGLE_CHROME_BIN
