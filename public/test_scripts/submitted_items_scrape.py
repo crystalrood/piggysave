@@ -116,7 +116,7 @@ for index, row in submisission.iterrows():
 ##-------------------------------------
 #if the retailer is amazon, then grab all of the info needed 
 ##-------------------------------------
-    elif retailer == 'amazon':
+    #elif retailer == 'amazon':
         
         ##-------------------------------------
         ## getting the price of the item
@@ -127,7 +127,7 @@ for index, row in submisission.iterrows():
         #this class appears only if the item is on sale
         ###divTag = soup.find_all("span", {"id": "priceblock_ourprice"})
         ###price = divTag[0].string
-        price = 0
+        ##price = 0
         #print(price)
         
         ##-------------------------------------
@@ -146,17 +146,17 @@ for index, row in submisission.iterrows():
         #print(item_name)
         #print(image_link)
 
-        image_link = 0
-        item_name = 0
+        #image_link = 0
+        #item_name = 0
         ##-------------------------------------
         ## shortening the URL
         ##-------------------------------------
-        if "/ref" in item_url: 
-            condensed = item_url.split('/ref')[0]
-        elif "?ref" in item_url:
-            condensed = item_url.split('?ref')[0]
-        else:
-            condensed = 'mimsey get your shit together'
+        #if "/ref" in item_url: 
+        #    condensed = item_url.split('/ref')[0]
+        #elif "?ref" in item_url:
+            #condensed = item_url.split('?ref')[0]
+       # else:
+         #   condensed = 'mimsey get your shit together'
         #print(condensed)
         
      

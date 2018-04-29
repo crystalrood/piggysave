@@ -21,6 +21,7 @@ import selenium
 from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
 import time
+import os
 
 client = MongoClient('mongodb://heroku_4jtg3rvf:r9nq5ealpnfrlda5la4fj8r192@ds161503.mlab.com:61503/heroku_4jtg3rvf')
 db = client['heroku_4jtg3rvf']
@@ -31,11 +32,16 @@ db = client['heroku_4jtg3rvf']
 GOOGLE_CHROME_BIN = '/app/.apt/usr/bin/google-chrome'
 CHROMEDRIVER_PATH = '/usr/bin/google-chrome'
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.binary_location = GOOGLE_CHROME_BIN
-chrome_options.add_argument('--disable-gpu')
-chrome_options.add_argument('--no-sandbox')
-driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
+#chrome_options = webdriver.ChromeOptions()
+#chrome_options.binary_location = GOOGLE_CHROME_BIN
+#chrome_options.add_argument('--disable-gpu')
+#chrome_options.add_argument('--no-sandbox')
+#driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)
+
+chrome_options= webdriver.ChromeOptions()
+chrome_options.binary_location = env.get('GOOGLE_CHROME_SHIM')
+driver = webdriver.Chrome(chrome_options=chrome_options)
+
 
 ## used for local testing
 #chromedriver = "/Users/crystalm/Downloads/chromedriver"
