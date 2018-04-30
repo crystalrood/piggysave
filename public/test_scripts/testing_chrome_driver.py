@@ -40,20 +40,8 @@ sel_chrome = os.environ.get('GOOGLE_CHROME_SHIM', None)
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.binary_location = sel_chrome
-#chrome_options.add_argument('--disable-gpu')
-#chrome_options.add_argument('--no-sandbox')
 driver = webdriver.Chrome(chrome_options=chrome_options)
 
-#chrome_options= webdriver.ChromeOptions()
-#chrome_options.binary_location = os.environ.get('GOOGLE_CHROME_SHIM', None)
-#driver = webdriver.Chrome(chrome_options=chrome_options)
-
-
-#chrome_bin = os.environ.get('GOOGLE_CHROME_SHIM', None)
-#opts = ChromeOptions()
-#opts.binary_location = chrome_bin
-#driver = webdriver.Chrome(executable_path="chromedriver", chrome_options=opts)
-#webdriver.Chrome(DRIVER)
 
 ## used for local testing
 #chromedriver = "/Users/crystalm/Downloads/chromedriver"
@@ -74,9 +62,11 @@ password.clear()
 password.send_keys('cw1992')
 driver.find_element_by_name('rememberMe').click()
 driver.find_element_by_id('signInSubmit').click()
+time.sleep(2)
 driver.get('https://www.amazon.com/dp/B01MCULB3G')
-time.sleep(1)
+time.sleep(5)
 driver.find_element_by_id('amzn-ss-text-link').click()
+print('made it here')
 time.sleep(2)
 url = driver.find_element_by_id("amzn-ss-text-shortlink-textarea").text
 time.sleep(2)
