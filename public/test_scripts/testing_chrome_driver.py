@@ -22,11 +22,8 @@ from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
 import time
 import os
-from pyvirtualdisplay import Display
 
 
-display = Display(visible=0, size=(1024, 768))
-display.start()
 
 client = MongoClient('mongodb://heroku_4jtg3rvf:r9nq5ealpnfrlda5la4fj8r192@ds161503.mlab.com:61503/heroku_4jtg3rvf')
 db = client['heroku_4jtg3rvf']
@@ -84,7 +81,6 @@ time.sleep(2)
 url = driver.find_element_by_id("amzn-ss-text-shortlink-textarea").text
 time.sleep(2)
 driver.quit()
-display.stop()
 
 
 url
