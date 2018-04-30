@@ -22,6 +22,11 @@ from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
 import time
 import os
+from pyvirtualdisplay import Display
+
+
+display = Display(visible=0, size=(1024, 768))
+display.start()
 
 client = MongoClient('mongodb://heroku_4jtg3rvf:r9nq5ealpnfrlda5la4fj8r192@ds161503.mlab.com:61503/heroku_4jtg3rvf')
 db = client['heroku_4jtg3rvf']
@@ -36,11 +41,11 @@ chrome_exec_shim = os.environ.get("GOOGLE_CHROME_BIN", "chromedriver")
 chrome_bin = os.environ.get('GOOGLE_CHROME_BIN', None)
 sel_chrome = os.environ.get('GOOGLE_CHROME_SHIM', None)
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.binary_location = sel_chrome
-chrome_options.add_argument('--disable-gpu')
-chrome_options.add_argument('--no-sandbox')
-driver = webdriver.Chrome(executable_path=chrome_exec_shim, chrome_options=chrome_options)
+#chrome_options = webdriver.ChromeOptions()
+#chrome_options.binary_location = sel_chrome
+#chrome_options.add_argument('--disable-gpu')
+#chrome_options.add_argument('--no-sandbox')
+driver = webdriver.Chrome(executable_path=chrome_exec_shim)
 
 #chrome_options= webdriver.ChromeOptions()
 #chrome_options.binary_location = os.environ.get('GOOGLE_CHROME_SHIM', None)
@@ -79,6 +84,7 @@ time.sleep(2)
 url = driver.find_element_by_id("amzn-ss-text-shortlink-textarea").text
 time.sleep(2)
 driver.quit()
+display.stop()
 
 
 url
