@@ -8,20 +8,21 @@
           span.icon-bar
           span.icon-bar
           span.icon-bar
-        a.navbar-brand(href='/')(style='font-family:"Helvetica Neue" !important; color:#ff63d5 !important;font-size:30px !important; font-weight: 350; !important')
-          |Piggy
+        a.navbar-brand(href='/')(style='font-family:"Helvetica Neue" !important; color:#ff63d5 !important;font-size:30px !important; font-weight: 350; !important') Piggy
       .collapse.navbar-collapse
         ul.nav.navbar-nav
           li  
           li(class=(title == 'About') ? 'active' : undefined)
             a(href='/about')(style='font-family:"Helvetica Neue"; font-size:15px !important; font-weight: 320; !important') How does Piggy work?
-          //li(class=(title == 'Contact') ? 'active' : undefined)
-          //  a(href='/contact')(style='font-family:"Helvetica Neue"; font-size:15px !important; font-weight: 320; !important') Contact
-        // ul.nav.navbar-nav.navbar-right
-        //   li(class=(title == 'Login') ? 'active' : undefined)
-        //     a(href='/login') Login
-        //   li(class=(title == 'Create Account') ? 'active' : undefined)
-        //     a(href='/signup') Create Account
+          li(class=(title == 'Piggy Tracker') ? 'active' : undefined)
+            a(href='/piggy_tracker_home')(style='font-family:"Helvetica Neue"; font-size:15px !important; font-weight: 320; !important') <b>New </b>  Piggy Tracker
+          li(class=(title == 'Contact') ? 'active' : undefined)
+            a(href='/contact')(style='font-family:"Helvetica Neue"; font-size:15px !important; font-weight: 320; !important') Contact
+        ul.nav.navbar-nav.navbar-right
+           li(class=(title == 'Login') ? 'active' : undefined)
+             a(href='/login') Login
+           li(class=(title == 'Create Account') ? 'active' : undefined)
+             a(href='/signup') Create Account
       
     else
       .navbar-header
@@ -30,14 +31,15 @@
           span.icon-bar
           span.icon-bar
           span.icon-bar
-        a.navbar-brand(href='/order')
-          |Piggy
+        a.navbar-brand(href='/')(style='font-family:"Helvetica Neue" !important; color:#ff63d5 !important;font-size:30px !important; font-weight: 350; !important') Piggy
       .collapse.navbar-collapse
         ul.nav.navbar-nav
           li(class=(title == 'Your Orders') ? 'active' : undefined)
-            a(href='/order') Your Orders
-          //li(class=(title == 'Contact') ? 'active' : undefined)
-          //a(href='/contact') Contact
+            a(href='/order')(style='font-family:"Helvetica Neue"; font-size:15px !important; font-weight: 320; !important') Your Orders
+          li(class=(title == 'Piggy Tracker') ? 'active' : undefined)
+            a(href='/piggy_tracker_home')(style='font-family:"Helvetica Neue"; font-size:15px !important; font-weight: 320; !important') <b>New </b>  Piggy Tracker
+          li(class=(title == 'Contact') ? 'active' : undefined)
+            a(href='/contact')(style='font-family:"Helvetica Neue"; font-size:15px !important; font-weight: 320; !important') Contact
         ul.nav.navbar-nav.navbar-right
           li.dropdown(class=(title == 'Account Management') ? 'active' : undefined)
             a.dropdown-toggle(href='#', data-toggle='dropdown')
@@ -45,11 +47,11 @@
                 img(src=user.profile.picture)
               else
                 img(src=user.gravatar(60))
-              span= user.profile.name || user.email || user.id
+              span(style='font-family:"Helvetica Neue"; font-size:15px !important; font-weight: 320; !important')= user.profile.name || user.email || user.id
               i.caret
-          //  ul.dropdown-menu
-          //    li
-          //      a(href='/account') My Account
-          //    li.divider
-          //   li
-          //      a(href='/logout') Logout
+            ul.dropdown-menu
+              li
+                a(href='/account')(style='font-family:"Helvetica Neue"; font-size:15px !important; font-weight: 320; !important') My Account
+              li.divider
+              li
+                a(href='/logout')(style='font-family:"Helvetica Neue"; font-size:15px !important; font-weight: 320; !important') Logout

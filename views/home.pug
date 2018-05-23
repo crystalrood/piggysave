@@ -1,54 +1,85 @@
 extends layout
 
 block content
-  head
-  title Page Title
-  script(src='https://www.google.com/recaptcha/api.js')
-
+  .row
+    .container
+      .row
+        #welcome.container
+          .col-sm-4.col-sm-offset-4
+            br
+            br
+            br
+            img(src='images/piggie_broken.png', align='middle', width="50%")
+            br     
+            br              
+            img(src='images/piggie_font.png', align='middle', width="50%")
+  br
   .row
     .container
       .row
         #welcome.container
           br
-          br
-          br
-          .col-sm-4.col-sm-offset-4
-            br
-            img(src='images/piggie_font.png', align='middle', width="30%")
-            br
-            br
-            img(src='images/piggie_v2.png', align='middle', width="30%")
-            br
-            br
-            p(style = 'font-family:"Helvetica Neue";margin-bottom: 20px;font-size: 23px;font-weight: 300;line-height: 1.4;') Get notified when prices drop for free!
-            form.form-group(action='/', method='POST')
-              input(type='hidden', name='_csrf', value=_csrf)
-              <label class="col-sm-3 control-label" for="email"></label>
-                <input class="form-control" style="border:1px solid #189aff; !important;border-radius:5px !important;" type="email" name="email" id="email" placeholder="Email" autofocus="" required="">
-              <label class="col-sm-3 control-label" for="email"></label>
-                <input class="form-control" style="border:1px solid #189aff; !important;border-radius:5px !important;"  name="url" id="url" placeholder="Product URL" autofocus="" required="">
+          #welcome
+            .col-md-8.col-sm-offset-2
+              p(style = 'font-family:"Helvetica Neue";margin-bottom: 20px;font-size: 23px;font-weight: 300;line-height: 1.4;') Piggy is a little broken right now, feel free to sign up, but don't expect to save right away.
+              p(style = 'font-family:"Helvetica Neue";margin-bottom: 20px;font-size: 23px;font-weight: 300;line-height: 1.4;') Automatically get refunds on purchases when prices drop. 
+              p(style = 'font-family:"Helvetica Neue";margin-bottom: 20px;font-size: 25px;font-weight: 500;line-height: 1.4;')|Join for free & start earning!  
               br
-              //.col-sm-3
-              // <div class="g-recaptcha" data-sitekey="6LexWFMUAAAAAF76TBXmR97co3veRZZLGsiY_xxS"></div>
+          #welcome
+            .col-md-8.col-sm-offset-2
+              .form-group
+                .col-sm-offset-3.col-sm-6
+                  a(href='/auth/google', title='Google')
+                    img(src='images/web/2x/btn_google_signin_dark_normal_web@2x.png', align='middle', width='220px')
               br
-              //button.g-recaptcha(data-sitekey='6LduVVMUAAAAACW40K4eDwbXSVTN3P1GqGQ-lZge', data-callback='submit').btn.btn-primary(type='submit')(style="width:50%;")
-              //  i.fa.fa-envelope
-              //  | Start tracking!
-              button.btn.btn-primary(type='submit')(style="width:50%;")
-                i.fa.fa-envelope
-                | Start tracking!
-
-
+          
+      br
+      br
+      br 
+      <hr>
+      </hr>
+      br
+      .row
+        .container
+        .row
+          #welcome.container
+            .col-sm-4.col-sm-offset-4
+              p(style = 'font-family:"Helvetica Neue";margin-bottom: 20px;font-size: 23px;font-weight: 450;line-height: 1.4;') How does Piggy work? 
+      br
+      .row
+        #welcome.container
+          #welcome.col-sm-4
+            br
+            br
+            img(src='images/email+piggie.png', align='middle', height='120px')    
+            br
+            br
+            .row
+              br
+              br
+              p(style = 'font-family:"Helvetica Neue";margin-bottom: 20px;font-size: 20px;font-weight: 300;line-height: 1.4;') (1) Connect Piggy to your email.
+              br 
+          #welcome.col-sm-4
+            br
+            img(src='images/receipt+piggie.png', align='middle', height='160px')    
+            br
+            br
+            .row
+              br
+              p(style = 'font-family:"Helvetica Neue";margin-bottom: 20px;font-size: 20px;font-weight: 300;line-height: 1.4;') (2) Piggy will search for lower prices on past orders.   
+              br
+          #welcome.col-sm-4
+            br  
+            img(src='images/laptop+piggie.png', align='middle', height='160px')    
+            br
             br     
-            br    
-            p(style = 'font-family:"Helvetica Neue";margin-bottom: 20px;font-size: 23px;font-weight: 300;line-height: 1.4;') We'll email you once we notice a price drop.
-            br
-            br
-            br
-            br
-           
-
-  
+            .row       
+              br
+              p(style = 'font-family:"Helvetica Neue";margin-bottom: 20px;font-size: 20px;font-weight: 300;line-height: 1.4;') (3) Piggy will contact you and the retailer when she finds a lower price.
+              br
+    br
+    br
+    br
 
 
   script(async='', src='https://www.googletagmanager.com/gtag/js?id=UA-109512311-1')
@@ -57,4 +88,3 @@ block content
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'UA-109512311-1');
-

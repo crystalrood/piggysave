@@ -28,6 +28,7 @@ const upload = multer({ dest: path.join(__dirname, 'uploads') });
  */
 dotenv.load({ path: '.env.example' });
 
+
 /**
  * Controllers (route handlers).
  */
@@ -37,6 +38,8 @@ const contactController = require('./controllers/contact');
 const termController = require('./controllers/term');
 const privacyController = require('./controllers/privacy');
 const aboutController = require('./controllers/about');
+const piggy_tracker_homeController = require('./controllers/piggy_tracker_home');
+const orderController = require('./controllers/order');
 
 
 
@@ -66,7 +69,7 @@ mongoose.connection.on('error', (err) => {
 /**
  * Express configuration.
  */
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 27017);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(expressStatusMonitor());
@@ -173,9 +176,13 @@ app.post('/account/password', passportConfig.isAuthenticated, userController.pos
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 
+
+app.get('/order', orderController.getOrder);
 app.get('/terms', termController.index);
 app.get('/privacynotice', privacyController.index);
 app.get('/about', aboutController.index);
+app.get('/piggy_tracker_home', piggy_tracker_homeController.index);
+
 
 /**
  * OAuth authentication routes. (Sign in)
