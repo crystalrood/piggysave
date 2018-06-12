@@ -8,8 +8,6 @@ var fs = require('fs');
 const User = require('../models/User');
 mongoose.Promise = require('bluebird');
 
-var message_data = []
-
 var google = require('googleapis');
 var OAuth2 = google.auth.OAuth2;
 var oauth2Client = new OAuth2(
@@ -23,94 +21,28 @@ var gmail = google.gmail({
   auth: oauth2Client
 });
 
-//sub function to get message from gmail api
-//**********//**********//**********//**********
-function getMessage(i, email ,thread_id, callback) {
-   gmail.users.messages.get({
-     auth: oauth2Client,
-     userId: email,
-     id: thread_id.id,
-     format: 'raw'
-   },
-     function(err, response2) {
-       if (err) {
-         console.log('The API returned an error: ' + err);
-         return;
-       }
-
-       //for some reason i needed to create an _id to save to mongoose...:(
-       var mongoose = require('mongoose');
-       var ObjectId =  mongoose.Types.ObjectId;
-       var x = new ObjectId();
-
-       var date = new Date().getTime()
-       const email_thread = new Message(
-         {
-           _id: x,
-           email: email,
-           date_extracted: date,
-           thread_id: thread_id.id,
-           encoded_message: response2['raw']
-        }
-       );
-       email_thread.save();
-       console.log('saved thread')
-    })
-    console.log('counter is ' + i)
- }
 
 
-function getThreads(email, callback) {
-  var retailers = ['contact@em.nordstrom.com']
-  var key_words = '{subject:order subject:reciept subject:confirmation subject:purchase}'
-  var lookback = 'before:2017/09/10'
-  query = 'in: anywhere,' + retailers +','+ key_words +','+ lookback 
+//************************************************************************************************************************
+//************************************************************************************************************************
+//******************            Loading order page and performing initial scrape if new user     *************************
+//************************************************************************************************************************
+//************************************************************************************************************************
 
-  gmail.users.threads.list({
-    auth: oauth2Client,
-    userId: email,
-    q: query
-  }, function(err, response) {
-    if (err) {
-      console.log('The API returned an error: ' + err);
-      return;
-    }
-
-    var threads = response['threads']
-    console.log(threads.length)
-    if(length in threads){
-        console.log("yes, i have that property");
-    
-
-
-      if (threads.length == 0) {
-        console.log('no threads found that match critera');
-      } else {
-        for (var i = 0; i < threads.length; i++) {
-          var thread = threads[i];
-          console.log(email)
-          getMessage(i , email, thread)
-        }
-        if (i==threads.length){
-          //callback(null);
-        }
-      }
-    }
-  });
-}
-
-//**********//**********//**********//**********
-//**********//**********//**********//**********
 
 
 exports.getOrder = (req, res) => {
-/*
+console.log('crystal line 107')
 console.log(process.cwd())
   if(req.user && req.user.initial_scrape_state == 'need_initial'){
+    console.log('crystal made it past user check and initial scrape')
     async.waterfall([
+      //***************************************************************************************
+      //*****   1st function scrapes user threads for the first time from gmail api    ********
+      //***************************************************************************************
       function(callback) {
         //checking to see if the user has an initial status of need to scrape
-          console.log(req.user.tokens[0].accessToken)
+         console.log('crystal made it to the first callback function in async waterfall')
           if (req.user.tokens[0].accessToken) {
               //setting oauth2Client credentials if user has a token set up
               oauth2Client.setCredentials({
@@ -119,7 +51,7 @@ console.log(process.cwd())
             });
             var retailers = ['contact@em.nordstrom.com']
             var key_words = '{subject:order subject:in process}'
-            var lookback = ' newer_than:90d'
+            var lookback = ' newer_than:180d '
             query = 'in: anywhere,' + retailers +','+ key_words + ',' + lookback
             gmail.users.threads.list({
               auth: oauth2Client,
@@ -177,22 +109,22 @@ console.log(process.cwd())
                   }
                 }
               }catch(e){
-                if(e){
-                  callback(null, 'next1');
-                }
+                if(e){callback(null, 'next1');}
               }    
             });
-            
           }
-        //else{
-        //  callback(null, 'next1');
-        //}
       },
+      //***************************************************************************************
+      //***** 2nd function calls email_info_scrape.py which scrapes info from the thread saved in function 1
+      //***** parameters scrape are: ('thread_id','email', 'retailer', 
+      //***** 'date', 'order_num', 'billing_address', 'zipcode')
+      //***** This information serves as an input to get the items within the order to track
+      //***** Information is saved into order_info_from_email
+      //***************************************************************************************
       function(arg1, callback) {
-        //in this subfunction i want to call the python scraper :D
           var PythonShell = require('python-shell');
-          var path = process.cwd()+'/public/test_scripts/'
-          var pyshell = new PythonShell('test.py', {scriptPath:path, pythonOptions: ['-u']});
+          var path = process.cwd()+'/public/test_scripts/piggy_main_scripts/'
+          var pyshell = new PythonShell('email_info_scrape.py', {scriptPath:path, pythonOptions: ['-u']});
           pyshell.on('message', function (message) {
             // received a message sent from the Python script (a simple "print" statement)
             console.log(message);
@@ -205,11 +137,17 @@ console.log(process.cwd())
             callback(null, 'next3');
           });
       },
+      //***************************************************************************************
+      //***** 3rd function calls nordstrom_scrape_order_info.py which goes into the order and
+      //***** and scrape the individual items within the order and collects the following pieces
+      //***** of data: 'order_num','zipcode', 'image', 'quantity', 'unit_price', 'item_name', 
+      //***** 'size', 'style', 'tracking_num'
+      //***** this data is saved into order_info_item_scrapes
+      //***************************************************************************************
       function(arg1, callback) {
-        //in this subfunction i want to call the python scraper :D
           var PythonShell = require('python-shell');
-          var path = process.cwd()+'/public/test_scripts/'
-          var pyshell = new PythonShell('test_scrape_nordstrom.py',{scriptPath: path, pythonOptions: ['-u']});
+          var path = process.cwd()+'/public/test_scripts/piggy_main_scripts/'
+          var pyshell = new PythonShell('nordstrom_scrape_order_info.py',{scriptPath: path, pythonOptions: ['-u']});
           pyshell.on('message', function (message) {
             // received a message sent from the Python script (a simple "print" statement)
             console.log(message);
@@ -222,6 +160,10 @@ console.log(process.cwd())
             callback(null, 'next3');
           });
       },
+      //***************************************************************************************
+      //***** 4th function calls sets the user profile in the DB to "scraped" regardless of 
+      //***** if actual information was scraped
+      //***************************************************************************************
       function(arg1, callback) {
             User.update(
               {'email': req.user.email }
@@ -258,6 +200,6 @@ console.log(process.cwd())
         }
       }     
   }
-  */
-res.render('orders');
+  
+//res.render('orders');
 };
