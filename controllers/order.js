@@ -51,7 +51,7 @@ console.log(process.cwd())
             });
             var retailers = ['contact@em.nordstrom.com']
             var key_words = '{subject:order subject:in process}'
-            var lookback = ' newer_than:180d '
+            var lookback = ' newer_than:190d '
             query = 'in: anywhere,' + retailers +','+ key_words + ',' + lookback
             gmail.users.threads.list({
               auth: oauth2Client,
@@ -120,11 +120,12 @@ console.log(process.cwd())
       //***** 'date', 'order_num', 'billing_address', 'zipcode')
       //***** This information serves as an input to get the items within the order to track
       //***** Information is saved into order_info_from_email
+      //***** /public/test_scripts/piggy_main_scripts/email_info_scrape_v2.py
       //***************************************************************************************
       function(arg1, callback) {
           var PythonShell = require('python-shell');
           var path = process.cwd()+'/public/test_scripts/piggy_main_scripts/'
-          var pyshell = new PythonShell('email_info_scrape.py', {scriptPath:path, pythonOptions: ['-u']});
+          var pyshell = new PythonShell('email_info_scrape_v2.py', {scriptPath:path, pythonOptions: ['-u']});
           pyshell.on('message', function (message) {
             // received a message sent from the Python script (a simple "print" statement)
             console.log(message);
