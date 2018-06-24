@@ -50,8 +50,8 @@ console.log(process.cwd())
               refresh_token: req.user.refresh_token[0].refreshToken
             });
             var retailers = ['contact@em.nordstrom.com']
-            var key_words = '{subject:order subject:in process}'
-            var lookback = ' newer_than:190d '
+            var key_words = '{subject:Your Nordstrom order subject:in process}'
+            var lookback = ' newer_than:14d '
             query = 'in: anywhere,' + retailers +','+ key_words + ',' + lookback
             gmail.users.threads.list({
               auth: oauth2Client,
@@ -145,7 +145,8 @@ console.log(process.cwd())
       //***** 'size', 'style', 'tracking_num'
       //***** this data is saved into order_info_item_scrapes
       //***************************************************************************************
-      function(arg1, callback) {
+      /* ----6.24 commented this code out because email_info_scrape_v2 takes care of this*/
+  /*    function(arg1, callback) {
           var PythonShell = require('python-shell');
           var path = process.cwd()+'/public/test_scripts/piggy_main_scripts/'
           var pyshell = new PythonShell('nordstrom_scrape_order_info.py',{scriptPath: path, pythonOptions: ['-u']});
@@ -160,7 +161,7 @@ console.log(process.cwd())
             console.log(arg1)
             callback(null, 'next3');
           });
-      },
+      },*/
       //***************************************************************************************
       //***** 4th function calls sets the user profile in the DB to "scraped" regardless of 
       //***** if actual information was scraped

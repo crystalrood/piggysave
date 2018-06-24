@@ -50,12 +50,12 @@ block content
     function create_html(value, status){
       var retailer = value['retailer']
       var status = value['status']
-      var item_link = value['image_link_2']
-      var item_name = value['item_name_2']
+      var item_link = value['image_url']
+      var item_name = value['item_name']
       var quantity = value['quantity']
-      var purchase_price = value['purchase_price']
+      var purchase_price = value['price']
       var order_num = value['order_num']
-      var date_purchased = value['date_placed']
+      var date_purchased = value['date']
       var html = ''
       if (status == 'tracking'){
         html += '<div class="item_checking" id="item_checking"><div class="row"><h3 class="col-sm-4">'
@@ -90,7 +90,7 @@ block content
       
       html += '</div><div class="row"><div class="div col-sm-2"><img src="'
       html += item_link + '" width="140px"></div><div class="div col-sm-7 col-sm-offset-3"><p class="item_checking"> <span>Item: </span>'
-      html += item_name + ' X ' + quantity + '<br><span>Unit Price: </span>' + purchase_price + '<br><span>Order Number: </span>' 
+      html += item_name + ' X ' + quantity + '<br><span>Unit Price: </span>' + '$'+ purchase_price + '<br><span>Order Number: </span>' 
       html += order_num + '<br><span>Date Ordered: </span>' + date_purchased + '</p></div></div></div>'
       
       return html
@@ -102,19 +102,19 @@ block content
     function create_tracking_html(value){
       var retailer = value['retailer']
       var status = value['status']
-      var item_link = value['image_link_2']
-      var item_name = value['item_name_2']
+      var item_link = value['image_url']
+      var item_name = value['item_name']
       var quantity = value['quantity']
-      var purchase_price = value['purchase_price']
+      var purchase_price = value['price']
       var order_num = value['order_num']
-      var date_purchased = value['date_placed']
+      var date_purchased = value['date']
       html = ''
       html += '<div class="item_checking" id="item_checking"><div class="row"><h3 class="col-sm-4">'
       html += retailer + '</h3><h4 class="col-sm-4 col-sm-offset-4">'
       html += '<span style="background-color:#380083;font color:;color: white;letter-spacing: 2px; padding: 5px;">tracking</span></h4>'
       html += '</div><div class="row"><div class="div col-sm-2"><img src="'
       html += item_link + '" width="140px"></div><div class="div col-sm-7 col-sm-offset-3"><p class="item_checking"> <span>Item: </span>'
-      html += item_name + ' X ' + quantity + '<br><span>Unit Price: </span>' + purchase_price + '<br><span>Order Number: </span>' 
+      html += item_name + ' X ' + quantity + '<br><span>Unit Price: </span>' + '$'+purchase_price + '<br><span>Order Number: </span>' 
       html += order_num + '<br><span>Date Ordered: </span>' + date_purchased + '</p></div></div></div>'
       return html
     }
@@ -122,19 +122,19 @@ block content
     function created_email_html(value){
       var retailer = value['retailer']
       var status = value['status']
-      var item_link = value['image_link_2']
-      var item_name = value['item_name_2']
+      var item_link = value['image_url']
+      var item_name = value['item_name']
       var quantity = value['quantity']
-      var purchase_price = value['purchase_price']
+      var purchase_price = value['price']
       var order_num = value['order_num']
-      var date_purchased = value['date_placed']
+      var date_purchased = value['date']
       html = ''
       html += '<div class="retailer_contacted" id="retailer_contacted"><div class="row"><h3 class="col-sm-4"> '
       html += retailer + '</h3><h4 class="col-sm-4 col-sm-offset-4"> '
       html += '<span style="background-color:#840469;font color:;color: white;letter-spacing: 3px; padding: 5px;">contacted</span></h4>'
       html += '</div><div class="row"><div class="div col-sm-2"><img src="'
       html += item_link + '" width="140px"></div><div class="div col-sm-7 col-sm-offset-3"><p class="item_checking"> <span>Item: </span>'
-      html += item_name + ' X ' + quantity + '<br><span>Unit Price: </span>' + purchase_price + '<br><span>Order Number: </span>' 
+      html += item_name + ' X ' + quantity + '<br><span>Unit Price: </span>' + '$'+purchase_price + '<br><span>Order Number: </span>' 
       html += order_num + '<br><span>Date Ordered: </span>' + date_purchased + '</p></div></div></div>'
       return html
     }
@@ -142,19 +142,19 @@ block content
     function refunded_html_add(value){
       var retailer = value['retailer']
       var status = value['status']
-      var item_link = value['image_link_2']
-      var item_name = value['item_name_2']
+      var item_link = value['image_url']
+      var item_name = value['item_name']
       var quantity = value['quantity']
-      var purchase_price = value['purchase_price']
+      var purchase_price = value['price']
       var order_num = value['order_num']
-      var date_purchased = value['date_placed']
+      var date_purchased = value['date']
       html = ''
       html += '<div class="refunded_savings" id="refunded_savings"><div class="row"><h3 class="col-sm-4"> '
       html += retailer + '</h3><h4 class="col-sm-4 col-sm-offset-4"> '
       html += '<span style="background-color:#008745;font color:;color: white;letter-spacing: 3px; padding: 5px;">refunded!   </span></h4>'
       html += '</div><div class="row"><div class="div col-sm-2"><img src="'
       html += item_link + '" width="140px"></div><div class="div col-sm-7 col-sm-offset-3"><p class="item_checking"> <span>Item: </span>'
-      html += item_name + ' X ' + quantity + '<br><span>Unit Price: </span>' + purchase_price + '<br><span>Order Number: </span>' 
+      html += item_name + ' X ' + quantity + '<br><span>Unit Price: </span>' + '$'+purchase_price + '<br><span>Order Number: </span>' 
       html += order_num + '<br><span>Date Ordered: </span>' + date_purchased + '</p></div></div></div>'
       return html
     }
@@ -162,19 +162,19 @@ block content
     function ineligible_html_add(value){
       var retailer = value['retailer']
       var status = value['status']
-      var item_link = value['image_link_2']
-      var item_name = value['item_name_2']
+      var item_link = value['image_url']
+      var item_name = value['item_name']
       var quantity = value['quantity']
-      var purchase_price = value['purchase_price']
+      var purchase_price = value['price']
       var order_num = value['order_num']
-      var date_purchased = value['date_placed']
+      var date_purchased = value['date']
       html = ''
       html += '<div class="not_eligable" id="not_eligable"><div class="row"><h3 class="col-sm-4">'
       html += retailer + '</h3><h4 class="col-sm-4 col-sm-offset-4"> '
       html += '<span style="background-color:#565656;font color:;color: white; letter-spacing: 3px; padding: 5px;">ineligible </span></h4'
       html += '</div><div class="row"><div class="div col-sm-2"><img src="'
       html += item_link + '" width="140px"></div><div class="div col-sm-7 col-sm-offset-3"><p class="item_checking"> <span>Item: </span>'
-      html += item_name + ' X ' + quantity + '<br><span>Unit Price: </span>' + purchase_price + '<br><span>Order Number: </span>' 
+      html += item_name + ' X ' + quantity + '<br><span>Unit Price: </span>' + '$'+purchase_price + '<br><span>Order Number: </span>' 
       html += order_num + '<br><span>Date Ordered: </span>' + date_purchased + '</p></div></div></div>'
       return html
     }
